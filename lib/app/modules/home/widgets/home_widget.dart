@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
+
 class HomeWidget extends StatelessWidget {
   const HomeWidget({super.key});
 
@@ -12,8 +14,8 @@ class HomeWidget extends StatelessWidget {
         leading: Icon(Icons.home),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.bookmark_added),
+            onPressed: () => Get.toNamed(Routes.TAMBAH_PEGAWAI),
+            icon: Icon(Icons.person),
           ),
         ],
       ),

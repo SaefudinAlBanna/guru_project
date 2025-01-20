@@ -11,5 +11,28 @@ class HomeController extends GetxController {
 
   final List<Widget> myWidgets = [
     HomeWidget(),
+    Center(
+      child: Text('ABSEN', style: TextStyle(
+        fontSize: 50,
+        fontWeight: FontWeight.bold,
+      ),),
+    ),
+    Center(
+      child: SizedBox(
+        height: 200,
+        width: 300,
+        child: Card(
+          color: Colors.blue,
+          borderOnForeground: true,
+          child: Center(
+            child: Text('PROFILE', style: TextStyle(
+              fontSize: 50,
+              fontWeight: FontWeight.bold,
+            ),),
+          ),
+        ),
+      ),
+    ),
+
   ];
 }
