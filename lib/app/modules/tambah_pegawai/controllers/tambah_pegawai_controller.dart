@@ -39,16 +39,25 @@ class TambahPegawaiController extends GetxController {
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
-          Get.snackbar('Terjadi Kesalahan', 'Password terlalu singkat');
+          Get.snackbar(
+            snackPosition: SnackPosition.BOTTOM,
+            'Terjadi Kesalahan', 'Password terlalu singkat');
         } else if (e.code == 'email-already-in-use') {
-          Get.snackbar('Terjadi Kesalahan', 'email pegawai sudah terdaftar');
+          Get.snackbar(
+            snackPosition: SnackPosition.BOTTOM,
+            'Terjadi Kesalahan', 'email pegawai sudah terdaftar');
         }
       } catch (e) {
-        Get.snackbar('Terjadi Kesalahan',
+        Get.snackbar(
+          snackPosition: SnackPosition.BOTTOM,
+          'Terjadi Kesalahan',
             'Tidak dapat menambahkan pegawai, harap dicoba lagi');
       }
     } else {
-      Get.snackbar('Terjadi Kesalahan', '* Wajib di isi');
+      Get.snackbar(
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Color.fromARGB(255, 156, 151, 151),
+        'Terjadi Kesalahan', '* Wajib di isi');
     }
   }
 }
