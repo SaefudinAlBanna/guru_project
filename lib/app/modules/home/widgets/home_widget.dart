@@ -165,7 +165,7 @@ class HomeWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 15),
                 Container(
-                  height: 3,
+                  height: 1,
                   color: Colors.black,
                 ),
                 SizedBox(height: 25),

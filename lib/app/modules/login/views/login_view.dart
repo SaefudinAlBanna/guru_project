@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:guru_project/app/routes/app_pages.dart';
 
 import '../controllers/login_controller.dart';
 
@@ -27,11 +26,17 @@ class LoginView extends GetView<LoginController> {
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
-                    _textInput(hint: "Enter your Email", icon: Icons.email, obsecure: false),
-                    _textInput(hint: "Password", icon: Icons.vpn_key, obsecure: true),
+                    _textInput(
+                        controller: controller.emailC,
+                        hint: "Enter your Email",
+                        icon: Icons.email,
+                        obsecure: false),
+                    _textInput(
+                        controller: controller.passC,
+                        hint: "Password", icon: Icons.vpn_key, obsecure: true),
                     ElevatedButton(
                       onPressed: () {
-                        Get.toNamed(Routes.HOME);
+                        controller.login();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.indigo,
@@ -67,7 +72,12 @@ class LoginView extends GetView<LoginController> {
     );
   }
 
-  Widget _textInput({controller, hint, icon, obsecure,}) {
+  Widget _textInput({
+    controller,
+    hint,
+    icon,
+    obsecure,
+  }) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       decoration: const BoxDecoration(
@@ -76,6 +86,7 @@ class LoginView extends GetView<LoginController> {
       ),
       padding: const EdgeInsets.only(left: 10),
       child: TextFormField(
+        autocorrect: false,
         obscureText: obsecure,
         controller: controller,
         decoration: InputDecoration(
@@ -125,3 +136,4 @@ class HeaderContainer extends StatelessWidget {
     );
   }
 }
+

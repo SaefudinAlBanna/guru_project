@@ -1,23 +1,185 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guru_project/app/routes/app_pages.dart';
 
 class LoginController extends GetxController {
-  //TODO: Implement LoginController
+  TextEditingController emailC = TextEditingController();
+  TextEditingController passC = TextEditingController();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  void login() async {
+    if (emailC.text.isNotEmpty && passC.text.isNotEmpty) {
+      try {
+        UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: emailC.text,
+          password: passC.text,
+        );
+
+        if (userCredential.user != null) {
+          if (userCredential.user != null) {
+            if (userCredential.user!.emailVerified == true) {
+              if (passC.text == "password") {
+                Get.offAllNamed(Routes.NEW_PASSWORD);
+              } else {
+                Get.offAllNamed(Routes.HOME);
+              }
+            } else {
+              Get.defaultDialog(
+                title: 'Belum verifikasi',
+                middleText: 'Silahkan verifikasi terlebih dahulu',
+                actions: [
+                  OutlinedButton(
+                    onPressed: () => Get.back(),
+                    child: Text('CANCEL'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        await userCredential.user!.sendEmailVerification();
+                        Get.back();
+                        Get.snackbar('Berhasil',
+                            'email verifikasi sudah berhasil terkirim');
+                      } catch (e) {
+                        Get.snackbar(
+                            'Terjadi Kesalahan', 'Silahkan dicoba lagi nanti');
+                      }
+                    },
+                    child: Text('Kirim Ulang Verifikasi'),
+                  ),
+                ],
+              );
+            }
+          }
+        } else {
+          Get.snackbar('Peringatan', 'email belum terfverifikasi');
+        }
+
+        print(userCredential);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          Get.snackbar("Peringatan", 'user tidak ditemukan',
+              snackPosition: SnackPosition.BOTTOM,
+              snackStyle: SnackStyle.FLOATING,
+              // borderColor: Colors.grey
+              backgroundColor: Colors.grey);
+          // print('user not found');
+        } else if (e.code == 'wrong-password') {
+          Get.snackbar("Peringatan", "Password yang anda masukan salah",
+              snackPosition: SnackPosition.BOTTOM,
+              snackStyle: SnackStyle.FLOATING,
+              // borderColor: Colors.grey
+              backgroundColor: Colors.grey);
+          // print('wrong password');
+        }
+      } catch (e) {
+        Get.snackbar("Terjadi kesalahan", "Tidak dapat login",
+            snackPosition: SnackPosition.BOTTOM,
+            snackStyle: SnackStyle.FLOATING,
+            // borderColor: Colors.grey
+            backgroundColor: Colors.grey);
+      }
+    } else {
+      Get.snackbar("Peringatan", "Email & Password Wajib diisi",
+          snackPosition: SnackPosition.BOTTOM,
+          snackStyle: SnackStyle.FLOATING,
+          // borderColor: Colors.grey
+          backgroundColor: Colors.grey);
+    }
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  Future<String> loginUser() async {
+    String res = " Some error ocured";
+    if (emailC.text.isNotEmpty && passC.text.isNotEmpty) {
+      try {
+        UserCredential userCredential = await auth.signInWithEmailAndPassword(
+            email: emailC.text, password: passC.text);
+
+        if (userCredential.user != null) {
+          if (userCredential.user != null) {
+            if (userCredential.user!.emailVerified == true) {
+              if (passC.text == "password" || passC.text == "Password") {
+                Get.offAllNamed(Routes.NEW_PASSWORD);
+              } else {
+                res = "Succes";
+                Get.offAllNamed(Routes.HOME);
+              }
+            } else {
+              Get.defaultDialog(
+                title: 'Belum verifikasi',
+                middleText: 'Silahkan verifikasi terlebih dahulu',
+                actions: [
+                  OutlinedButton(
+                    onPressed: () => Get.back(),
+                    child: Text('CANCEL'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        await userCredential.user!.sendEmailVerification();
+                        Get.back();
+                        Get.snackbar('Berhasil',
+                            'email verifikasi sudah berhasil terkirim');
+                      } catch (e) {
+                        Get.snackbar(
+                            'Terjadi Kesalahan', 'Silahkan dicoba lagi nanti');
+                      }
+                    },
+                    child: Text('Kirim Ulang Verifikasi'),
+                  ),
+                ],
+              );
+            }
+          }
+        } else {
+          res = 'email belum terfverifikasi';
+        }
+      } catch (e) {
+        return e.toString();
+      }
+    }
+    return res;
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  void loginuser() async {
+    String res = await LoginController().loginUser();
+
+    if (res == "Succes") {
+      Get.offAllNamed(Routes.HOME);
+    } else {
+      Get.snackbar(
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.grey,
+          'Peringatan',
+          res);
+    }
   }
 
-  void increment() => count.value++;
+  Future<void> signOut() async {
+    await auth.signOut();
+  }
+
+  void logincontoh() async {
+    if (emailC.text.isNotEmpty && passC.text.isNotEmpty) {
+      try {
+        final credential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: emailC.text, password: passC.text);
+                Get.offAllNamed(Routes.HOME);
+                print(credential);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+      Get.snackbar('Peringatan', 'user-not-found');
+          print('No user found for that email.');
+        } else if (e.code == 'wrong-password') {
+      Get.snackbar('Peringatan', 'wrong-password');
+          print('Wrong password provided for that user.');
+        }
+      }
+    } else {
+      Get.snackbar('Peringatan', 'Tidak bisa login, hubungi admin');
+    }
+    // print('Login');
+  }
 }

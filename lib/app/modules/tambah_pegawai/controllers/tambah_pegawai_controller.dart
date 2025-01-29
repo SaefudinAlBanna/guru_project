@@ -23,7 +23,7 @@ class TambahPegawaiController extends GetxController {
           email: emailC.text,
           password: 'password',
         );
-        // print(userCredential);
+        print(userCredential);
 
         if (userCredential.user != null) {
           String uid = userCredential.user!.uid;
@@ -36,6 +36,8 @@ class TambahPegawaiController extends GetxController {
             "uid": uid,
             "createdAt": DateTime.now().toIso8601String(),
           });
+
+         await userCredential.user!.sendEmailVerification();
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {

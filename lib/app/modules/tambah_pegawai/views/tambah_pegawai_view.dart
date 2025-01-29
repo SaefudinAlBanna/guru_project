@@ -17,6 +17,7 @@ class TambahPegawaiView extends GetView<TambahPegawaiController> {
         padding: EdgeInsets.all(20),
         children: [
           TextFormField(
+            autocorrect: false,
             controller: controller.nipC,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
@@ -30,6 +31,7 @@ class TambahPegawaiView extends GetView<TambahPegawaiController> {
           ),
           SizedBox(height: 10),
           TextFormField(
+            autocorrect: false,
             controller: controller.namaC,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
@@ -42,6 +44,7 @@ class TambahPegawaiView extends GetView<TambahPegawaiController> {
           ),
           SizedBox(height: 10),
           TextFormField(
+            autocorrect: false,
             controller: controller.emailC,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
@@ -55,6 +58,7 @@ class TambahPegawaiView extends GetView<TambahPegawaiController> {
           ),
           SizedBox(height: 10),
           TextFormField(
+            autocorrect: false,
             controller: controller.noHpC,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
