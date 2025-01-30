@@ -4,29 +4,36 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class TambahPegawaiController extends GetxController {
+  RxBool isLoading = false.obs;
+  RxBool isLoadingTambahPegawai = false.obs;
   TextEditingController nipC = TextEditingController();
   TextEditingController namaC = TextEditingController();
   TextEditingController emailC = TextEditingController();
   TextEditingController noHpC = TextEditingController();
+  TextEditingController passAdminC = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  void tambahPegawai() async {
-    if (nipC.text.isNotEmpty &&
-        namaC.text.isNotEmpty &&
-        emailC.text.isNotEmpty &&
-        noHpC.text.isNotEmpty) {
+  Future<void> pegawaiDitambahkan() async {
+    if (passAdminC.text.isNotEmpty) {
+      isLoadingTambahPegawai.value = true;
       try {
-        final UserCredential userCredential =
+        String emailAdmin = auth.currentUser!.email!;
+
+        UserCredential userCredentialAdmin =
+            await auth.signInWithEmailAndPassword(
+                email: emailAdmin, password: passAdminC.text);
+
+        UserCredential pegawaiCredential =
             await auth.createUserWithEmailAndPassword(
           email: emailC.text,
           password: 'password',
         );
-        print(userCredential);
+        print(pegawaiCredential);
 
-        if (userCredential.user != null) {
-          String uid = userCredential.user!.uid;
+        if (pegawaiCredential.user != null) {
+          String uid = pegawaiCredential.user!.uid;
 
           await firestore.collection("Pegawai").doc(uid).set({
             "nip": nipC.text,
@@ -37,29 +44,114 @@ class TambahPegawaiController extends GetxController {
             "createdAt": DateTime.now().toIso8601String(),
           });
 
-         await userCredential.user!.sendEmailVerification();
+          await pegawaiCredential.user!.sendEmailVerification();
+
+          await auth.signOut();
+
+          UserCredential userCredentialAdmin =
+              await auth.signInWithEmailAndPassword(
+            email: emailAdmin,
+            password: passAdminC.text,
+          );
+
+          Get.back();
+          Get.back();
+
+          Get.snackbar(
+              snackPosition: SnackPosition.BOTTOM,
+              'Berhasil',
+              'Karyawan berhasil ditambahkan');
         }
+              isLoadingTambahPegawai.value = false;
       } on FirebaseAuthException catch (e) {
+        isLoadingTambahPegawai.value = false;
         if (e.code == 'weak-password') {
           Get.snackbar(
-            snackPosition: SnackPosition.BOTTOM,
-            'Terjadi Kesalahan', 'Password terlalu singkat');
+              snackPosition: SnackPosition.BOTTOM,
+              'Terjadi Kesalahan',
+              'Password terlalu singkat');
         } else if (e.code == 'email-already-in-use') {
           Get.snackbar(
-            snackPosition: SnackPosition.BOTTOM,
-            'Terjadi Kesalahan', 'email pegawai sudah terdaftar');
+              snackPosition: SnackPosition.BOTTOM,
+              'Terjadi Kesalahan',
+              'email pegawai sudah terdaftar');
+        } else if (e.code == 'invalid-credential') {
+          Get.snackbar(
+              snackPosition: SnackPosition.BOTTOM,
+              'Terjadi Kesalahan',
+              'password salah');
+        } else {
+          Get.snackbar(
+              snackPosition: SnackPosition.BOTTOM, 'Terjadi Kesalahan', e.code);
         }
       } catch (e) {
+        isLoadingTambahPegawai.value = false;
         Get.snackbar(
-          snackPosition: SnackPosition.BOTTOM,
-          'Terjadi Kesalahan',
+            snackPosition: SnackPosition.BOTTOM,
+            'Terjadi Kesalahan',
             'Tidak dapat menambahkan pegawai, harap dicoba lagi');
       }
     } else {
+      isLoading.value = false;
       Get.snackbar(
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Color.fromARGB(255, 156, 151, 151),
-        'Terjadi Kesalahan', '* Wajib di isi');
+          snackPosition: SnackPosition.BOTTOM,
+          'Error',
+          'Password Admin wajib diisi');
+    }
+  }
+
+  Future<void> tambahPegawai() async {
+    if (nipC.text.isNotEmpty &&
+        namaC.text.isNotEmpty &&
+        emailC.text.isNotEmpty &&
+        noHpC.text.isNotEmpty) {
+      isLoading.value = true;
+      Get.defaultDialog(
+        title: 'Verifikasi Admnin',
+        content: Column(
+          children: [
+            Text('Masukan password'),
+            SizedBox(height: 10),
+            TextField(
+              controller: passAdminC,
+              obscureText: true,
+              autocorrect: false,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: 'Password',
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          OutlinedButton(
+            onPressed: () {
+              isLoading.value = false;
+              Get.back();
+            },
+            child: Text('CANCEL'),
+          ),
+          Obx(
+            () => ElevatedButton(
+              onPressed: () async {
+                if (isLoadingTambahPegawai.isFalse) {
+                  await pegawaiDitambahkan();
+                }
+                isLoading.value = false;
+              },
+              child: Text(isLoadingTambahPegawai.isFalse
+                  ? 'Tambah Pegawai'
+                  : 'LOADING...'),
+            ),
+          ),
+        ],
+      );
+    } else {
+      Get.snackbar(
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color.fromARGB(255, 156, 151, 151),
+          'Terjadi Kesalahan',
+          '* Wajib di isi');
     }
   }
 }

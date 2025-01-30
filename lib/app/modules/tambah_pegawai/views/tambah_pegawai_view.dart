@@ -21,12 +21,11 @@ class TambahPegawaiView extends GetView<TambahPegawaiController> {
             controller: controller.nipC,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
-              border: UnderlineInputBorder(),
-              filled: true,
-              icon: Icon(Icons.numbers_outlined),
-              labelText: 'NIP *',
-              hintText: 'Input NIP Karyawan'
-            ),
+                border: UnderlineInputBorder(),
+                filled: true,
+                icon: Icon(Icons.numbers_outlined),
+                labelText: 'NIP *',
+                hintText: 'Input NIP Karyawan'),
             keyboardType: TextInputType.number,
           ),
           SizedBox(height: 10),
@@ -70,13 +69,18 @@ class TambahPegawaiView extends GetView<TambahPegawaiController> {
             ),
             keyboardType: TextInputType.phone,
           ),
-          
           SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              controller.tambahPegawai();
-            },
-            child: Text('Tambah Pegawai'),
+          Obx(
+            () => ElevatedButton(
+              onPressed: () async {
+                if (controller.isLoading.isFalse) {
+                  await controller.tambahPegawai();
+                }
+              },
+              child: Text(controller.isLoading.isFalse
+                  ? 'Tambah Pegawai'
+                  : 'LOADING...'),
+            ),
           ),
         ],
       ),

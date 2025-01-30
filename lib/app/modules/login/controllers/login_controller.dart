@@ -4,13 +4,15 @@ import 'package:get/get.dart';
 import 'package:guru_project/app/routes/app_pages.dart';
 
 class LoginController extends GetxController {
+  RxBool isLoading = false.obs;
   TextEditingController emailC = TextEditingController();
   TextEditingController passC = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  void login() async {
+  Future<void> login() async {
     if (emailC.text.isNotEmpty && passC.text.isNotEmpty) {
+      isLoading.value = true;
       try {
         UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: emailC.text,
@@ -20,18 +22,23 @@ class LoginController extends GetxController {
         if (userCredential.user != null) {
           if (userCredential.user != null) {
             if (userCredential.user!.emailVerified == true) {
+              isLoading.value = false;
               if (passC.text == "password") {
                 Get.offAllNamed(Routes.NEW_PASSWORD);
               } else {
                 Get.offAllNamed(Routes.HOME);
               }
             } else {
+              
               Get.defaultDialog(
                 title: 'Belum verifikasi',
                 middleText: 'Silahkan verifikasi terlebih dahulu',
                 actions: [
                   OutlinedButton(
-                    onPressed: () => Get.back(),
+                    onPressed: () {
+                      isLoading.value = false;
+                      Get.back();
+                    },
                     child: Text('CANCEL'),
                   ),
                   ElevatedButton(
@@ -41,7 +48,9 @@ class LoginController extends GetxController {
                         Get.back();
                         Get.snackbar('Berhasil',
                             'email verifikasi sudah berhasil terkirim');
+                            isLoading.value = false;
                       } catch (e) {
+                            isLoading.value = false;
                         Get.snackbar(
                             'Terjadi Kesalahan', 'Silahkan dicoba lagi nanti');
                       }
@@ -56,24 +65,31 @@ class LoginController extends GetxController {
           Get.snackbar('Peringatan', 'email belum terfverifikasi');
         }
 
-        print(userCredential);
+        // print(userCredential);
+        isLoading.value = false;
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          Get.snackbar("Peringatan", 'user tidak ditemukan',
+        isLoading.value = false;
+        if (e.code == 'invalid-credential') {
+          Get.snackbar("Peringatan", 'Periksa kembali, apakah email, password sudah benar?? dan apakah akun email sudah terdaftar',
               snackPosition: SnackPosition.BOTTOM,
               snackStyle: SnackStyle.FLOATING,
               // borderColor: Colors.grey
               backgroundColor: Colors.grey);
           // print('user not found');
-        } else if (e.code == 'wrong-password') {
-          Get.snackbar("Peringatan", "Password yang anda masukan salah",
-              snackPosition: SnackPosition.BOTTOM,
-              snackStyle: SnackStyle.FLOATING,
-              // borderColor: Colors.grey
-              backgroundColor: Colors.grey);
-          // print('wrong password');
+        // } else if (e.code == 'invalid-credential') {
+        //   Get.snackbar("Peringatan", "Password yang anda masukan salah",
+        //       snackPosition: SnackPosition.BOTTOM,
+        //       snackStyle: SnackStyle.FLOATING,
+        //       // borderColor: Colors.grey
+        //       backgroundColor: Colors.grey);
+        //   // print('wrong password');
+        } else {
+          Get.snackbar(
+              snackPosition: SnackPosition.BOTTOM, 'Terjadi Kesalahan', e.code);
+              print(e.code);
         }
       } catch (e) {
+        isLoading.value = false;
         Get.snackbar("Terjadi kesalahan", "Tidak dapat login",
             snackPosition: SnackPosition.BOTTOM,
             snackStyle: SnackStyle.FLOATING,

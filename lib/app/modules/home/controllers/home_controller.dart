@@ -4,6 +4,7 @@ import '../widgets/home_widget.dart';
 
 class HomeController extends GetxController {
   RxInt indexWidget =0.obs;
+  RxBool isLoading = false.obs;
 
   void changeIndex(int index){
     indexWidget.value = index;

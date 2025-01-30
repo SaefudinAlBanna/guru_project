@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:guru_project/app/routes/app_pages.dart';
 
 import '../controllers/login_controller.dart';
+
+
 
 // Color orangeColors = const Color(0xffF5591F);
 // Color orangeLightColors = const Color(0xffF2861E);
@@ -33,22 +36,30 @@ class LoginView extends GetView<LoginController> {
                         obsecure: false),
                     _textInput(
                         controller: controller.passC,
-                        hint: "Password", icon: Icons.vpn_key, obsecure: true),
-                    ElevatedButton(
-                      onPressed: () {
-                        controller.login();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.indigo,
-                        foregroundColor: Colors.white,
+                        hint: "Password",
+                        icon: Icons.vpn_key,
+                        obsecure: true),
+                    Obx(
+                      () => ElevatedButton(
+                        onPressed: () async {
+                          if (controller.isLoading.isFalse) {
+                            await controller.login();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.indigo,
+                          foregroundColor: Colors.white,
+                        ),
+                        child: Text(controller.isLoading.isFalse
+                            ? "Login"
+                            : "LOADING..."),
                       ),
-                      child: Text("Login"),
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 10),
                       alignment: Alignment.centerRight,
-                      child: const Text(
-                        "Forgot Password?",
+                      child: TextButton( onPressed: ()=> Get.toNamed(Routes.FORGOT_PASSWORD),
+                          child: const Text("Forgot Password?"),
                       ),
                     ),
                     Spacer(),
@@ -136,4 +147,3 @@ class HeaderContainer extends StatelessWidget {
     );
   }
 }
-

@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
+import '../controllers/home_controller.dart';
 
-class HomeWidget extends StatelessWidget {
+// class HomeWidget extends StatelessWidget {
+class HomeWidget extends GetView<HomeController> {
   const HomeWidget({super.key});
 
   @override
@@ -32,6 +35,25 @@ class HomeWidget extends StatelessWidget {
           IconButton(
             onPressed: () => Get.toNamed(Routes.TAMBAH_PEGAWAI),
             icon: Icon(Icons.person),
+          ),
+          Obx(
+            () => ElevatedButton(
+              onPressed: () async {
+                if (controller.isLoading.isFalse) {
+                  controller.isLoading.value = true;
+                  await FirebaseAuth.instance.signOut();
+                  controller.isLoading.value = false;
+                  Get.offAllNamed(Routes.LOGIN);
+                }
+              },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.indigo[400]
+                  ),
+              child: 
+                  controller.isLoading.isFalse
+                  ? Icon(Icons.logout_outlined, color: Colors.black)
+                  : CircularProgressIndicator(),
+            ),
           ),
         ],
       ),
@@ -180,89 +202,77 @@ class HomeWidget extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: () => Get.snackbar(
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.brown.shade400,
-                                  "DASHBOARD",
-                                  "Nanti akan popup page sesuai dengan ketentuan"),
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.brown.shade400,
+                                    "DASHBOARD",
+                                    "Nanti akan popup page sesuai dengan ketentuan"),
                                 child: ColumnMenuTengah(
                                   icon:
                                       Icon(Icons.dashboard_outlined, size: 45),
                                   judulbawah: 'DASHBOARD',
                                 ),
                               ),
-
-
                               GestureDetector(
                                 onTap: () => Get.snackbar(
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.brown.shade400,
-                                  "PILIHAN A",
-                                  "Nanti akan popup page sesuai dengan ketentuan"),
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.brown.shade400,
+                                    "PILIHAN A",
+                                    "Nanti akan popup page sesuai dengan ketentuan"),
                                 child: ColumnMenuTengah(
-                                  icon:
-                                      Icon(Icons.calendar_month_outlined, size: 45),
+                                  icon: Icon(Icons.calendar_month_outlined,
+                                      size: 45),
                                   judulbawah: 'PILIHAN A',
                                 ),
                               ),
-
-
                               GestureDetector(
                                 onTap: () => Get.snackbar(
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.brown.shade400,
-                                  "PILIHAN B",
-                                  "Nanti akan popup page sesuai dengan ketentuan"),
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.brown.shade400,
+                                    "PILIHAN B",
+                                    "Nanti akan popup page sesuai dengan ketentuan"),
                                 child: ColumnMenuTengah(
-                                  icon:
-                                      Icon(Icons.facebook_outlined, size: 45),
+                                  icon: Icon(Icons.facebook_outlined, size: 45),
                                   judulbawah: 'PILIHAN B',
                                 ),
                               ),
                             ],
                           ),
-
                           SizedBox(height: 30),
-
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               GestureDetector(
                                 onTap: () => Get.snackbar(
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.brown.shade400,
-                                  "DASHBOARD",
-                                  "Nanti akan popup page sesuai dengan ketentuan"),
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.brown.shade400,
+                                    "DASHBOARD",
+                                    "Nanti akan popup page sesuai dengan ketentuan"),
                                 child: ColumnMenuTengah(
                                   icon:
                                       Icon(Icons.dashboard_outlined, size: 45),
                                   judulbawah: 'DASHBOARD',
                                 ),
                               ),
-
-
                               GestureDetector(
                                 onTap: () => Get.snackbar(
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.brown.shade400,
-                                  "PILIHAN A",
-                                  "Nanti akan popup page sesuai dengan ketentuan"),
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.brown.shade400,
+                                    "PILIHAN A",
+                                    "Nanti akan popup page sesuai dengan ketentuan"),
                                 child: ColumnMenuTengah(
-                                  icon:
-                                      Icon(Icons.calendar_month_outlined, size: 45),
+                                  icon: Icon(Icons.calendar_month_outlined,
+                                      size: 45),
                                   judulbawah: 'PILIHAN A',
                                 ),
                               ),
-
-
                               GestureDetector(
                                 onTap: () => Get.snackbar(
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.brown.shade400,
-                                  "PILIHAN B",
-                                  "Nanti akan popup page sesuai dengan ketentuan"),
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.brown.shade400,
+                                    "PILIHAN B",
+                                    "Nanti akan popup page sesuai dengan ketentuan"),
                                 child: ColumnMenuTengah(
-                                  icon:
-                                      Icon(Icons.facebook_outlined, size: 45),
+                                  icon: Icon(Icons.facebook_outlined, size: 45),
                                   judulbawah: 'PILIHAN B',
                                 ),
                               ),
