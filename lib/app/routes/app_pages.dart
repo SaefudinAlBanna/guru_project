@@ -10,6 +10,10 @@ import '../modules/new_password/bindings/new_password_binding.dart';
 import '../modules/new_password/views/new_password_view.dart';
 import '../modules/tambah_pegawai/bindings/tambah_pegawai_binding.dart';
 import '../modules/tambah_pegawai/views/tambah_pegawai_view.dart';
+import '../modules/update_password/bindings/update_password_binding.dart';
+import '../modules/update_password/views/update_password_view.dart';
+import '../modules/update_pegawai/bindings/update_pegawai_binding.dart';
+import '../modules/update_pegawai/views/update_pegawai_view.dart';
 
 part 'app_routes.dart';
 
@@ -43,6 +47,16 @@ class AppPages {
       name: _Paths.FORGOT_PASSWORD,
       page: () => const ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.UPDATE_PEGAWAI,
+      page: () =>  UpdatePegawaiView(),
+      binding: UpdatePegawaiBinding(),
+    ),
+    GetPage(
+      name: _Paths.UPDATE_PASSWORD,
+      page: () => const UpdatePasswordView(),
+      binding: UpdatePasswordBinding(),
     ),
   ];
 }

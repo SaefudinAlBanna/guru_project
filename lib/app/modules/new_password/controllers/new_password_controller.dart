@@ -12,7 +12,7 @@ class NewPasswordController extends GetxController {
     if (newpassC.text.isNotEmpty) {
       if (newpassC.text != "password") {
         try {
-          String email = auth.currentUser!.email!;
+          // String email = auth.currentUser!.email!;
 
           await auth.currentUser!.updatePassword(newpassC.text);
           Get.snackbar('Berhasil', 'Silahkan login ulang');

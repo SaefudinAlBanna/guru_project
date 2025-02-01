@@ -8,6 +8,8 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const NEW_PASSWORD = _Paths.NEW_PASSWORD;
   static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
+  static const UPDATE_PEGAWAI = _Paths.UPDATE_PEGAWAI;
+  static const UPDATE_PASSWORD = _Paths.UPDATE_PASSWORD;
 }
 
 abstract class _Paths {
@@ -17,4 +19,6 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const NEW_PASSWORD = '/new-password';
   static const FORGOT_PASSWORD = '/forgot-password';
+  static const UPDATE_PEGAWAI = '/update-pegawai';
+  static const UPDATE_PASSWORD = '/update-password';
 }

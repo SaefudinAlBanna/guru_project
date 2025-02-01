@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,10 +33,22 @@ class HomeWidget extends GetView<HomeController> {
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () => Get.toNamed(Routes.TAMBAH_PEGAWAI),
-            icon: Icon(Icons.person),
-          ),
+          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              stream: controller.userStream(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return SizedBox();
+                }
+                // String role = snapshot.data!.data()!['role']; // 'admin'
+                if (snapshot.data!.data()!['role'] == 'admin') {
+                  return IconButton(
+                    onPressed: () => Get.toNamed(Routes.TAMBAH_PEGAWAI),
+                    icon: Icon(Icons.person),
+                  );
+                } else {
+                  return SizedBox();
+                }
+              }),
           Obx(
             () => ElevatedButton(
               onPressed: () async {
@@ -46,11 +59,9 @@ class HomeWidget extends GetView<HomeController> {
                   Get.offAllNamed(Routes.LOGIN);
                 }
               },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo[400]
-                  ),
-              child: 
-                  controller.isLoading.isFalse
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: Colors.indigo[400]),
+              child: controller.isLoading.isFalse
                   ? Icon(Icons.logout_outlined, color: Colors.black)
                   : CircularProgressIndicator(),
             ),

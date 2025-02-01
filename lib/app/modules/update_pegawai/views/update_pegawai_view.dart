@@ -2,23 +2,29 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/tambah_pegawai_controller.dart';
+import '../controllers/update_pegawai_controller.dart';
 
-class TambahPegawaiView extends GetView<TambahPegawaiController> {
-  const TambahPegawaiView({super.key});
+class UpdatePegawaiView extends GetView<UpdatePegawaiController> {
+   UpdatePegawaiView({super.key});
 
+  final Map<String, dynamic> data = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
+    controller.nipC.text = data['nip'];
+    controller.namaC.text = data['nama'];
+    controller.emailC.text = data['email'];
+    controller.noHpC.text = data['noHp'];
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TambahPegawaiView'),
+        title: const Text('UpdatePegawaiView'),
         centerTitle: true,
       ),
       body: ListView(
         padding: EdgeInsets.all(20),
         children: [
           TextFormField(
+            readOnly: true,
             autocorrect: false,
             controller: controller.nipC,
             textCapitalization: TextCapitalization.words,
@@ -45,6 +51,7 @@ class TambahPegawaiView extends GetView<TambahPegawaiController> {
           ),
           SizedBox(height: 10),
           TextFormField(
+            readOnly: true,
             autocorrect: false,
             controller: controller.emailC,
             textCapitalization: TextCapitalization.words,
@@ -76,11 +83,11 @@ class TambahPegawaiView extends GetView<TambahPegawaiController> {
             () => ElevatedButton(
               onPressed: () async {
                 if (controller.isLoading.isFalse) {
-                  await controller.tambahPegawai();
+                  await controller.updateProfile(data['uid']);
                 }
               },
               child: Text(controller.isLoading.isFalse
-                  ? 'Tambah Pegawai'
+                  ? 'Update Profile'
                   : 'LOADING...'),
             ),
           ),

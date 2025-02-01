@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../home/controllers/home_controller.dart';
 
-import '../controllers/tambah_pegawai_controller.dart';
 
-class TambahPegawaiView extends GetView<TambahPegawaiController> {
-  const TambahPegawaiView({super.key});
+class UpdateProfile extends GetView<HomeController> {
+  const UpdateProfile({super.key});
 
+  // final Map<String, dynamic> data = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
+    // controller.nipC.text = data['nip'];
+    // controller.namaC.text = data['nama'];
+    // controller.emailC.text = data['email'];
+    // controller.noHpC.text = data['noHp'];
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TambahPegawaiView'),
-        centerTitle: true,
+        title: Text('Update Profile'),
       ),
       body: ListView(
         padding: EdgeInsets.all(20),
@@ -76,11 +82,11 @@ class TambahPegawaiView extends GetView<TambahPegawaiController> {
             () => ElevatedButton(
               onPressed: () async {
                 if (controller.isLoading.isFalse) {
-                  await controller.tambahPegawai();
+                  await controller.updateProfile();
                 }
               },
               child: Text(controller.isLoading.isFalse
-                  ? 'Tambah Pegawai'
+                  ? 'Update Profile'
                   : 'LOADING...'),
             ),
           ),
