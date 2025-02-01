@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guru_project/app/modules/home/controllers/home_controller.dart';
-import 'package:guru_project/app/modules/home/widgets/update_profile.dart';
 import 'package:guru_project/app/routes/app_pages.dart';
 
 class ProfileWidget extends GetView<HomeController> {
@@ -78,7 +76,7 @@ class ProfileWidget extends GetView<HomeController> {
                               ),
                               SizedBox(height: 20),
                               Text(
-                                '${data['nama']}',
+                                data['nama'].toString().toUpperCase(),
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -122,6 +120,15 @@ class ProfileWidget extends GetView<HomeController> {
                                     style: TextStyle(
                                       fontSize: 20,
                                     ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () => Get.toNamed(Routes.UPDATE_PASSWORD),
+                                    icon: Icon(
+                                      Icons.vpn_key_outlined,
+                                      size: 25,
+                                      color: Colors.grey,
+                                    ),
+                                    
                                   ),
                                   IconButton(
                                     onPressed: () => Get.toNamed(Routes.UPDATE_PEGAWAI, arguments: data),
@@ -268,59 +275,3 @@ class ClassClipPathTop extends CustomClipper<Path> {
   @override
   bool shouldReclip(covariant CustomClipper oldClipper) => false;
 }
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(
-//           "Profile",
-//           style: TextStyle(
-//             fontSize: 17,
-//             fontWeight: FontWeight.bold,
-//             color: Colors.white,
-//           ),
-//         ),
-//         backgroundColor: Colors.indigo[400],
-//         actions: [
-//           IconButton(
-//             onPressed: () {
-//               controller.signOut();
-//               Get.snackbar('Informasi', 'Anda telah keluar');
-//             },
-//             icon: Icon(
-//               Icons.logout_outlined,
-//               size: 25,
-//               color: Colors.white,
-//             ),
-//           ),
-//         ],
-//       ),
-      // body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-      //     stream: controller.getProfile(),
-      //     builder: (context, snapshot) {
-      //       if (snapshot.connectionState == ConnectionState.waiting) {
-      //         return Center(
-      //           child: CircularProgressIndicator(),
-      //         );
-      //       }
-
-      //       if (snapshot.hasData) {
-      //         Map<String, dynamic> data = snapshot.data!.data()!;
-
-      //         return ListView(
-      //           children: [
-      //             Text('${data['nip']}'),
-      //             Text('${data['nama']}'),
-      //             Text('${data['email']}'),
-      //             Text('${data['noHp']}'),
-      //             Text('${data['role']}'),
-      //             Text('${data['createdAt']}'),
-      //           ],
-      //         );
-      //       } else {
-      //         return Center(
-      //           child: Text('Data tidak ditemukan'),
-      //         );
-      //       }
-      //     }),
-//     );
-//   }
-// }

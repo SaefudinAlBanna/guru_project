@@ -1,23 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UpdatePasswordController extends GetxController {
-  //TODO: Implement UpdatePasswordController
+  final oldPasswordController = TextEditingController();
+  final newPasswordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  void updatePassword() {
+    // Update password logic here
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:guru_project/app/modules/home/widgets/profile_widget.dart';
-import 'package:guru_project/app/routes/app_pages.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 
 class UpdatePegawaiController extends GetxController {

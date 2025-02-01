@@ -10,15 +10,57 @@ class UpdatePasswordView extends GetView<UpdatePasswordController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('UpdatePasswordView'),
+        title: const Text('Update Password'),
         centerTitle: true,
       ),
-      body: const Center(
-        child: Text(
-          'UpdatePasswordView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
+      body: ListView(
+        children: [
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              obscureText: true,
+              autocorrect: false,
+              controller: controller.oldPasswordController,
+              decoration: const InputDecoration(
+                labelText: 'Old Password',
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              obscureText: true,
+              autocorrect: false,
+              controller: controller.newPasswordController,
+              decoration: const InputDecoration(
+                labelText: 'New Password',
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              obscureText: true,
+              autocorrect: false,
+              controller: controller.confirmPasswordController,
+              decoration: const InputDecoration(
+                labelText: 'Confirm Password',
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                controller.updatePassword();
+              },
+              child: const Text('Update Password'),
+            ),
+          ),
+        ],
+      )
     );
   }
 }
