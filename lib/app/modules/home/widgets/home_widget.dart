@@ -6,300 +6,319 @@ import 'package:get/get.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
 
-// class HomeWidget extends StatelessWidget {
 class HomeWidget extends GetView<HomeController> {
   const HomeWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Muhammad Jaber',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: Colors.indigo[400],
-        leading: Container(
-          height: 75,
-          width: 75,
-          margin: EdgeInsets.only(left: 10, top: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            color: Colors.grey[350],
-            image: DecorationImage(
-                image: NetworkImage("https://picsum.photos/id/91/367/267")),
-          ),
-        ),
-        actions: [
-          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              stream: controller.userStream(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return SizedBox();
-                }
-                // String role = snapshot.data!.data()!['role']; // 'admin'
-                if (snapshot.data!.data()!['role'] == 'admin') {
-                  return IconButton(
-                    onPressed: () => Get.toNamed(Routes.TAMBAH_PEGAWAI),
-                    icon: Icon(Icons.person),
-                  );
-                } else {
-                  return SizedBox();
-                }
-              }),
-          Obx(
-            () => ElevatedButton(
-              onPressed: () async {
-                if (controller.isLoading.isFalse) {
-                  controller.isLoading.value = true;
-                  await FirebaseAuth.instance.signOut();
-                  controller.isLoading.value = false;
-                  Get.offAllNamed(Routes.LOGIN);
-                }
-              },
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: Colors.indigo[400]),
-              child: controller.isLoading.isFalse
-                  ? Icon(Icons.logout_outlined, color: Colors.black)
-                  : CircularProgressIndicator(),
-            ),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          ClipPath(
-            clipper: ClassClipPathTop(),
-            child: Container(
-              height: 250,
-              width: Get.width,
-              color: Colors.indigo[400],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 50),
-            child: Column(
-              children: [
-                Column(
-                  children: [
-                    ClipPath(
-                      clipper: ClipPathClass(),
-                      child: Container(
-                        padding: EdgeInsets.all(15),
-                        margin: EdgeInsets.symmetric(horizontal: 25),
-                        height: 215,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.blue.shade200,
-                              Colors.blue.shade400
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        stream: controller.userStream(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            Map<String, dynamic> data = snapshot.data!.data()!;
+
+            return Scaffold(
+              appBar: AppBar(
+                title: Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Text(
+                    data['nama'].toString().toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                backgroundColor: Colors.indigo[400],
+                leading: Container(
+                  height: 85,
+                  width: 85,
+                  margin: EdgeInsets.only(left: 15, top: 15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.grey[350],
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            "https://ui-avatars.com/api/?name=${data['nama']}")),
+                  ),
+                ),
+                actions: [
+                  if (snapshot.connectionState == ConnectionState.waiting)
+                    SizedBox()
+                  else if (snapshot.data!.data()!['role'] == 'admin')
+                    IconButton(
+                      onPressed: () => Get.toNamed(Routes.TAMBAH_PEGAWAI),
+                      icon: Icon(Icons.admin_panel_settings_outlined),
+                    )
+                  else
+                    SizedBox(),
+                  Obx(
+                    () => ElevatedButton(
+                      onPressed: () async {
+                        if (controller.isLoading.isFalse) {
+                          controller.isLoading.value = true;
+                          await FirebaseAuth.instance.signOut();
+                          controller.isLoading.value = false;
+                          Get.offAllNamed(Routes.LOGIN);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.indigo[400]),
+                      child: controller.isLoading.isFalse
+                          ? Icon(Icons.logout_outlined, color: Colors.black)
+                          : CircularProgressIndicator(),
+                    ),
+                  ),
+                ],
+              ),
+              body: Stack(
+                children: [
+                  ClipPath(
+                    clipper: ClassClipPathTop(),
+                    child: Container(
+                      height: 250,
+                      width: Get.width,
+                      color: Colors.indigo[400],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 50),
+                    child: Column(
+                      children: [
+                        Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '07:00:02',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Masuk',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                  ),
-                                  child: Icon(Icons.alarm, size: 45),
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '14:10:02',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Pulang',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 15),
-                            Divider(
-                              height: 2,
-                              color: Colors.black,
-                            ),
-                            SizedBox(height: 5),
-                            Center(
+                            ClipPath(
+                              clipper: ClipPathClass(),
                               child: Container(
-                                height: 33,
-                                width: 230,
+                                padding: EdgeInsets.all(15),
+                                margin: EdgeInsets.symmetric(horizontal: 25),
+                                height: 215,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.amber,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'Durasi Kerja : 00.00.00 Jam',
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.blue.shade200,
+                                      Colors.blue.shade400
+                                    ],
                                   ),
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  TxtBtnKelas(kelasnya: 'Kelas 2A'),
-                                  TxtBtnKelas(kelasnya: 'Kelas 3B'),
-                                  TxtBtnKelas(kelasnya: 'Kelas 5B'),
-                                  TxtBtnKelas(kelasnya: 'Kelas 6A'),
-                                ],
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              '07:00:02',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              'Masuk',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                          ),
+                                          child: Icon(Icons.alarm, size: 45),
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              '14:10:02',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              'Pulang',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 15),
+                                    Divider(
+                                      height: 2,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(height: 5),
+                                    Center(
+                                      child: Container(
+                                        height: 33,
+                                        width: 230,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Colors.amber,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            'Durasi Kerja : 00.00.00 Jam',
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          TxtBtnKelas(kelasnya: 'Kelas 2A'),
+                                          TxtBtnKelas(kelasnya: 'Kelas 3B'),
+                                          TxtBtnKelas(kelasnya: 'Kelas 5B'),
+                                          TxtBtnKelas(kelasnya: 'Kelas 6A'),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
+                        SizedBox(height: 15),
+                        Container(
+                          height: 1,
+                          color: Colors.black,
+                        ),
+                        SizedBox(height: 25),
+                        Expanded(
+                          child: ListView(
+                            padding: EdgeInsets.symmetric(horizontal: 25),
+                            children: [
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      GestureDetector(
+                                        // if(snapshot.connectionState == ConnectionState.done)
+                                        // if(snapshot.data!.data()!['role'] == 'admin')
+                                        onTap: () => Get.toNamed(Routes.TAMBAH_SISWA),
+                                        child: ColumnMenuTengah(
+                                          icon: Icon(Icons.person_add_outlined,
+                                              size: 40),
+                                          judulbawah: 'TAMBAH SISWA',
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () => Get.snackbar(
+                                            snackPosition: SnackPosition.BOTTOM,
+                                            backgroundColor:
+                                                Colors.brown.shade400,
+                                            "PILIHAN A",
+                                            "Nanti akan popup page sesuai dengan ketentuan"),
+                                        child: ColumnMenuTengah(
+                                          icon: Icon(
+                                              Icons.calendar_month_outlined,
+                                              size: 45),
+                                          judulbawah: 'PILIHAN A',
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () => Get.snackbar(
+                                            snackPosition: SnackPosition.BOTTOM,
+                                            backgroundColor:
+                                                Colors.brown.shade400,
+                                            "PILIHAN B",
+                                            "Nanti akan popup page sesuai dengan ketentuan"),
+                                        child: ColumnMenuTengah(
+                                          icon: Icon(Icons.facebook_outlined,
+                                              size: 45),
+                                          judulbawah: 'PILIHAN B',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 30),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => Get.snackbar(
+                                            snackPosition: SnackPosition.BOTTOM,
+                                            backgroundColor:
+                                                Colors.brown.shade400,
+                                            "DASHBOARD",
+                                            "Nanti akan popup page sesuai dengan ketentuan"),
+                                        child: ColumnMenuTengah(
+                                          icon: Icon(Icons.dashboard_outlined,
+                                              size: 45),
+                                          judulbawah: 'DASHBOARD',
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () => Get.snackbar(
+                                            snackPosition: SnackPosition.BOTTOM,
+                                            backgroundColor:
+                                                Colors.brown.shade400,
+                                            "PILIHAN A",
+                                            "Nanti akan popup page sesuai dengan ketentuan"),
+                                        child: ColumnMenuTengah(
+                                          icon: Icon(
+                                              Icons.calendar_month_outlined,
+                                              size: 45),
+                                          judulbawah: 'PILIHAN A',
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () => Get.snackbar(
+                                            snackPosition: SnackPosition.BOTTOM,
+                                            backgroundColor:
+                                                Colors.brown.shade400,
+                                            "PILIHAN B",
+                                            "Nanti akan popup page sesuai dengan ketentuan"),
+                                        child: ColumnMenuTengah(
+                                          icon: Icon(Icons.facebook_outlined,
+                                              size: 45),
+                                          judulbawah: 'PILIHAN B',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                SizedBox(height: 15),
-                Container(
-                  height: 1,
-                  color: Colors.black,
-                ),
-                SizedBox(height: 25),
-                Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 25),
-                    children: [
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              GestureDetector(
-                                onTap: () => Get.snackbar(
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.brown.shade400,
-                                    "DASHBOARD",
-                                    "Nanti akan popup page sesuai dengan ketentuan"),
-                                child: ColumnMenuTengah(
-                                  icon:
-                                      Icon(Icons.dashboard_outlined, size: 45),
-                                  judulbawah: 'DASHBOARD',
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () => Get.snackbar(
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.brown.shade400,
-                                    "PILIHAN A",
-                                    "Nanti akan popup page sesuai dengan ketentuan"),
-                                child: ColumnMenuTengah(
-                                  icon: Icon(Icons.calendar_month_outlined,
-                                      size: 45),
-                                  judulbawah: 'PILIHAN A',
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () => Get.snackbar(
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.brown.shade400,
-                                    "PILIHAN B",
-                                    "Nanti akan popup page sesuai dengan ketentuan"),
-                                child: ColumnMenuTengah(
-                                  icon: Icon(Icons.facebook_outlined, size: 45),
-                                  judulbawah: 'PILIHAN B',
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 30),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              GestureDetector(
-                                onTap: () => Get.snackbar(
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.brown.shade400,
-                                    "DASHBOARD",
-                                    "Nanti akan popup page sesuai dengan ketentuan"),
-                                child: ColumnMenuTengah(
-                                  icon:
-                                      Icon(Icons.dashboard_outlined, size: 45),
-                                  judulbawah: 'DASHBOARD',
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () => Get.snackbar(
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.brown.shade400,
-                                    "PILIHAN A",
-                                    "Nanti akan popup page sesuai dengan ketentuan"),
-                                child: ColumnMenuTengah(
-                                  icon: Icon(Icons.calendar_month_outlined,
-                                      size: 45),
-                                  judulbawah: 'PILIHAN A',
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () => Get.snackbar(
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.brown.shade400,
-                                    "PILIHAN B",
-                                    "Nanti akan popup page sesuai dengan ketentuan"),
-                                child: ColumnMenuTengah(
-                                  icon: Icon(Icons.facebook_outlined, size: 45),
-                                  judulbawah: 'PILIHAN B',
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
                   ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+                ],
+              ),
+            );
+          } else {
+            return SizedBox();
+          }
+        });
   }
 }
 
@@ -318,8 +337,8 @@ class ColumnMenuTengah extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 75,
-          width: 75,
+          height: 50,
+          width: 50,
           decoration: BoxDecoration(
             // color: Colors.amber,
             borderRadius: BorderRadius.circular(5),
@@ -347,7 +366,7 @@ class TxtBtnKelas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: (){},
       child: Text(
         kelasnya,
         style: TextStyle(
