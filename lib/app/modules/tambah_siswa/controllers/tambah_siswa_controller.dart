@@ -1,7 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TambahSiswaController extends GetxController {
+
+  RxBool isLoading = false.obs;
+  RxBool isLoadingTambahSiswa = false.obs;
+
   TextEditingController namaSiswaController = TextEditingController();
   TextEditingController kelasSiswaController = TextEditingController();
   TextEditingController jenisKelaminSiswaController = TextEditingController();
@@ -25,31 +31,213 @@ class TambahSiswaController extends GetxController {
   TextEditingController pendidikanWaliController = TextEditingController();
   TextEditingController biayaSppController = TextEditingController();
   TextEditingController biayaUangPangkalController = TextEditingController();
+  TextEditingController passAdminC = TextEditingController();
 
-  void tambahSiswa() {
-    if (namaSiswaController.text.isEmpty ||
-        kelasSiswaController.text.isEmpty ||
-        jenisKelaminSiswaController.text.isEmpty ||
-        agamaSiswaController.text.isEmpty ||
-        tempatLahirSiswaController.text.isEmpty ||
-        tanggalLahirSiswaController.text.isEmpty ||
-        alamatSiswaController.text.isEmpty ||
-        waliKelasSiswaController.text.isEmpty ||
-        namaAyahController.text.isEmpty ||
-        namaIbuController.text.isEmpty ||
-        emailOrangTuaController.text.isEmpty ||
-        noHpOrangTuaController.text.isEmpty ||
-        alamatOrangTuaController.text.isEmpty ||
-        pekerjaanAyahController.text.isEmpty ||
-        pekerjaanIbuController.text.isEmpty ||
-        pendidikanAyahController.text.isEmpty ||
-        pendidikanIbuController.text.isEmpty ||
-        noHpWaliController.text.isEmpty ||
-        alamatWaliController.text.isEmpty ||
-        pekerjaanWaliController.text.isEmpty ||
-        pendidikanWaliController.text.isEmpty ||
-        biayaSppController.text.isEmpty ||
-        biayaUangPangkalController.text.isEmpty) {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  Future<void> siswaDitambahkan() async {
+    if (passAdminC.text.isNotEmpty) {
+      isLoadingTambahSiswa.value = true;
+      try {
+        String emailAdmin = auth.currentUser!.email!;
+
+        UserCredential userCredentialAdmin =
+            await auth.signInWithEmailAndPassword(
+                email: emailAdmin, password: passAdminC.text); 
+
+        UserCredential siswaCredential =
+            await auth.createUserWithEmailAndPassword(
+          email: emailOrangTuaController.text,
+          password: 'password',
+        );
+        print(siswaCredential);
+
+        if (siswaCredential.user != null) {
+          String uid = siswaCredential.user!.uid;
+
+          await firestore.collection("Siswa").doc(uid).set({
+            "nama": namaSiswaController.text,
+            "kelas": kelasSiswaController.text,
+            "jenisKelamin": jenisKelaminSiswaController.text,
+            "agama": agamaSiswaController.text,
+            "tempatLahir": tempatLahirSiswaController.text,
+            "tanggalLahir": tanggalLahirSiswaController.text,
+            "alamat": alamatSiswaController.text,
+            "waliKelas": waliKelasSiswaController.text,
+            "namaAyah": namaAyahController.text,
+            "namaIbu": namaIbuController.text,
+            "emailOrangTua": emailOrangTuaController.text,
+            "noHpOrangTua": noHpOrangTuaController.text,
+            "alamatOrangTua": alamatOrangTuaController.text,
+            "pekerjaanAyah": pekerjaanAyahController.text,
+            "pekerjaanIbu": pekerjaanIbuController.text,
+            "pendidikanAyah": pendidikanAyahController.text,
+            "pendidikanIbu": pendidikanIbuController.text,
+            "noHpWali": noHpWaliController.text,
+            "alamatWali": alamatWaliController.text,
+            "pekerjaanWali": pekerjaanWaliController.text,
+            "pendidikanWali": pendidikanWaliController.text,
+            "biayaSpp": biayaSppController.text,
+            "biayaUangPangkal": biayaUangPangkalController.text,
+            "uid": uid,
+            "createdAt": DateTime.now().toIso8601String(),
+            "createdBy": emailAdmin,
+            "createdById": auth.currentUser!.uid,
+            "status": "Siswa",
+          });
+
+          await siswaCredential.user!.sendEmailVerification();
+
+          await auth.signOut();
+
+          UserCredential userCredentialAdmin =
+              await auth.signInWithEmailAndPassword(
+            email: emailAdmin,
+            password: passAdminC.text,
+          );
+
+          Get.back();
+          Get.back();
+
+          Get.snackbar(
+            'Berhasil',
+            'Siswa berhasil ditambahkan',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+          
+          resetForm();
+        }
+        isLoadingTambahSiswa.value = false;
+      } on FirebaseAuthException catch (e) {
+        isLoadingTambahSiswa.value = false;
+        if(e.code == 'email-already-in-use') {
+          Get.snackbar(
+            'Gagal',
+            e.message!,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        } else if (e.code == 'weak-password') {
+          Get.snackbar(
+            'Gagal',
+            e.message!,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        } else if (e.code == 'invalid-credential') {
+          Get.snackbar(
+            'Gagal',
+            e.message!,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        } else {
+          Get.snackbar(
+            'Gagal',
+            e.message!,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
+        Get.snackbar(
+          'Gagal',
+          e.message!,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      } catch (e) {
+        isLoadingTambahSiswa.value = false;
+        Get.snackbar(
+          'Gagal',
+          'Tidak dapat menambahkan siswa, harap dicoba lagi',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );        
+      }
+    } else {
+      isLoading.value = false;
+      Get.snackbar(
+        'Error',
+        'Password Admin wajib diisi',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
+
+
+
+
+  Future<void> tambahSiswa() async {
+    if (namaSiswaController.text.isNotEmpty &&
+        kelasSiswaController.text.isNotEmpty &&
+        jenisKelaminSiswaController.text.isNotEmpty &&
+        agamaSiswaController.text.isNotEmpty &&
+        tempatLahirSiswaController.text.isNotEmpty &&
+        tanggalLahirSiswaController.text.isNotEmpty &&
+        alamatSiswaController.text.isNotEmpty &&
+        waliKelasSiswaController.text.isNotEmpty &&
+        namaAyahController.text.isNotEmpty &&
+        namaIbuController.text.isNotEmpty &&
+        emailOrangTuaController.text.isNotEmpty &&
+        noHpOrangTuaController.text.isNotEmpty &&
+        alamatOrangTuaController.text.isNotEmpty &&
+        pekerjaanAyahController.text.isNotEmpty &&
+        pekerjaanIbuController.text.isNotEmpty &&
+        pendidikanAyahController.text.isNotEmpty &&
+        pendidikanIbuController.text.isNotEmpty &&
+        noHpWaliController.text.isNotEmpty &&
+        alamatWaliController.text.isNotEmpty &&
+        pekerjaanWaliController.text.isNotEmpty &&
+        pendidikanWaliController.text.isNotEmpty &&
+        biayaSppController.text.isNotEmpty &&
+        biayaUangPangkalController.text.isNotEmpty) {
+          isLoading.value = true;
+          Get.defaultDialog(
+            title: 'Verifikasi Email',
+            content: Column(
+              children: [
+                TextFormField(
+                  controller: passAdminC,
+                  decoration: const InputDecoration(
+                    labelText: 'Password Admin'),
+                ),
+              ],
+            ),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  isLoading.value = false;
+                  Get.back();
+                },
+                child: Text('CANCEL'),
+              ),
+              Obx(
+                () => ElevatedButton(
+                  onPressed: () async {
+                    if (isLoadingTambahSiswa.isFalse) {
+                      await siswaDitambahkan();
+                    }
+                    isLoading.value = false;
+                  },
+                  child: Text(isLoadingTambahSiswa.isFalse
+                      ? 'Tambah Siswa'
+                      : 'LOADING...'),
+                ),
+              ),
+            ],
+          );
+    } else {
       Get.snackbar(
         'Gagal',
         'Semua data harus diisi',
@@ -57,23 +245,17 @@ class TambahSiswaController extends GetxController {
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
-    } else {
-      Get.snackbar(
-        'Berhasil',
-        'Data berhasil ditambahkan',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-      resetForm();
+      } 
     }
-  }
 
   void resetForm() {
     namaSiswaController.clear();
     kelasSiswaController.clear();
+    kelasSiswaController.text == "";
     jenisKelaminSiswaController.clear();
+    jenisKelaminSiswaController.text == "";
     agamaSiswaController.clear();
+    agamaSiswaController.text == "";
     tempatLahirSiswaController.clear();
     tanggalLahirSiswaController.clear();
     alamatSiswaController.clear();

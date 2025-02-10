@@ -86,4 +86,9 @@ class HomeController extends GetxController {
       snackPosition: SnackPosition.BOTTOM,
     );
   } 
+
+  
+
+
+
 }

@@ -189,10 +189,8 @@ class HomeWidget extends GetView<HomeController> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          TxtBtnKelas(kelasnya: 'Kelas 2A'),
-                                          TxtBtnKelas(kelasnya: 'Kelas 3B'),
-                                          TxtBtnKelas(kelasnya: 'Kelas 5B'),
-                                          TxtBtnKelas(kelasnya: 'Kelas 6A'),
+                                          // membuat listview.builder sesuai dengan list kelas yang diajar
+                                          Text('data'),
                                         ],
                                       ),
                                     ),
@@ -221,7 +219,8 @@ class HomeWidget extends GetView<HomeController> {
                                       GestureDetector(
                                         // if(snapshot.connectionState == ConnectionState.done)
                                         // if(snapshot.data!.data()!['role'] == 'admin')
-                                        onTap: () => Get.toNamed(Routes.TAMBAH_SISWA),
+                                        onTap: () =>
+                                            Get.toNamed(Routes.TAMBAH_SISWA),
                                         child: ColumnMenuTengah(
                                           icon: Icon(Icons.person_add_outlined,
                                               size: 40),
@@ -229,30 +228,22 @@ class HomeWidget extends GetView<HomeController> {
                                         ),
                                       ),
                                       GestureDetector(
-                                        onTap: () => Get.snackbar(
-                                            snackPosition: SnackPosition.BOTTOM,
-                                            backgroundColor:
-                                                Colors.brown.shade400,
-                                            "PILIHAN A",
-                                            "Nanti akan popup page sesuai dengan ketentuan"),
+                                        onTap: () =>
+                                            Get.toNamed(Routes.DAFTAR_SISWA),
                                         child: ColumnMenuTengah(
                                           icon: Icon(
                                               Icons.calendar_month_outlined,
                                               size: 45),
-                                          judulbawah: 'PILIHAN A',
+                                          judulbawah: 'DAFTAR SISWA',
                                         ),
                                       ),
                                       GestureDetector(
-                                        onTap: () => Get.snackbar(
-                                            snackPosition: SnackPosition.BOTTOM,
-                                            backgroundColor:
-                                                Colors.brown.shade400,
-                                            "PILIHAN B",
-                                            "Nanti akan popup page sesuai dengan ketentuan"),
+                                        onTap: () =>
+                                            Get.toNamed(Routes.DAFTAR_KELAS),
                                         child: ColumnMenuTengah(
                                           icon: Icon(Icons.facebook_outlined,
                                               size: 45),
-                                          judulbawah: 'PILIHAN B',
+                                          judulbawah: 'DAFTAR KELAS',
                                         ),
                                       ),
                                     ],
@@ -263,16 +254,11 @@ class HomeWidget extends GetView<HomeController> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       GestureDetector(
-                                        onTap: () => Get.snackbar(
-                                            snackPosition: SnackPosition.BOTTOM,
-                                            backgroundColor:
-                                                Colors.brown.shade400,
-                                            "DASHBOARD",
-                                            "Nanti akan popup page sesuai dengan ketentuan"),
+                                        onTap: () => Get.toNamed(Routes.DAFTAR_NILAI),
                                         child: ColumnMenuTengah(
                                           icon: Icon(Icons.dashboard_outlined,
                                               size: 45),
-                                          judulbawah: 'DASHBOARD',
+                                          judulbawah: 'DAFTAR NILAI',
                                         ),
                                       ),
                                       GestureDetector(
@@ -366,7 +352,7 @@ class TxtBtnKelas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: (){},
+      onPressed: () {},
       child: Text(
         kelasnya,
         style: TextStyle(

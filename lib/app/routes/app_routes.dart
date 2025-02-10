@@ -11,6 +11,10 @@ abstract class Routes {
   static const UPDATE_PEGAWAI = _Paths.UPDATE_PEGAWAI;
   static const UPDATE_PASSWORD = _Paths.UPDATE_PASSWORD;
   static const TAMBAH_SISWA = _Paths.TAMBAH_SISWA;
+  static const DAFTAR_SISWA = _Paths.DAFTAR_SISWA;
+  static const DETAIL_SISWA = _Paths.DETAIL_SISWA;
+  static const DAFTAR_KELAS = _Paths.DAFTAR_KELAS;
+  static const DAFTAR_NILAI = _Paths.DAFTAR_NILAI;
 }
 
 abstract class _Paths {
@@ -23,4 +27,8 @@ abstract class _Paths {
   static const UPDATE_PEGAWAI = '/update-pegawai';
   static const UPDATE_PASSWORD = '/update-password';
   static const TAMBAH_SISWA = '/tambah-siswa';
+  static const DAFTAR_SISWA = '/daftar-siswa';
+  static const DETAIL_SISWA = '/detail-siswa';
+  static const DAFTAR_KELAS = '/daftar-kelas';
+  static const DAFTAR_NILAI = '/daftar-nilai';
 }

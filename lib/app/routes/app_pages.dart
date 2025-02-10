@@ -1,5 +1,13 @@
 import 'package:get/get.dart';
 
+import '../modules/daftar_kelas/bindings/daftar_kelas_binding.dart';
+import '../modules/daftar_kelas/views/daftar_kelas_view.dart';
+import '../modules/daftar_nilai/bindings/daftar_nilai_binding.dart';
+import '../modules/daftar_nilai/views/daftar_nilai_view.dart';
+import '../modules/daftar_siswa/bindings/daftar_siswa_binding.dart';
+import '../modules/daftar_siswa/views/daftar_siswa_view.dart';
+import '../modules/detail_siswa/bindings/detail_siswa_binding.dart';
+import '../modules/detail_siswa/views/detail_siswa_view.dart';
 import '../modules/forgot_password/bindings/forgot_password_binding.dart';
 import '../modules/forgot_password/views/forgot_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -64,6 +72,26 @@ class AppPages {
       name: _Paths.TAMBAH_SISWA,
       page: () => const TambahSiswaView(),
       binding: TambahSiswaBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAFTAR_SISWA,
+      page: () => const DaftarSiswaView(),
+      binding: DaftarSiswaBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_SISWA,
+      page: () => const DetailSiswaView(),
+      binding: DetailSiswaBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAFTAR_KELAS,
+      page: () => const DaftarKelasView(),
+      binding: DaftarKelasBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAFTAR_NILAI,
+      page: () => const DaftarNilaiView(),
+      binding: DaftarNilaiBinding(),
     ),
   ];
 }

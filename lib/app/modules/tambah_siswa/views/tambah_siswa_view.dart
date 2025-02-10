@@ -42,12 +42,9 @@ class TambahSiswaView extends GetView<TambahSiswaController> {
                       border: UnderlineInputBorder(),
                       filled: true,
                       prefixText: 'Kelas Siswa: ',
-                      
                     ),
-                   ),
-                  
+                  ),
                   selectedItem: controller.kelasSiswaController.text,
-                  
                   items: (f, cs) => ["1A", '1B', '2A', '2B', '3A', '3B'],
                   onChanged: (String? value) {
                     controller.kelasSiswaController.text = value!;
@@ -55,7 +52,6 @@ class TambahSiswaView extends GetView<TambahSiswaController> {
                   popupProps: PopupProps.menu(
                       // disabledItemFn: (item) => item == '1A',
                       fit: FlexFit.tight),
-                      
                 ),
                 DropdownSearch<String>(
                   decoratorProps: DropDownDecoratorProps(
@@ -63,18 +59,16 @@ class TambahSiswaView extends GetView<TambahSiswaController> {
                       border: UnderlineInputBorder(),
                       filled: true,
                       prefixText: 'Jenis Kelamin: ',
-                      
                     ),
-                   ),
+                  ),
                   selectedItem: controller.jenisKelaminSiswaController.text,
-                  
                   items: (f, cs) => ["Laki-laki", 'Perempuan'],
                   onChanged: (String? value) {
                     controller.jenisKelaminSiswaController.text = value!;
                   },
                   popupProps: PopupProps.menu(
                       // disabledItemFn: (item) => item == '1A',
-                      fit: FlexFit.tight),  
+                      fit: FlexFit.tight),
                 ),
                 DropdownSearch<String>(
                   decoratorProps: DropDownDecoratorProps(
@@ -82,19 +76,18 @@ class TambahSiswaView extends GetView<TambahSiswaController> {
                       border: UnderlineInputBorder(),
                       filled: true,
                       prefixText: 'Agama: ',
-                      
                     ),
-                   ),
+                  ),
                   selectedItem: controller.agamaSiswaController.text,
-                  
-                  items: (f, cs) => ["Islam", 'Kristen', 'Katolik', 'Hindu', 'Budha'],
+                  items: (f, cs) =>
+                      ["Islam", 'Kristen', 'Katolik', 'Hindu', 'Budha'],
                   onChanged: (String? value) {
                     controller.agamaSiswaController.text = value!;
                     print(controller.agamaSiswaController.text);
                   },
                   popupProps: PopupProps.menu(
                       // disabledItemFn: (item) => item == '1A',
-                      fit: FlexFit.tight),  
+                      fit: FlexFit.tight),
                 ),
                 TextFormField(
                   controller: controller.tempatLahirSiswaController,
@@ -102,7 +95,24 @@ class TambahSiswaView extends GetView<TambahSiswaController> {
                 ),
                 TextFormField(
                   controller: controller.tanggalLahirSiswaController,
-                  decoration: const InputDecoration(labelText: 'Tanggal Lahir'),
+                  decoration: InputDecoration(
+                    labelText: 'Tanggal Lahir',
+                    prefix: IconButton(
+                      onPressed: () {
+                        showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                        ).then((value) {
+                          controller.tanggalLahirSiswaController.text =
+                              value.toString();
+                              print(controller.tanggalLahirSiswaController.text);
+                        });
+                      },
+                      icon: Icon(Icons.calendar_today),
+                    ),
+                  ),
                 ),
                 TextFormField(
                   controller: controller.alamatSiswaController,
@@ -214,16 +224,18 @@ class TambahSiswaView extends GetView<TambahSiswaController> {
               ],
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                if(controller.isLoading.isFalse) {
+                  await
                 controller.tambahSiswa();
+                print(controller.tanggalLahirSiswaController.text);
+                }
               },
               child: const Text('Tambah Siswa'),
             ),
           ],
         ),
-        
       ),
-      
     );
   }
 }

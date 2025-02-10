@@ -10,6 +10,7 @@ plugins {
 
 android {
     namespace = "com.banasari.guru_project"
+    // compileSdkVersion 34
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
