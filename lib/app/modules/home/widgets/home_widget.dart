@@ -14,8 +14,16 @@ class HomeWidget extends GetView<HomeController> {
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: controller.userStream(),
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           if (snapshot.hasData) {
             Map<String, dynamic> data = snapshot.data!.data()!;
+
+            //menampilkan kelas guru yang diajar
+            List kelasAjarGuru = data['kelasAjar'];
 
             return Scaffold(
               appBar: AppBar(
@@ -43,7 +51,10 @@ class HomeWidget extends GetView<HomeController> {
                 ),
                 actions: [
                   if (snapshot.connectionState == ConnectionState.waiting)
-                    SizedBox()
+                    // SizedBox()
+                    Center(
+                      child: CircularProgressIndicator(),
+                    )
                   else if (snapshot.data!.data()!['role'] == 'admin')
                     IconButton(
                       onPressed: () => Get.toNamed(Routes.TAMBAH_PEGAWAI),
@@ -188,10 +199,15 @@ class HomeWidget extends GetView<HomeController> {
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          // membuat listview.builder sesuai dengan list kelas yang diajar
-                                          Text('data'),
-                                        ],
+                                        children:
+                                            kelasAjarGuru.map((kelasNya) {
+                                          return TextButton(
+                                              onPressed: () {
+                                                Get.toNamed(Routes.DAFTAR_KELAS);
+                                                print(kelasNya);
+                                              },
+                                              child: Text(kelasNya));
+                                        }).toList(),
                                       ),
                                     ),
                                   ],
@@ -254,7 +270,8 @@ class HomeWidget extends GetView<HomeController> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       GestureDetector(
-                                        onTap: () => Get.toNamed(Routes.DAFTAR_NILAI),
+                                        onTap: () =>
+                                            Get.toNamed(Routes.DAFTAR_NILAI),
                                         child: ColumnMenuTengah(
                                           icon: Icon(Icons.dashboard_outlined,
                                               size: 45),

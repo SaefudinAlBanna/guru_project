@@ -82,8 +82,9 @@ class TambahSiswaController extends GetxController {
             "biayaUangPangkal": biayaUangPangkalController.text,
             "uid": uid,
             "createdAt": DateTime.now().toIso8601String(),
-            "createdBy": emailAdmin,
+            "createdByEmail": emailAdmin,
             "createdById": auth.currentUser!.uid,
+            // "createdByName" : auth.currentUser!.
             "status": "Siswa",
           });
 

@@ -90,7 +90,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DAFTAR_NILAI,
-      page: () => const DaftarNilaiView(),
+      page: () => DaftarNilaiView(),
       binding: DaftarNilaiBinding(),
     ),
   ];
