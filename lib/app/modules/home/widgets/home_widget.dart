@@ -203,7 +203,7 @@ class HomeWidget extends GetView<HomeController> {
                                             kelasAjarGuru.map((kelasNya) {
                                           return TextButton(
                                               onPressed: () {
-                                                Get.toNamed(Routes.DAFTAR_KELAS);
+                                                Get.toNamed(Routes.DAFTAR_KELAS, arguments: kelasNya);
                                                 print(kelasNya);
                                               },
                                               child: Text(kelasNya));

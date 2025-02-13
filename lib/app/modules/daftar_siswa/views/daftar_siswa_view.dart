@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:guru_project/app/routes/app_pages.dart';
+// import 'package:guru_project/app/routes/app_pages.dart';
 
 import '../controllers/daftar_siswa_controller.dart';
 
@@ -25,7 +25,7 @@ class DaftarSiswaView extends GetView<DaftarSiswaController> {
           }
           if (snapshot.hasData) {
           // Map<String, dynamic> data = snapshot.data!.data() ?? {};
-          Map<String, dynamic> data = snapshot.data!.data()!;
+          // Map<String, dynamic> data = snapshot.data!.data()!;
           // print(data);
           } else {
             return Center(

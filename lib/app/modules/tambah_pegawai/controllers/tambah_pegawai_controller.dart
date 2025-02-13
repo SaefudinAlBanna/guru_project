@@ -19,11 +19,11 @@ class TambahPegawaiController extends GetxController {
     if (passAdminC.text.isNotEmpty) {
       isLoadingTambahPegawai.value = true;
       try {
-        String emailAdmin = auth.currentUser!.email!;
+        // String emailAdmin = auth.currentUser!.email!;
 
-        UserCredential userCredentialAdmin =
-            await auth.signInWithEmailAndPassword(
-                email: emailAdmin, password: passAdminC.text);
+        // UserCredential userCredentialAdmin =
+        //     await auth.signInWithEmailAndPassword(
+        //         email: emailAdmin, password: passAdminC.text);
 
         UserCredential pegawaiCredential =
             await auth.createUserWithEmailAndPassword(
@@ -48,11 +48,11 @@ class TambahPegawaiController extends GetxController {
 
           await auth.signOut();
 
-          UserCredential userCredentialAdmin =
-              await auth.signInWithEmailAndPassword(
-            email: emailAdmin,
-            password: passAdminC.text,
-          );
+          // UserCredential userCredentialAdmin =
+          //     await auth.signInWithEmailAndPassword(
+          //   email: emailAdmin,
+          //   password: passAdminC.text,
+          // );
 
           Get.back();
           Get.back();

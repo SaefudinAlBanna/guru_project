@@ -85,7 +85,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DAFTAR_KELAS,
-      page: () => const DaftarKelasView(),
+      page: () => DaftarKelasView(),
       binding: DaftarKelasBinding(),
     ),
     GetPage(

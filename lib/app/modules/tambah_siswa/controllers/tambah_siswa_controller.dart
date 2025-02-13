@@ -42,9 +42,9 @@ class TambahSiswaController extends GetxController {
       try {
         String emailAdmin = auth.currentUser!.email!;
 
-        UserCredential userCredentialAdmin =
-            await auth.signInWithEmailAndPassword(
-                email: emailAdmin, password: passAdminC.text); 
+        // UserCredential userCredentialAdmin =
+        //     await auth.signInWithEmailAndPassword(
+        //         email: emailAdmin, password: passAdminC.text); 
 
         UserCredential siswaCredential =
             await auth.createUserWithEmailAndPassword(
@@ -92,11 +92,11 @@ class TambahSiswaController extends GetxController {
 
           await auth.signOut();
 
-          UserCredential userCredentialAdmin =
-              await auth.signInWithEmailAndPassword(
-            email: emailAdmin,
-            password: passAdminC.text,
-          );
+          // UserCredential userCredentialAdmin =
+          //     await auth.signInWithEmailAndPassword(
+          //   email: emailAdmin,
+          //   password: passAdminC.text,
+          // );
 
           Get.back();
           Get.back();
@@ -315,18 +315,18 @@ class TambahSiswaController extends GetxController {
     super.onReady();
   }
 
-  @override
-  void onInactive() {
-    // super.onInactive();
-  }
+  // @override
+  // void onInactive() {
+  //   // super.onInactive();
+  // }
 
-  @override
-  void onResumed() {
-    // super.onResumed();
-  }
+  // @override
+  // void onResumed() {
+  //   // super.onResumed();
+  // }
 
-  @override
-  void onSuspended() {
-    // super.onSuspended();
-  }
+  // @override
+  // void onSuspended() {
+  //   // super.onSuspended();
+  // }
 }

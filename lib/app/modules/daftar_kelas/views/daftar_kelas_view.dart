@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -7,19 +8,28 @@ import 'package:guru_project/app/routes/app_pages.dart';
 import '../controllers/daftar_kelas_controller.dart';
 
 class DaftarKelasView extends GetView<DaftarKelasController> {
-  const DaftarKelasView({super.key});
+   DaftarKelasView({super.key});
+
+   final data = Get.arguments;
+
   @override
   Widget build(BuildContext context) {
+    print('tampilkan $data');
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DaftarKelasView'),
+        title: Text('Kelas $data'),
         centerTitle: true,
       ),
       body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
           future: controller.getDataKelas(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
+              
+              
+              
               if (snapshot.hasData) {
+
+                // print(snapshot.data!.toString());
 
                 // TO DO 1: Replace the Column widget with ListView.builder
                 // return Column(

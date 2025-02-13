@@ -28,6 +28,7 @@ class DaftarNilaiView extends GetView<DaftarNilaiController> {
             }
             if (snapshot.hasData) {
               Map<String, dynamic> user = snapshot.data!.data()!;
+              // print('print user $user');
 
               //percobaan 1
               List mataPelajaranNya = user['mataPelajaran'];
