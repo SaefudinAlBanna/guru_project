@@ -146,7 +146,7 @@ class HomeWidget extends GetView<HomeController> {
                                           decoration: BoxDecoration(
                                             color: Colors.transparent,
                                           ),
-                                          child: Icon(Icons.alarm, size: 45),
+                                          child: IconButton(icon: Icon(Icons.alarm, size: 45), onPressed: () { Get.toNamed(Routes.CONTOH); }),
                                         ),
                                         Column(
                                           mainAxisAlignment:
@@ -199,8 +199,7 @@ class HomeWidget extends GetView<HomeController> {
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
-                                        children:
-                                            kelasAjarGuru.map((kelasNya) {
+                                        children: kelasAjarGuru.map((kelasNya) {
                                           return TextButton(
                                               onPressed: () {
                                                 Get.toNamed(Routes.DAFTAR_KELAS, arguments: kelasNya);
@@ -208,6 +207,7 @@ class HomeWidget extends GetView<HomeController> {
                                               },
                                               child: Text(kelasNya));
                                         }).toList(),
+                                        
                                       ),
                                     ),
                                   ],
@@ -279,17 +279,12 @@ class HomeWidget extends GetView<HomeController> {
                                         ),
                                       ),
                                       GestureDetector(
-                                        onTap: () => Get.snackbar(
-                                            snackPosition: SnackPosition.BOTTOM,
-                                            backgroundColor:
-                                                Colors.brown.shade400,
-                                            "PILIHAN A",
-                                            "Nanti akan popup page sesuai dengan ketentuan"),
+                                        onTap: () => Get.toNamed(Routes.INFO_SEKOLAH),
                                         child: ColumnMenuTengah(
                                           icon: Icon(
                                               Icons.calendar_month_outlined,
                                               size: 45),
-                                          judulbawah: 'PILIHAN A',
+                                          judulbawah: 'INFO SEKOLAH',
                                         ),
                                       ),
                                       GestureDetector(

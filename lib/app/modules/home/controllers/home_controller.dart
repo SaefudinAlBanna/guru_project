@@ -26,6 +26,10 @@ class HomeController extends GetxController {
     yield* firestore.collection('Pegawai').doc(uid).snapshots();
   }
 
+  //percobaan menampilkan contoh collection
+    
+  
+
 
   Stream<DocumentSnapshot<Map<String, dynamic>>> getProfile() async* {
     String uid = auth.currentUser!.uid;

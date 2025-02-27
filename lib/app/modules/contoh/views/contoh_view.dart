@@ -2,24 +2,20 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/detail_siswa_controller.dart';
+import '../controllers/contoh_controller.dart';
 
-class DetailSiswaView extends GetView<DetailSiswaController> {
-   DetailSiswaView({super.key});
-
-  final String dataNama = Get.arguments;
-  final String dataKelas = Get.arguments;
-
+class ContohView extends GetView<ContohController> {
+  const ContohView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nama Siswa : $dataNama'),
+        title: const Text('ContohView'),
         centerTitle: true,
       ),
       body: const Center(
         child: Text(
-          'DetailSiswaView is working',
+          'ContohView is working',
           style: TextStyle(fontSize: 20),
         ),
       ),

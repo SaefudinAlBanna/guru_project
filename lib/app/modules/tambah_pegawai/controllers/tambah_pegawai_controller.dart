@@ -42,6 +42,11 @@ class TambahPegawaiController extends GetxController {
             "noHp": noHpC.text,
             "uid": uid,
             "createdAt": DateTime.now().toIso8601String(),
+            //--   pengambilan createdAt by metadata
+            
+            //  "creationTime": pegawaiCredential.user!.metadata.creationTime!.toIso8601String(),
+            //  "lastSignInTime": pegawaiCredential.user!.metadata.lastSignInTime!.toIso8601String(),
+            // "updateAt": DateTime.now().toIso8601String(),
           });
 
           await pegawaiCredential.user!.sendEmailVerification();

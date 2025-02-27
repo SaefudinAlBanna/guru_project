@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/contoh/bindings/contoh_binding.dart';
+import '../modules/contoh/views/contoh_view.dart';
 import '../modules/daftar_kelas/bindings/daftar_kelas_binding.dart';
 import '../modules/daftar_kelas/views/daftar_kelas_view.dart';
 import '../modules/daftar_nilai/bindings/daftar_nilai_binding.dart';
@@ -12,10 +14,14 @@ import '../modules/forgot_password/bindings/forgot_password_binding.dart';
 import '../modules/forgot_password/views/forgot_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/info_sekolah/bindings/info_sekolah_binding.dart';
+import '../modules/info_sekolah/views/info_sekolah_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/new_password/bindings/new_password_binding.dart';
 import '../modules/new_password/views/new_password_view.dart';
+import '../modules/pemberian_nilai_siswa/bindings/pemberian_nilai_siswa_binding.dart';
+import '../modules/pemberian_nilai_siswa/views/pemberian_nilai_siswa_view.dart';
 import '../modules/tambah_pegawai/bindings/tambah_pegawai_binding.dart';
 import '../modules/tambah_pegawai/views/tambah_pegawai_view.dart';
 import '../modules/tambah_siswa/bindings/tambah_siswa_binding.dart';
@@ -80,7 +86,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DETAIL_SISWA,
-      page: () => const DetailSiswaView(),
+      page: () => DetailSiswaView(),
       binding: DetailSiswaBinding(),
     ),
     GetPage(
@@ -92,6 +98,21 @@ class AppPages {
       name: _Paths.DAFTAR_NILAI,
       page: () => DaftarNilaiView(),
       binding: DaftarNilaiBinding(),
+    ),
+    GetPage(
+      name: _Paths.PEMBERIAN_NILAI_SISWA,
+      page: () => const PemberianNilaiSiswaView(),
+      binding: PemberianNilaiSiswaBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONTOH,
+      page: () => const ContohView(),
+      binding: ContohBinding(),
+    ),
+    GetPage(
+      name: _Paths.INFO_SEKOLAH,
+      page: () => const InfoSekolahView(),
+      binding: InfoSekolahBinding(),
     ),
   ];
 }

@@ -10,254 +10,191 @@ class ProfileWidget extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Profile",
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: Colors.indigo[400],
-        actions: [
-          IconButton(
-            onPressed: () => controller.signOut(),
-            icon: Icon(
-              Icons.logout,
-              size: 25,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
+      appBar: _buildAppBar(),
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: controller.getProfile(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasData) {
             Map<String, dynamic> data = snapshot.data!.data()!;
-            return Stack(
-              children: [
-                ClipPath(
-                  clipper: ClassClipPathTop(),
-                  child: Container(
-                    height: 250,
-                    width: Get.width,
-                    color: Colors.indigo[400],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  child: Column(
-                    children: [
-                      Column(
-                        children: [
-                          Column(
-                            children: [
-                              Container(
-                                height: 100,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[400],
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                        "https://ui-avatars.com/api/?name=${data['nama']}"),
-                                    // "https://photos.google.com/photo/AF1QipO0EuuqmPsza1Ljrdy6roeFI9BbjQ043BrYtxpc"),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                              ),
-                              SizedBox(height: 20),
-                              Text(
-                                data['nama'].toString().toUpperCase(),
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                "${data['role']}",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  // fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 50),
-                      Container(
-                        height: 1.5,
-                        color: Colors.grey[400],
-                      ),
-                      Expanded(
-                        child: SafeArea(
-                          child: ListView(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 25,
-                            ),
-                            children: [
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Info Pegawai",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () => Get.toNamed(Routes.UPDATE_PASSWORD),
-                                    icon: Icon(
-                                      Icons.vpn_key_outlined,
-                                      size: 25,
-                                      color: Colors.grey,
-                                    ),
-                                    
-                                  ),
-                                  IconButton(
-                                    onPressed: () => Get.toNamed(Routes.UPDATE_PEGAWAI, arguments: data),
-                                    icon: Icon(
-                                      Icons.change_circle_outlined,
-                                      size: 25,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 5),
-                              Card(
-                                color: Colors.grey[200],
-                                child: Container(
-                                  alignment: Alignment.topLeft,
-                                  padding: EdgeInsets.all(15),
-                                  child: Column(
-                                    children: [
-                                      ...ListTile.divideTiles(
-                                          color: Colors.grey,
-                                          tiles: [
-                                            ListTile(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 4),
-                                              leading: Icon(Icons.key_outlined),
-                                              title: Text("NIP / NIK"),
-                                              subtitle: Text('${data['nip']}'),
-                                            ),
-                                            ListTile(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 4),
-                                              leading:
-                                                  Icon(Icons.email_outlined),
-                                              title: Text("Email"),
-                                              subtitle:
-                                                  Text('${data['email']}'),
-                                            ),
-                                            const ListTile(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 4),
-                                              leading:
-                                                  Icon(Icons.male_outlined),
-                                              title: Text("Jenis Kelamin"),
-                                              subtitle: Text("Laki-Laki"),
-                                            ),
-                                            const ListTile(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 4),
-                                              leading:
-                                                  Icon(Icons.bloodtype_rounded),
-                                              title: Text("Gol. Darah"),
-                                              subtitle: Text("O"),
-                                            ),
-                                            const ListTile(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 4),
-                                              leading: Icon(Icons.my_location),
-                                              title: Text("Alamat Domisili"),
-                                              subtitle: Text(
-                                                  "Pringgolayan RT.08 Banguntapan"),
-                                            ),
-                                            ListTile(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 4),
-                                              leading: Icon(
-                                                  Icons.phone_android_outlined),
-                                              title: Text("No Hp"),
-                                              subtitle: Text('${data['noHp']}'),
-                                            ),
-                                            const ListTile(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 4),
-                                              leading:
-                                                  Icon(Icons.man_3_outlined),
-                                              title: Text("Nama Ayah"),
-                                              subtitle: Text("Saefudin"),
-                                            ),
-                                            const ListTile(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 4),
-                                              leading:
-                                                  Icon(Icons.woman_outlined),
-                                              title: Text("Nama Ibu"),
-                                              subtitle: Text("Jumariyah"),
-                                            ),
-                                          ]),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            );
+            return _buildProfileContent(data);
           }
-          return Center(
-            child: Text('Data tidak ditemukan'),
-          );
+          
+          return const Center(child: Text('Data tidak ditemukan'));
         },
       ),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: const Text(
+        "Profile",
+        style: TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: Colors.indigo[400],
+      actions: [
+        IconButton(
+          onPressed: () => controller.signOut(),
+          icon: const Icon(Icons.logout, size: 25, color: Colors.white),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProfileContent(Map<String, dynamic> data) {
+    return Stack(
+      children: [
+        ClipPath(
+          clipper: ClassClipPathTop(),
+          child: Container(
+            height: 250,
+            width: Get.width,
+            color: Colors.indigo[400],
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Column(
+            children: [
+              _buildProfileHeader(data),
+              const SizedBox(height: 50),
+              Container(
+                height: 1.5,
+                color: Colors.grey[400],
+              ),
+              Expanded(
+                child: _buildProfileInfo(data),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProfileHeader(Map<String, dynamic> data) {
+    return Column(
+      children: [
+        Container(
+          height: 100,
+          width: 100,
+          decoration: BoxDecoration(
+            color: Colors.grey[400],
+            image: DecorationImage(
+              image: NetworkImage("https://ui-avatars.com/api/?name=${data['nama']}"),
+              fit: BoxFit.cover,
+            ),
+            borderRadius: BorderRadius.circular(50),
+          ),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          data['nama'].toString().toUpperCase(),
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        Text(
+          "${data['role']}",
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.white,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProfileInfo(Map<String, dynamic> data) {
+    return SafeArea(
+      child: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        children: [
+          const SizedBox(height: 20),
+          _buildInfoHeader(data),
+          const SizedBox(height: 5),
+          _buildInfoCard(data),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoHeader(Map<String, dynamic> data) {
+    // print("datanya adalah : $data");
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Info Pegawai",
+          style: TextStyle(fontSize: 20),
+        ),
+        IconButton(
+          onPressed: () => Get.toNamed(Routes.UPDATE_PASSWORD),
+          icon: const Icon(Icons.vpn_key_outlined, size: 25, color: Colors.grey),
+        ),
+        IconButton(
+          onPressed: () => Get.toNamed(Routes.UPDATE_PEGAWAI, arguments: data),
+          icon: const Icon(Icons.change_circle_outlined, size: 25, color: Colors.grey),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoCard(Map<String, dynamic> data) {
+    return Card(
+      color: Colors.grey[200],
+      child: Container(
+        alignment: Alignment.topLeft,
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          children: [
+            ...ListTile.divideTiles(
+              color: Colors.grey,
+              tiles: _buildInfoTiles(data),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildInfoTiles(Map<String, dynamic> data) {
+    return [
+      _buildInfoTile(Icons.key_outlined, "NIP / NIK", data['nip']),
+      _buildInfoTile(Icons.email_outlined, "Email", data['email']),
+      _buildInfoTile(Icons.male_outlined, "Jenis Kelamin", "Laki-Laki"),
+      _buildInfoTile(Icons.bloodtype_rounded, "Gol. Darah", "O"),
+      _buildInfoTile(Icons.my_location, "Alamat Domisili", "Pringgolayan RT.08 Banguntapan"),
+      _buildInfoTile(Icons.phone_android_outlined, "No Hp", data['noHp']),
+      _buildInfoTile(Icons.man_3_outlined, "Nama Ayah", "Saefudin"),
+      _buildInfoTile(Icons.woman_outlined, "Nama Ibu", "Jumariyah"),
+    ];
+  }
+
+  Widget _buildInfoTile(IconData icon, String title, String subtitle) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      leading: Icon(icon),
+      title: Text(title),
+      subtitle: Text(subtitle),
     );
   }
 }
 
 class ClassClipPathTop extends CustomClipper<Path> {
   @override
-  getClip(Size size) {
+  Path getClip(Size size) {
     Path path = Path();
     path.lineTo(0, size.height - 60);
     path.quadraticBezierTo(
@@ -268,7 +205,6 @@ class ClassClipPathTop extends CustomClipper<Path> {
     );
     path.lineTo(size.width, 0);
     path.close();
-
     return path;
   }
 

@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:guru_project/app/routes/app_pages.dart';
-
 import '../controllers/login_controller.dart';
 
-
-
-// Color orangeColors = const Color(0xffF5591F);
-// Color orangeLightColors = const Color(0xffF2861E);
-Color orangeColors = const Color(0xFFE52027);
-Color orangeLightColors = const Color(0xFF831217);
+// Warna yang digunakan
+const Color orangeColors = Color(0xFFE52027);
+const Color orangeLightColors = Color(0xFF831217);
 
 class LoginView extends GetView<LoginController> {
   const LoginView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(bottom: 30),
+        padding: const EdgeInsets.only(bottom: 30),
         child: Column(
           children: <Widget>[
-            HeaderContainer(),
+            const HeaderContainer(),
             Expanded(
               flex: 1,
               child: Container(
@@ -30,15 +26,17 @@ class LoginView extends GetView<LoginController> {
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     _textInput(
-                        controller: controller.emailC,
-                        hint: "Enter your Email",
-                        icon: Icons.email,
-                        obsecure: false),
+                      controller: controller.emailC,
+                      hint: "Enter your Email",
+                      icon: Icons.email,
+                      obsecure: false,
+                    ),
                     _textInput(
-                        controller: controller.passC,
-                        hint: "Password",
-                        icon: Icons.vpn_key,
-                        obsecure: true),
+                      controller: controller.passC,
+                      hint: "Password", 
+                      icon: Icons.vpn_key,
+                      obsecure: true,
+                    ),
                     Obx(
                       () => ElevatedButton(
                         onPressed: () async {
@@ -50,29 +48,20 @@ class LoginView extends GetView<LoginController> {
                           backgroundColor: Colors.indigo,
                           foregroundColor: Colors.white,
                         ),
-                        child: Text(controller.isLoading.isFalse
-                            ? "Login"
-                            : "LOADING..."),
+                        child: Text(
+                          controller.isLoading.isFalse ? "Login" : "LOADING..."
+                        ),
                       ),
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 10),
                       alignment: Alignment.centerRight,
-                      child: TextButton( onPressed: ()=> Get.toNamed(Routes.FORGOT_PASSWORD),
-                          child: const Text("Forgot Password?"),
+                      child: TextButton(
+                        onPressed: () => Get.toNamed(Routes.FORGOT_PASSWORD),
+                        child: const Text("Forgot Password?"),
                       ),
                     ),
-                    Spacer(),
-                    RichText(
-                      text: TextSpan(children: [
-                        const TextSpan(
-                            text: "Don't have an account ? ",
-                            style: TextStyle(color: Colors.black)),
-                        TextSpan(
-                            text: "Signup",
-                            style: TextStyle(color: orangeColors)),
-                      ]),
-                    )
+                    const Spacer(),
                   ],
                 ),
               ),
@@ -84,10 +73,10 @@ class LoginView extends GetView<LoginController> {
   }
 
   Widget _textInput({
-    controller,
-    hint,
-    icon,
-    obsecure,
+    required TextEditingController controller,
+    required String hint,
+    required IconData icon,
+    required bool obsecure,
   }) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
@@ -118,30 +107,28 @@ class HeaderContainer extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.height * 0.4,
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-              // colors: [orangeColors, orangeLightColors],
-              colors: [Colors.indigo.shade400, Colors.indigo.shade300],
-              end: Alignment.bottomCenter,
-              begin: Alignment.topCenter),
-          borderRadius:
-              const BorderRadius.only(bottomLeft: Radius.circular(100))),
-      child: Stack(
+        gradient: LinearGradient(
+          colors: [Colors.indigo.shade400, Colors.indigo.shade300],
+          end: Alignment.bottomCenter,
+          begin: Alignment.topCenter,
+        ),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(100),
+        ),
+      ),
+      child: const Stack(
         children: <Widget>[
-          const Positioned(
-              bottom: 20,
-              right: 20,
-              child: Text(
-                "Login",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              )),
-          // Center(
-          //   child: Image.network(
-          //     "https://picsum.photos/200/300",
-          //     fit: BoxFit.cover,
-          //     height: 100,
-          //     width: 100,
-          //   ),
-          // ),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: Text(
+              "Login",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+              ),
+            ),
+          ),
         ],
       ),
     );

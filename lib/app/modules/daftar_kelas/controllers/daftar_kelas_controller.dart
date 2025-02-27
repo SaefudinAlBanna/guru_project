@@ -6,7 +6,9 @@ class DaftarKelasController extends GetxController {
   
   var getDataKelasNya = FirebaseFirestore.instance.collection('Siswa').get();
 
-  
+
+
+ // BERHASIL MENAMPILKAN DATA DETAIL SISWA berdasarkan kelas pada halaman guru  
  Future<QuerySnapshot<Map<String, dynamic>>> getDataKelas() async {
   // return FirebaseFirestore.instance.collection('Siswa').get();
   
