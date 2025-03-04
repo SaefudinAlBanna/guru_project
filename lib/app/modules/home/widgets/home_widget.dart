@@ -288,16 +288,11 @@ class HomeWidget extends GetView<HomeController> {
                                         ),
                                       ),
                                       GestureDetector(
-                                        onTap: () => Get.snackbar(
-                                            snackPosition: SnackPosition.BOTTOM,
-                                            backgroundColor:
-                                                Colors.brown.shade400,
-                                            "PILIHAN B",
-                                            "Nanti akan popup page sesuai dengan ketentuan"),
+                                        onTap: () => Get.toNamed(Routes.TAMBAH_KELOMPOK_MENGAJI),
                                         child: ColumnMenuTengah(
                                           icon: Icon(Icons.facebook_outlined,
                                               size: 45),
-                                          judulbawah: 'PILIHAN B',
+                                          judulbawah: 'Tambah kelompok',
                                         ),
                                       ),
                                     ],

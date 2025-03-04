@@ -18,6 +18,8 @@ abstract class Routes {
   static const PEMBERIAN_NILAI_SISWA = _Paths.PEMBERIAN_NILAI_SISWA;
   static const CONTOH = _Paths.CONTOH;
   static const INFO_SEKOLAH = _Paths.INFO_SEKOLAH;
+  static const DETAIL_NILAI = _Paths.DETAIL_NILAI;
+  static const TAMBAH_KELOMPOK_MENGAJI = _Paths.TAMBAH_KELOMPOK_MENGAJI;
 }
 
 abstract class _Paths {
@@ -37,4 +39,6 @@ abstract class _Paths {
   static const PEMBERIAN_NILAI_SISWA = '/pemberian-nilai-siswa';
   static const CONTOH = '/contoh';
   static const INFO_SEKOLAH = '/info-sekolah';
+  static const DETAIL_NILAI = '/detail-nilai';
+  static const TAMBAH_KELOMPOK_MENGAJI = '/tambah-kelompok-mengaji';
 }

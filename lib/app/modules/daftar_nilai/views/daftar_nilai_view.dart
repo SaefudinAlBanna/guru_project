@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/daftar_nilai_controller.dart';
 
 class DaftarNilaiView extends GetView<DaftarNilaiController> {
@@ -14,10 +16,7 @@ class DaftarNilaiView extends GetView<DaftarNilaiController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('DaftarNilaiView'),
-        centerTitle: true,
-      ),
+      appBar: _buildAppBar(),
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           stream: controller.userStream(),
           builder: (context, snapshot) {
@@ -28,35 +27,121 @@ class DaftarNilaiView extends GetView<DaftarNilaiController> {
             }
             if (snapshot.hasData) {
               Map<String, dynamic> user = snapshot.data!.data()!;
-              // print('print user $user');
+              String defaultImage =
+                  "https://ui-avatars.com/api/?name=${user['nama']}";
 
-              //percobaan 1
-              List mataPelajaranNya = user['mataPelajaran'];
-              print('datanya adalah ${user['mataPelajaran']}');
-              return ListView(
-                padding: EdgeInsets.all(20),
-                children: [
-                  Text(
-                    user['nama'],
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 20),
-                  Text(user['email']),
-                  SizedBox(height: 50),
-                  Column(
-                    children: mataPelajaranNya.map((pelajaran) {
-                      return TextButton(
-                          onPressed: () {
-                            print(pelajaran);
-                          }, 
-                          child: Text(pelajaran));
-                    }).toList(),
-                  ),
-                ],
+              return Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  // padding: EdgeInsets.all(15),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        ClipOval(
+                          child: Container(
+                            width: 75,
+                            height: 75,
+                            color: Colors.grey[300],
+                            child: Image.network(
+                              user['profile'] ?? defaultImage,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Nama Siswa',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text('Kelas'),
+                          ],
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 5,
+                        children: [
+                          Text(
+                            'Ustadz/ah : ${user['nama']}',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text('Tgk/Jilid'),
+                          Text('Tempat'),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Divider(
+                      height: 2,
+                      color: Colors.black,
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      'DAFTAR NILAI',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Expanded(
+                        child: ListView.builder(
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: Material(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.grey[200],
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(20),
+                              onTap: ()=> Get.toNamed(Routes.DETAIL_NILAI),
+                              child: Container(
+                                padding: EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('pertemuan ke ${index + 1}'),
+                                    Divider(height: 1),
+                                    SizedBox(height: 10),
+                                    Text(DateFormat('dd.MM.yyyy')
+                                        .format(DateTime.now())),
+                                    Text('Data Hafalan'),
+                                    Text('Materi'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    )),
+                  ],
+                ),
               );
             } else {
               return Center(
-                child: Text('Tidak dapat mengambil data'),
+                child: Text('Data Tidak Ditemukan'),
               );
             }
           }),
@@ -64,101 +149,10 @@ class DaftarNilaiView extends GetView<DaftarNilaiController> {
   }
 }
 
-
-
-//       body: ListView.builder(
-//         itemCount: 6,
-//         itemBuilder: (BuildContext context, int index) {
-//           return ListTile(
-//             title: Text('title'),
-//             subtitle: Text('subtitle'),
-//             trailing: DropdownButton<String>(
-//               items: myList.map((String value) {
-//                 return DropdownMenuItem<String>(
-//                   value: value,
-//                   child: Text(value),
-//                 );
-//               }).toList(),
-//               onChanged: (String? newValue) {
-//                 print(newValue);
-//               },
-//             ),
-//             leading: CircleAvatar(
-//               child: Text('leading'),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
-
-
-
-
-
-
-
-        // body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        //   future: null,
-        //   builder: (context, snapshot) {
-        //     // print('ini snaphootnya ${snapshot.data!.docs}');
-        //     if (snapshot.connectionState == ConnectionState.waiting) {
-        //       return Center(child: CircularProgressIndicator());
-        //     }
-        //     if (!snapshot.hasData) {
-        //       return Center(
-        //           child: Text('No data available ${snapshot.data!.docs}'));
-        //     }
-        //     if (snapshot.hasError) {
-        //       return Center(child: Text('Error: ${snapshot.error}'));
-        //     }
-        //     if (snapshot.data!.docs.isEmpty) {
-        //       return Center(child: Text('No data available'));
-        //     }
-        //     Map<String, dynamic> data = snapshot.data!.data()!;
-        //     if (snapshot.hasData) {
-              // return ListView.builder(
-              //   // itemCount: snapshot.data!.docs.length,
-              //   itemCount: 6,
-              //   itemBuilder: (context, index) {
-              //     print(
-              //         'ini snapshotnya ${snapshot.data!.docs[index].data()['kelasAjar'].toString()}');
-              //     return ListTile(
-              //       title: Text(snapshot.data!.docs[index]
-              //           .data()['kelasAjar']
-              //           .toString()),
-              //       subtitle: Text(snapshot.data!.docs[index]
-              //           .data()['mataPelajaran']
-              //           .toString()),
-              //       // subtitle: Text(snapshot.data!.docs[index].data()['nilai']),
-              //       // leading: CircleAvatar(
-              //       //   child: Text(snapshot.data!.docs[index].data()['nama'][0]),
-              //       // ),
-              //     );
-              //   },
-              // );
-
-
-        //       return Padding(
-        //         padding: const EdgeInsets.symmetric(horizontal: 20),
-        //         child: Column(
-        //           children: [
-        //             Text('Kelas yang di ajar oleh ustadznya'),
-        //             SizedBox(height: 20),
-        //             GridView.count(
-        //               crossAxisCount: 3,
-        //               crossAxisSpacing: 4,
-        //               mainAxisSpacing: 4,
-        //               children: snapshot.data!.docs.
-        //             ),
-        //           ],
-        //         ),
-        //       );
-        //     }
-        //     return Center(child: Text('Data loaded'));
-        //     // Add your widget here based on the snapshot data
-        //   },
-        // )
-      
-   
+PreferredSizeWidget _buildAppBar() {
+  return AppBar(
+    title: const Text('Daftar Nilai'),
+    backgroundColor: Colors.indigo[400],
+    elevation: 0,
+  );
+}

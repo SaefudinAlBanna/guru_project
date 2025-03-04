@@ -35,7 +35,7 @@ class DaftarKelasView extends GetView<DaftarKelasController> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         IconButton(
-                          tooltip: 'Detail Siswa',
+                          tooltip: 'Detail Nilai',
                           icon: const Icon(Icons.info_outlined),
                           onPressed: () {
                             String getNama = snapshot.data!.docs[index].data()['nama'];
@@ -43,18 +43,19 @@ class DaftarKelasView extends GetView<DaftarKelasController> {
                           },
                         ),
                         IconButton(
-                          tooltip: 'Nilai',
+                          tooltip: 'Pemberian Nilai',
                           icon: const Icon(Icons.add_box_rounded),
                           onPressed: () {
-                            Get.toNamed(Routes.PEMBERIAN_NILAI_SISWA, arguments: snapshot.data!.docs[index]);
+                            // Get.toNamed(Routes.PEMBERIAN_NILAI_SISWA, arguments: snapshot.data!.docs[index].data()['nama']);
+                            Get.toNamed(Routes.CONTOH, arguments: snapshot.data!.docs[index].data()['nama']);
                           },
                         ),
                         IconButton(
-                          tooltip: 'Nilai',
+                          tooltip: 'Daftar Nilai',
                           icon: const Icon(Icons.book),
                           onPressed: () {
                             String getNama = snapshot.data!.docs[index].data()['nama'];
-                            Get.toNamed(Routes.PEMBERIAN_NILAI_SISWA, arguments: getNama);
+                            Get.toNamed(Routes.DAFTAR_NILAI, arguments: getNama);
                           },
                         ),
                       ],

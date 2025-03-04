@@ -8,6 +8,8 @@ import '../modules/daftar_nilai/bindings/daftar_nilai_binding.dart';
 import '../modules/daftar_nilai/views/daftar_nilai_view.dart';
 import '../modules/daftar_siswa/bindings/daftar_siswa_binding.dart';
 import '../modules/daftar_siswa/views/daftar_siswa_view.dart';
+import '../modules/detail_nilai/bindings/detail_nilai_binding.dart';
+import '../modules/detail_nilai/views/detail_nilai_view.dart';
 import '../modules/detail_siswa/bindings/detail_siswa_binding.dart';
 import '../modules/detail_siswa/views/detail_siswa_view.dart';
 import '../modules/forgot_password/bindings/forgot_password_binding.dart';
@@ -22,6 +24,8 @@ import '../modules/new_password/bindings/new_password_binding.dart';
 import '../modules/new_password/views/new_password_view.dart';
 import '../modules/pemberian_nilai_siswa/bindings/pemberian_nilai_siswa_binding.dart';
 import '../modules/pemberian_nilai_siswa/views/pemberian_nilai_siswa_view.dart';
+import '../modules/tambah_kelompok_mengaji/bindings/tambah_kelompok_mengaji_binding.dart';
+import '../modules/tambah_kelompok_mengaji/views/tambah_kelompok_mengaji_view.dart';
 import '../modules/tambah_pegawai/bindings/tambah_pegawai_binding.dart';
 import '../modules/tambah_pegawai/views/tambah_pegawai_view.dart';
 import '../modules/tambah_siswa/bindings/tambah_siswa_binding.dart';
@@ -113,6 +117,16 @@ class AppPages {
       name: _Paths.INFO_SEKOLAH,
       page: () => const InfoSekolahView(),
       binding: InfoSekolahBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_NILAI,
+      page: () => const DetailNilaiView(),
+      binding: DetailNilaiBinding(),
+    ),
+    GetPage(
+      name: _Paths.TAMBAH_KELOMPOK_MENGAJI,
+      page: () => const TambahKelompokMengajiView(),
+      binding: TambahKelompokMengajiBinding(),
     ),
   ];
 }
