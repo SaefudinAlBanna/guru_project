@@ -20,6 +20,10 @@ abstract class Routes {
   static const INFO_SEKOLAH = _Paths.INFO_SEKOLAH;
   static const DETAIL_NILAI = _Paths.DETAIL_NILAI;
   static const TAMBAH_KELOMPOK_MENGAJI = _Paths.TAMBAH_KELOMPOK_MENGAJI;
+  static const UPDATE_KELAS_TAHUN_AJARAN = _Paths.UPDATE_KELAS_TAHUN_AJARAN;
+  static const PEMBERIAN_KELAS_SISWA = _Paths.PEMBERIAN_KELAS_SISWA;
+  static const TAMBAH_TAHUN_AJARAN = _Paths.TAMBAH_TAHUN_AJARAN;
+  static const TAMBAH_KELAS_BARU = _Paths.TAMBAH_KELAS_BARU;
 }
 
 abstract class _Paths {
@@ -41,4 +45,8 @@ abstract class _Paths {
   static const INFO_SEKOLAH = '/info-sekolah';
   static const DETAIL_NILAI = '/detail-nilai';
   static const TAMBAH_KELOMPOK_MENGAJI = '/tambah-kelompok-mengaji';
+  static const UPDATE_KELAS_TAHUN_AJARAN = '/update-kelas-tahun-ajaran';
+  static const PEMBERIAN_KELAS_SISWA = '/pemberian-kelas-siswa';
+  static const TAMBAH_TAHUN_AJARAN = '/tambah-tahun-ajaran';
+  static const TAMBAH_KELAS_BARU = '/tambah-kelas-baru';
 }

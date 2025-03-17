@@ -1,4 +1,4 @@
-import 'package:firebase_app_check/firebase_app_check.dart';
+// import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,10 +11,10 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.debug,
-    appleProvider: AppleProvider.appAttest,
-  );
+  // await FirebaseAppCheck.instance.activate(
+  //   androidProvider: AndroidProvider.debug,
+  //   appleProvider: AppleProvider.appAttest,
+  // );
   runApp(
     StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
@@ -28,7 +28,7 @@ Future<void> main() async {
             ),
           );
         }
-        print(snapshot.data);
+        // print(snapshot.data);
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: "Application",

@@ -15,59 +15,86 @@ class TambahPegawaiController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  String idSekolah = 'UQjMpsKZKmWWbWVu4Uwb';
+
+  //pengambilan tahun ajaran terakhir
+  Future<String> getTahunAjaranTerakhir() async {
+    CollectionReference<Map<String, dynamic>> colTahunAjaran = firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran');
+    QuerySnapshot<Map<String, dynamic>> snapshotTahunAjaran =
+        await colTahunAjaran.get();
+    List<Map<String, dynamic>> listTahunAjaran =
+        snapshotTahunAjaran.docs.map((e) => e.data()).toList();
+    String tahunAjaranTerakhir =
+        listTahunAjaran.map((e) => e['namatahunajaran']).toList().last;
+    return tahunAjaranTerakhir;
+  }
+
   Future<void> pegawaiDitambahkan() async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+
     if (passAdminC.text.isNotEmpty) {
       isLoadingTambahPegawai.value = true;
       try {
-        // String emailAdmin = auth.currentUser!.email!;
+        String emailAdmin = auth.currentUser!.email!;
 
-        // UserCredential userCredentialAdmin =
-        //     await auth.signInWithEmailAndPassword(
-        //         email: emailAdmin, password: passAdminC.text);
+        // (jangan dihapus)
+        // ignore: unused_local_variable
+        UserCredential userCredentialAdmin  = await auth.signInWithEmailAndPassword(
+          email: emailAdmin,
+          password: passAdminC.text,
+        );
 
         UserCredential pegawaiCredential =
             await auth.createUserWithEmailAndPassword(
           email: emailC.text,
           password: 'password',
         );
-        print(pegawaiCredential);
+        // print(pegawaiCredential);
 
         if (pegawaiCredential.user != null) {
           String uid = pegawaiCredential.user!.uid;
 
-          await firestore.collection("Pegawai").doc(uid).set({
+          await firestore
+              .collection("Sekolah")
+              .doc(idSekolah)
+              .collection('tahunajaran')
+              .doc(idTahunAjaran)
+              .collection('pegawai')
+              .doc(uid)
+              .set({
             "nip": nipC.text,
             "nama": namaC.text,
             "email": emailC.text,
             "noHp": noHpC.text,
             "uid": uid,
             "createdAt": DateTime.now().toIso8601String(),
-            //--   pengambilan createdAt by metadata
-            
-            //  "creationTime": pegawaiCredential.user!.metadata.creationTime!.toIso8601String(),
-            //  "lastSignInTime": pegawaiCredential.user!.metadata.lastSignInTime!.toIso8601String(),
-            // "updateAt": DateTime.now().toIso8601String(),
+            "emailpenginput" : emailAdmin
           });
 
           await pegawaiCredential.user!.sendEmailVerification();
 
           await auth.signOut();
 
-          // UserCredential userCredentialAdmin =
-          //     await auth.signInWithEmailAndPassword(
-          //   email: emailAdmin,
-          //   password: passAdminC.text,
-          // );
+          //disini login ulang admin penginput (jangan dihapus)
+          // ignore: unused_local_variable
+          UserCredential userCredentialAdmin  = await auth.signInWithEmailAndPassword(
+          email: emailAdmin,
+          password: passAdminC.text,
+        );
 
-          Get.back();
-          Get.back();
+          Get.back(); // tutup dialog
+          Get.back(); // back to home
 
           Get.snackbar(
               snackPosition: SnackPosition.BOTTOM,
               'Berhasil',
               'Karyawan berhasil ditambahkan');
         }
-              isLoadingTambahPegawai.value = false;
+        isLoadingTambahPegawai.value = false;
       } on FirebaseAuthException catch (e) {
         isLoadingTambahPegawai.value = false;
         if (e.code == 'weak-password') {

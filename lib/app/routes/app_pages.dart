@@ -22,14 +22,22 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/new_password/bindings/new_password_binding.dart';
 import '../modules/new_password/views/new_password_view.dart';
+import '../modules/pemberian_kelas_siswa/bindings/pemberian_kelas_siswa_binding.dart';
+import '../modules/pemberian_kelas_siswa/views/pemberian_kelas_siswa_view.dart';
 import '../modules/pemberian_nilai_siswa/bindings/pemberian_nilai_siswa_binding.dart';
 import '../modules/pemberian_nilai_siswa/views/pemberian_nilai_siswa_view.dart';
+import '../modules/tambah_kelas_baru/bindings/tambah_kelas_baru_binding.dart';
+import '../modules/tambah_kelas_baru/views/tambah_kelas_baru_view.dart';
 import '../modules/tambah_kelompok_mengaji/bindings/tambah_kelompok_mengaji_binding.dart';
 import '../modules/tambah_kelompok_mengaji/views/tambah_kelompok_mengaji_view.dart';
 import '../modules/tambah_pegawai/bindings/tambah_pegawai_binding.dart';
 import '../modules/tambah_pegawai/views/tambah_pegawai_view.dart';
 import '../modules/tambah_siswa/bindings/tambah_siswa_binding.dart';
 import '../modules/tambah_siswa/views/tambah_siswa_view.dart';
+import '../modules/tambah_tahun_ajaran/bindings/tambah_tahun_ajaran_binding.dart';
+import '../modules/tambah_tahun_ajaran/views/tambah_tahun_ajaran_view.dart';
+import '../modules/update_kelas_tahun_ajaran/bindings/update_kelas_tahun_ajaran_binding.dart';
+import '../modules/update_kelas_tahun_ajaran/views/update_kelas_tahun_ajaran_view.dart';
 import '../modules/update_password/bindings/update_password_binding.dart';
 import '../modules/update_password/views/update_password_view.dart';
 import '../modules/update_pegawai/bindings/update_pegawai_binding.dart';
@@ -127,6 +135,26 @@ class AppPages {
       name: _Paths.TAMBAH_KELOMPOK_MENGAJI,
       page: () => const TambahKelompokMengajiView(),
       binding: TambahKelompokMengajiBinding(),
+    ),
+    GetPage(
+      name: _Paths.UPDATE_KELAS_TAHUN_AJARAN,
+      page: () => const UpdateKelasTahunAjaranView(),
+      binding: UpdateKelasTahunAjaranBinding(),
+    ),
+    GetPage(
+      name: _Paths.PEMBERIAN_KELAS_SISWA,
+      page: () => const PemberianKelasSiswaView(),
+      binding: PemberianKelasSiswaBinding(),
+    ),
+    GetPage(
+      name: _Paths.TAMBAH_TAHUN_AJARAN,
+      page: () => const TambahTahunAjaranView(),
+      binding: TambahTahunAjaranBinding(),
+    ),
+    GetPage(
+      name: _Paths.TAMBAH_KELAS_BARU,
+      page: () => const TambahKelasBaruView(),
+      binding: TambahKelasBaruBinding(),
     ),
   ];
 }

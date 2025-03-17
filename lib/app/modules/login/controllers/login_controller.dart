@@ -75,18 +75,9 @@ class LoginController extends GetxController {
               snackStyle: SnackStyle.FLOATING,
               // borderColor: Colors.grey
               backgroundColor: Colors.grey);
-          // print('user not found');
-        // } else if (e.code == 'invalid-credential') {
-        //   Get.snackbar("Peringatan", "Password yang anda masukan salah",
-        //       snackPosition: SnackPosition.BOTTOM,
-        //       snackStyle: SnackStyle.FLOATING,
-        //       // borderColor: Colors.grey
-        //       backgroundColor: Colors.grey);
-        //   // print('wrong password');
         } else {
           Get.snackbar(
               snackPosition: SnackPosition.BOTTOM, 'Terjadi Kesalahan', e.code);
-              print(e.code);
         }
       } catch (e) {
         isLoading.value = false;
@@ -170,32 +161,5 @@ class LoginController extends GetxController {
           'Peringatan',
           res);
     }
-  }
-
-  Future<void> signOut() async {
-    await auth.signOut();
-  }
-
-  void logincontoh() async {
-    if (emailC.text.isNotEmpty && passC.text.isNotEmpty) {
-      try {
-        final credential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-                email: emailC.text, password: passC.text);
-                Get.offAllNamed(Routes.HOME);
-                print(credential);
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-      Get.snackbar('Peringatan', 'user-not-found');
-          print('No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-      Get.snackbar('Peringatan', 'wrong-password');
-          print('Wrong password provided for that user.');
-        }
-      }
-    } else {
-      Get.snackbar('Peringatan', 'Tidak bisa login, hubungi admin');
-    }
-    // print('Login');
   }
 }

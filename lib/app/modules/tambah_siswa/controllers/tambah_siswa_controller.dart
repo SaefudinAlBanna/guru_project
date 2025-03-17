@@ -8,14 +8,16 @@ class TambahSiswaController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isLoadingTambahSiswa = false.obs;
 
+  TextEditingController tahunAjaran = TextEditingController();
+  TextEditingController nisnSiswaController = TextEditingController();
   TextEditingController namaSiswaController = TextEditingController();
-  TextEditingController kelasSiswaController = TextEditingController();
+  // TextEditingController kelasSiswaController = TextEditingController();
   TextEditingController jenisKelaminSiswaController = TextEditingController();
   TextEditingController agamaSiswaController = TextEditingController();
   TextEditingController tempatLahirSiswaController = TextEditingController();
   TextEditingController tanggalLahirSiswaController = TextEditingController();
   TextEditingController alamatSiswaController = TextEditingController();
-  TextEditingController waliKelasSiswaController = TextEditingController();
+  // TextEditingController waliKelasSiswaController = TextEditingController();
   TextEditingController namaAyahController = TextEditingController();
   TextEditingController namaIbuController = TextEditingController();
   TextEditingController emailOrangTuaController = TextEditingController();
@@ -36,15 +38,34 @@ class TambahSiswaController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  //ambil tahun ajaran terakhir
+  Future<String> getTahunAjaranTerakhir() async {
+    String idSekolah = 'UQjMpsKZKmWWbWVu4Uwb';
+    CollectionReference<Map<String, dynamic>> colTahunAjaran = firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran');
+    QuerySnapshot<Map<String, dynamic>> snapshotTahunAjaran =
+        await colTahunAjaran.get();
+    List<Map<String, dynamic>> listTahunAjaran =
+        snapshotTahunAjaran.docs.map((e) => e.data()).toList();
+    String tahunAjaranTerakhir = listTahunAjaran
+        .map((e) => e['namatahunajaran'])
+        .toList()
+        .last;
+    print(tahunAjaranTerakhir);
+    return tahunAjaranTerakhir;
+  }
+
+  Future<void> test() async{
+    print(getTahunAjaranTerakhir());
+  }
+
   Future<void> siswaDitambahkan() async {
     if (passAdminC.text.isNotEmpty) {
       isLoadingTambahSiswa.value = true;
       try {
         String emailAdmin = auth.currentUser!.email!;
-
-        // UserCredential userCredentialAdmin =
-        //     await auth.signInWithEmailAndPassword(
-        //         email: emailAdmin, password: passAdminC.text); 
 
         UserCredential siswaCredential =
             await auth.createUserWithEmailAndPassword(
@@ -53,18 +74,58 @@ class TambahSiswaController extends GetxController {
         );
         print(siswaCredential);
 
-        if (siswaCredential.user != null) {
-          String uid = siswaCredential.user!.uid;
+        // if (siswaCredential.user != null) {
+        //   String uid = siswaCredential.user!.uid;
 
-          await firestore.collection("Siswa").doc(uid).set({
+        //   await firestore.collection("Siswa").doc(uid).set({
+        //     "nama": namaSiswaController.text,
+        //     "kelas": kelasSiswaController.text,
+        //     "jenisKelamin": jenisKelaminSiswaController.text,
+        //     "agama": agamaSiswaController.text,
+        //     "tempatLahir": tempatLahirSiswaController.text,
+        //     "tanggalLahir": tanggalLahirSiswaController.text,
+        //     "alamat": alamatSiswaController.text,
+        //     "waliKelas": waliKelasSiswaController.text,
+        //     "namaAyah": namaAyahController.text,
+        //     "namaIbu": namaIbuController.text,
+        //     "emailOrangTua": emailOrangTuaController.text,
+        //     "noHpOrangTua": noHpOrangTuaController.text,
+        //     "alamatOrangTua": alamatOrangTuaController.text,
+        //     "pekerjaanAyah": pekerjaanAyahController.text,
+        //     "pekerjaanIbu": pekerjaanIbuController.text,
+        //     "pendidikanAyah": pendidikanAyahController.text,
+        //     "pendidikanIbu": pendidikanIbuController.text,
+        //     "noHpWali": noHpWaliController.text,
+        //     "alamatWali": alamatWaliController.text,
+        //     "pekerjaanWali": pekerjaanWaliController.text,
+        //     "pendidikanWali": pendidikanWaliController.text,
+        //     "biayaSpp": biayaSppController.text,
+        //     "biayaUangPangkal": biayaUangPangkalController.text,
+        //     "uid": uid,
+        //     "createdAt": DateTime.now().toIso8601String(),
+        //     "createdByEmail": emailAdmin,
+        //     "createdById": auth.currentUser!.uid,
+        //     // "createdByName" : auth.currentUser!.
+        //     "status": "Siswa",
+        //   });
+
+        //======================================================
+
+        if (siswaCredential.user != null) {
+          // String uid = siswaCredential.user!.uid;
+          String idSekolah = 'UQjMpsKZKmWWbWVu4Uwb';
+
+          // await firestore.collection("Siswa").doc(nisnSiswaController.text).set({
+          await firestore.collection("Sekolah").doc(idSekolah).collection('siswa').doc(nisnSiswaController.text).set({
+            "nisn": nisnSiswaController.text,
             "nama": namaSiswaController.text,
-            "kelas": kelasSiswaController.text,
+            // "kelas": kelasSiswaController.text,
             "jenisKelamin": jenisKelaminSiswaController.text,
             "agama": agamaSiswaController.text,
             "tempatLahir": tempatLahirSiswaController.text,
             "tanggalLahir": tanggalLahirSiswaController.text,
             "alamat": alamatSiswaController.text,
-            "waliKelas": waliKelasSiswaController.text,
+            // "waliKelas": waliKelasSiswaController.text,
             "namaAyah": namaAyahController.text,
             "namaIbu": namaIbuController.text,
             "emailOrangTua": emailOrangTuaController.text,
@@ -80,7 +141,7 @@ class TambahSiswaController extends GetxController {
             "pendidikanWali": pendidikanWaliController.text,
             "biayaSpp": biayaSppController.text,
             "biayaUangPangkal": biayaUangPangkalController.text,
-            "uid": uid,
+            "uid": nisnSiswaController.text,
             "createdAt": DateTime.now().toIso8601String(),
             "createdByEmail": emailAdmin,
             "createdById": auth.currentUser!.uid,
@@ -90,7 +151,7 @@ class TambahSiswaController extends GetxController {
 
           await siswaCredential.user!.sendEmailVerification();
 
-          await auth.signOut();
+          // await auth.signOut();
 
           // UserCredential userCredentialAdmin =
           //     await auth.signInWithEmailAndPassword(
@@ -181,13 +242,13 @@ class TambahSiswaController extends GetxController {
 
   Future<void> tambahSiswa() async {
     if (namaSiswaController.text.isNotEmpty &&
-        kelasSiswaController.text.isNotEmpty &&
+        // kelasSiswaController.text.isNotEmpty &&
         jenisKelaminSiswaController.text.isNotEmpty &&
         agamaSiswaController.text.isNotEmpty &&
         tempatLahirSiswaController.text.isNotEmpty &&
         tanggalLahirSiswaController.text.isNotEmpty &&
         alamatSiswaController.text.isNotEmpty &&
-        waliKelasSiswaController.text.isNotEmpty &&
+        // waliKelasSiswaController.text.isNotEmpty &&
         namaAyahController.text.isNotEmpty &&
         namaIbuController.text.isNotEmpty &&
         emailOrangTuaController.text.isNotEmpty &&
@@ -251,8 +312,8 @@ class TambahSiswaController extends GetxController {
 
   void resetForm() {
     namaSiswaController.clear();
-    kelasSiswaController.clear();
-    kelasSiswaController.text == "";
+    // kelasSiswaController.clear();
+    // kelasSiswaController.text == "";
     jenisKelaminSiswaController.clear();
     jenisKelaminSiswaController.text == "";
     agamaSiswaController.clear();
@@ -260,7 +321,7 @@ class TambahSiswaController extends GetxController {
     tempatLahirSiswaController.clear();
     tanggalLahirSiswaController.clear();
     alamatSiswaController.clear();
-    waliKelasSiswaController.clear();
+    // waliKelasSiswaController.clear();
     namaAyahController.clear();
     namaIbuController.clear();
     emailOrangTuaController.clear();
@@ -281,13 +342,13 @@ class TambahSiswaController extends GetxController {
   @override
   void onClose() {
     namaSiswaController.dispose();
-    kelasSiswaController.dispose();
+    // kelasSiswaController.dispose();
     jenisKelaminSiswaController.dispose();
     agamaSiswaController.dispose();
     tempatLahirSiswaController.dispose();
     tanggalLahirSiswaController.dispose();
     alamatSiswaController.dispose();
-    waliKelasSiswaController.dispose();
+    // waliKelasSiswaController.dispose();
     namaAyahController.dispose();
     namaIbuController.dispose();
     emailOrangTuaController.dispose();

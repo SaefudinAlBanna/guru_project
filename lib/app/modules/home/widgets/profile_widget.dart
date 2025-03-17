@@ -12,7 +12,7 @@ class ProfileWidget extends GetView<HomeController> {
     return Scaffold(
       appBar: _buildAppBar(),
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: controller.getProfile(),
+        stream: controller.getProfileBaru(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

@@ -13,16 +13,35 @@ class TambahSiswaView extends GetView<TambahSiswaController> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('TAMBAH SISWA BARU'),
-        centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, bottom: 16,),
         child: ListView(
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Tahun Ajaran : ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                    FutureBuilder<String>(
+                        future: controller.getTahunAjaranTerakhir(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text('Error');
+                          } else {
+                            return Text(snapshot.data ?? 'No Data', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),);
+                          }
+                        }),
+                  ],
+                ),
+                SizedBox(height: 20),
                 Text(
                   "DATA SISWA",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -33,25 +52,12 @@ class TambahSiswaView extends GetView<TambahSiswaController> {
                   color: Colors.blue,
                 ),
                 TextFormField(
+                  controller: controller.nisnSiswaController,
+                  decoration: const InputDecoration(labelText: 'NISN'),
+                ),
+                TextFormField(
                   controller: controller.namaSiswaController,
                   decoration: const InputDecoration(labelText: 'Nama Siswa'),
-                ),
-                DropdownSearch<String>(
-                  decoratorProps: DropDownDecoratorProps(
-                    decoration: InputDecoration(
-                      border: UnderlineInputBorder(),
-                      filled: true,
-                      prefixText: 'Kelas Siswa: ',
-                    ),
-                  ),
-                  selectedItem: controller.kelasSiswaController.text,
-                  items: (f, cs) => ["1A", '1B', '2A', '2B', '3A', '3B'],
-                  onChanged: (String? value) {
-                    controller.kelasSiswaController.text = value!;
-                  },
-                  popupProps: PopupProps.menu(
-                      // disabledItemFn: (item) => item == '1A',
-                      fit: FlexFit.tight),
                 ),
                 DropdownSearch<String>(
                   decoratorProps: DropDownDecoratorProps(
@@ -83,7 +89,6 @@ class TambahSiswaView extends GetView<TambahSiswaController> {
                       ["Islam", 'Kristen', 'Katolik', 'Hindu', 'Budha'],
                   onChanged: (String? value) {
                     controller.agamaSiswaController.text = value!;
-                    print(controller.agamaSiswaController.text);
                   },
                   popupProps: PopupProps.menu(
                       // disabledItemFn: (item) => item == '1A',
@@ -107,7 +112,6 @@ class TambahSiswaView extends GetView<TambahSiswaController> {
                         ).then((value) {
                           controller.tanggalLahirSiswaController.text =
                               value.toString();
-                              print(controller.tanggalLahirSiswaController.text);
                         });
                       },
                       icon: Icon(Icons.calendar_today),
@@ -117,10 +121,6 @@ class TambahSiswaView extends GetView<TambahSiswaController> {
                 TextFormField(
                   controller: controller.alamatSiswaController,
                   decoration: const InputDecoration(labelText: 'Alamat'),
-                ),
-                TextFormField(
-                  controller: controller.waliKelasSiswaController,
-                  decoration: const InputDecoration(labelText: 'Wali Kelas'),
                 ),
               ],
             ),
@@ -225,10 +225,9 @@ class TambahSiswaView extends GetView<TambahSiswaController> {
             ),
             ElevatedButton(
               onPressed: () async {
-                if(controller.isLoading.isFalse) {
+                if (controller.isLoading.isFalse) {
                   await
-                controller.tambahSiswa();
-                print(controller.tanggalLahirSiswaController.text);
+                      controller.tambahSiswa();
                 }
               },
               child: const Text('Tambah Siswa'),

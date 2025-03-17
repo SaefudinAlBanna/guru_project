@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../widgets/home_widget.dart';
+// import '../widgets/home_widget.dart';
+import '../widgets/contoh.dart';
 import '../widgets/profile_widget.dart';
 
 class HomeController extends GetxController {
@@ -16,9 +17,13 @@ class HomeController extends GetxController {
   TextEditingController alamatC = TextEditingController();
   TextEditingController jabatanC = TextEditingController();
 
-
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  String idUser = FirebaseAuth.instance.currentUser!.uid;
+  String idSekolah = 'UQjMpsKZKmWWbWVu4Uwb';
+
+  // REGION LAMA
 
   Stream<DocumentSnapshot<Map<String, dynamic>>> userStream() async* {
     String uid = auth.currentUser!.uid;
@@ -27,10 +32,6 @@ class HomeController extends GetxController {
   }
 
   //percobaan menampilkan contoh collection
-    
-  
-
-
   Stream<DocumentSnapshot<Map<String, dynamic>>> getProfile() async* {
     String uid = auth.currentUser!.uid;
 
@@ -41,12 +42,6 @@ class HomeController extends GetxController {
     indexWidget.value = index;
   }
 
-  // getProfile() async {
-  //   isLoading.value = true;
-  //   await userStream().first;
-  //   isLoading.value = false;
-  // }
-
   void signOut() async {
     isLoading.value = true;
     await auth.signOut();
@@ -56,7 +51,8 @@ class HomeController extends GetxController {
 
   // ini adalah list widget yang akan di tampilkan pada halaman home
   final List<Widget> myWidgets = [
-    HomeWidget(),
+    Contoh(),
+    // HomeWidget(),
     Center(
       child: Text(
         'ABSEN',
@@ -89,10 +85,91 @@ class HomeController extends GetxController {
       'Data berhasil diupdate',
       snackPosition: SnackPosition.BOTTOM,
     );
-  } 
+  }
 
-  
+  // END REGION LAMA
 
+  //============================
 
+  // REGION BARU
 
+  //pengambilan tahun ajaran terakhir
+  Future<String> getTahunAjaranTerakhir() async {
+    CollectionReference<Map<String, dynamic>> colTahunAjaran = firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran');
+    QuerySnapshot<Map<String, dynamic>> snapshotTahunAjaran =
+        await colTahunAjaran.get();
+    List<Map<String, dynamic>> listTahunAjaran =
+        snapshotTahunAjaran.docs.map((e) => e.data()).toList();
+    String tahunAjaranTerakhir =
+        listTahunAjaran.map((e) => e['namatahunajaran']).toList().last;
+    return tahunAjaranTerakhir;
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> userStreamBaru() async* {
+    // String tahunajaranya = await getTahunAjaranTerakhir();
+    // String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    yield* firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        // .collection('tahunajaran')
+        // .doc(idTahunAjaran)
+        .collection('pegawai')
+        .doc(idUser)
+        .snapshots();
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getProfileBaru() async* {
+    yield* firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('pegawai')
+        .doc(idUser)
+        .snapshots();
+  }
+
+  Future<List<String>> getDataKelasYangDiajar() async {
+  String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    List<String> kelasList = [];
+    await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('pegawai')
+        .doc(idUser)
+        .collection('tahunajaran')
+        .doc(idTahunAjaran)
+        .collection('kelasnya')
+        .get()
+        .then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        kelasList.add(docSnapshot.id);
+      }
+    });
+    return kelasList;
 }
+  //get data kelas
+
+  Future<List<String>> getDataKelas() async {
+    List<String> kelasList = [];
+    await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('kelas')
+        .get()
+        .then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        kelasList.add(docSnapshot.id);
+      }
+    });
+    return kelasList;
+  }
+}
+
+
+
+  // END REGION BARU
+
+

@@ -51,7 +51,7 @@ class HomeWidget extends GetView<HomeController> {
                 ),
                 actions: [
                   if (snapshot.connectionState == ConnectionState.waiting)
-                    // SizedBox()
+                    // SizedBox(),
                     Center(
                       child: CircularProgressIndicator(),
                     )
@@ -205,7 +205,8 @@ class HomeWidget extends GetView<HomeController> {
                                                 Get.toNamed(Routes.DAFTAR_KELAS, arguments: kelasNya);
                                                 print(kelasNya);
                                               },
-                                              child: Text(kelasNya));
+                                              child: Text(kelasNya)
+                                              );
                                         }).toList(),
                                         
                                       ),
@@ -232,17 +233,17 @@ class HomeWidget extends GetView<HomeController> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      GestureDetector(
-                                        // if(snapshot.connectionState == ConnectionState.done)
-                                        // if(snapshot.data!.data()!['role'] == 'admin')
-                                        onTap: () =>
-                                            Get.toNamed(Routes.TAMBAH_SISWA),
-                                        child: ColumnMenuTengah(
-                                          icon: Icon(Icons.person_add_outlined,
-                                              size: 40),
-                                          judulbawah: 'TAMBAH SISWA',
-                                        ),
-                                      ),
+                                      // GestureDetector(
+                                      //   if(snapshot.connectionState == ConnectionState.done)
+                                      //   if(snapshot.data!.data()!['role'] == 'admin')
+                                      //   onTap: () =>
+                                      //       Get.toNamed(Routes.TAMBAH_SISWA),
+                                      //   child: ColumnMenuTengah(
+                                      //     icon: Icon(Icons.person_add_outlined,
+                                      //         size: 40),
+                                      //     judulbawah: 'TAMBAH SISWA',
+                                      //   ),
+                                      // ),
                                       GestureDetector(
                                         onTap: () =>
                                             Get.toNamed(Routes.DAFTAR_SISWA),
