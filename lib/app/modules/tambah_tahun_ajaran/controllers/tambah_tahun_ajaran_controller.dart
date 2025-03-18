@@ -23,14 +23,22 @@ class TambahTahunAjaranController extends GetxController {
     DocumentSnapshot<Map<String, dynamic>> snapDataPenginput =
         await ambilDataPenginput.get();
     print('ini datanya : ${snapDataPenginput.data()?['nama']}');
-    print('ini datanya 2 : ${snapDataPenginput.data()}');
+    // print('ini datanya 2 : ${snapDataPenginput.data()}');
   }
 
   Future<void> simpanTahunAjaran() async {
     String idSekolah = 'UQjMpsKZKmWWbWVu4Uwb';
     String uid = auth.currentUser!.uid;
     String emailPenginput = auth.currentUser!.email!;
-    // String namaPenginput = auth.currentUser!.displayName!;
+
+    DocumentReference<Map<String, dynamic>> ambilDataPenginput = firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('pegawai')
+        .doc(uid);
+
+    DocumentSnapshot<Map<String, dynamic>> snapDataPenginput =
+        await ambilDataPenginput.get();
 
     CollectionReference<Map<String, dynamic>> colTahunAjaran = firestore
         .collection('Sekolah')
@@ -55,6 +63,7 @@ class TambahTahunAjaranController extends GetxController {
           'namatahunajaran': tahunAjaranC.text,
           'idpenginput': uid,
           'emailpenginput': emailPenginput,
+          'namapenginput': snapDataPenginput.data()?['nama'],
           'tanggalinput': DateTime.now().toString(),
           'idtahunajaran': idTahunAjaran,
         }).then(

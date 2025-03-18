@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:guru_project/app/routes/app_pages.dart';
+// import 'package:guru_project/app/routes/app_pages.dart';
 
 import '../controllers/tambah_kelompok_mengaji_controller.dart';
 
@@ -16,18 +17,26 @@ class TambahKelompokMengajiView
       body: ListView(
         padding: EdgeInsets.all(15),
         children: [
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Tahun Ajaran',
-            ),
-          ),
-          SizedBox(height: 10),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Nama Keompok',
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Tahun Ajaran : '),
+              FutureBuilder<String>(
+                  future: controller.getTahunAjaranTerakhir(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error');
+                    } else {
+                      return Text(
+                        snapshot.data ?? 'No Data',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      );
+                    }
+                  }),
+            ],
           ),
           SizedBox(height: 10),
           DropdownSearch<String>(
@@ -35,25 +44,17 @@ class TambahKelompokMengajiView
               decoration: InputDecoration(
                 border: UnderlineInputBorder(),
                 filled: true,
-                prefixText: 'Pengampu: ',
-                hintText: 'Pilih ustadz/ah',
-                hintStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Colors.grey),
+                prefixText: 'Pengampu : ',
               ),
             ),
-            // selectedItem: controller.kelasSiswaController.text,
-            items: (f, cs) => [
-              "Ustadz 1",
-              "Ustadz 2",
-              "Ustadz 3",
-              "Ustadzah 1",
-              "Ustadzah 2",
-              "Ustadzah 3",
-            ],
+            // selectedItem: controller.kelasSiswaC.text,
+            selectedItem: controller.idPegawaiC.text,
+            items: (f, cs) => controller.getDataWaliKelas(),
             onChanged: (String? value) {
-              // controller.kelasSiswaController.text = value!;
+              controller.waliKelasSiswaC.text = value!;
+              controller.idPegawaiC.text = value;
+              // print(value);
+              // print(controller.idPegawaiC.text);
             },
             popupProps: PopupProps.menu(
                 // disabledItemFn: (item) => item == '1A',
@@ -65,56 +66,60 @@ class TambahKelompokMengajiView
               decoration: InputDecoration(
                 border: UnderlineInputBorder(),
                 filled: true,
-                prefixText: 'Fase: ',
-                hintText: 'Pilih Fase',
-                hintStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Colors.grey),
+                prefixText: 'kelas : ',
               ),
             ),
-            // selectedItem: controller.kelasSiswaController.text,
-            items: (f, cs) => [
-              "Fase A",
-              "Fase B",
-              "Fase C",
-            ],
+            selectedItem: controller.kelasSiswaC.text,
+            items: (f, cs) => controller.getDataKelas(),
             onChanged: (String? value) {
-              // controller.kelasSiswaController.text = value!;
+              controller.kelasSiswaC.text = value!;
             },
             popupProps: PopupProps.menu(
                 // disabledItemFn: (item) => item == '1A',
                 fit: FlexFit.tight),
-          ),
-          SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () => Get.toNamed(Routes.DAFTAR_SISWA),
-            child: Text('pilih Siswa'),
           ),
           Padding(
             padding: const EdgeInsets.all(20),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text('Nama Siswa ke ${index+1}'),
-                  subtitle: Text('Kelas'),
-                  trailing: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.delete_rounded),
-                  ),
-                );
-              },
+            child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              future: controller.tampilSiswa(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error');
+                } else if (!snapshot.hasData || snapshot.data!.data() == null) {
+                  return Text('No Data');
+                } else {
+                  var siswaList = snapshot.data!.data()!['siswa'] as List;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: siswaList.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(snapshot.data!.data()!['siswa']['nama']),
+                        subtitle: Text('Kelas'),
+                        trailing: IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.delete_rounded),
+                        ),
+                      );
+                    },
+                  );
+                }
+              }
             ),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-             backgroundColor: Colors.blue, 
-            ),
-            onPressed: (){}, child: Text('Simpan', style: TextStyle(
-              color: Colors.black,
-            ),)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              onPressed: () {},
+              child: Text(
+                'Simpan',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              )),
         ],
       ),
     );

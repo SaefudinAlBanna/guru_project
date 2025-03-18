@@ -13,6 +13,7 @@ class TambahKelasBaruController extends GetxController {
     String idSekolah = 'UQjMpsKZKmWWbWVu4Uwb';
     //ambil uid penginput
     String uid = auth.currentUser!.uid;
+    String emailPenginput = auth.currentUser!.email!;
 
     CollectionReference<Map<String, dynamic>> colKelas = firestore
         .collection('Sekolah')
@@ -22,9 +23,6 @@ class TambahKelasBaruController extends GetxController {
         await colKelas.get();
     List<Map<String, dynamic>> listKelas =
         snapshotKelas.docs.map((e) => e.data()).toList();
-
-    //ambil namakelas
-    // listKelas.map((e) => e['namakelas']).toList();
 
     // buat documen id buat tahun kelas
     String idKelas = kelasBaruC.text;
@@ -36,6 +34,7 @@ class TambahKelasBaruController extends GetxController {
         colKelas.doc(idKelas).set({
           'namakelas': kelasBaruC.text,
           'idpenginput': uid,
+          'emailpenginput' : emailPenginput,
           'tanggalinput': DateTime.now().toString(),
           'idkelas' : idKelas,
         }).then(
@@ -45,8 +44,6 @@ class TambahKelasBaruController extends GetxController {
       } else {
         Get.snackbar('Gagal', 'Kelas Sudah Ada');
       } 
-      // Get.back();
     }
-    // Get.back();
   }
 }

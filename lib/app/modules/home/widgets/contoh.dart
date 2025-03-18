@@ -204,17 +204,24 @@ class Contoh extends GetView<HomeController> {
                                             future: controller
                                                 .getDataKelasYangDiajar(),
                                             builder: (context, snapshot) {
-                                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
                                                 return CircularProgressIndicator();
                                               } else if (snapshot.hasData) {
-                                                List<String> kelasAjarGuru = snapshot.data as List<String>;
-                                                print(kelasAjarGuru);
+                                                List<String> kelasAjarGuru =
+                                                    snapshot.data
+                                                        as List<String>;
+                                                // print(kelasAjarGuru);
                                                 return SingleChildScrollView(
                                                   child: Row(
-                                                    children: kelasAjarGuru.map((k) {
+                                                    children:
+                                                        kelasAjarGuru.map((k) {
                                                       return TextButton(
                                                         onPressed: () {
-                                                          Get.toNamed(Routes.DAFTAR_KELAS, arguments: k);
+                                                          Get.toNamed(
+                                                              Routes
+                                                                  .DAFTAR_KELAS,
+                                                              arguments: k);
                                                         },
                                                         child: Text(k),
                                                       );
@@ -251,24 +258,63 @@ class Contoh extends GetView<HomeController> {
                                     height: 1,
                                     color: Colors.black,
                                   ),
-                                  DropdownSearch<String>(
-                                    decoratorProps: DropDownDecoratorProps(
-                                      decoration: InputDecoration(
-                                        border: UnderlineInputBorder(),
-                                        filled: true,
-                                        prefixText: 'surat: ',
-                                      ),
-                                    ),
-                                    // selectedItem: controller.kelasSiswaController.text,
-                                    items: (f, cs) => controller.getDataKelas(),
-                                    onChanged: (String? value) {
-                                      // controller.kelasSiswaController.text = value!;
-                                      print(value);
-                                    },
-                                    popupProps: PopupProps.menu(
-                                        // disabledItemFn: (item) => item == '1A',
-                                        fit: FlexFit.tight),
-                                  ),
+                                  SizedBox(height: 15),
+                                  FutureBuilder<Object>(
+                                      future: controller.getDataSemuaKelas(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return CircularProgressIndicator();
+                                        } else if (snapshot.hasData) {
+                                          List<String> kelasAjarGuru =
+                                              snapshot.data as List<String>;
+                                          return SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Container(
+                                              color: Colors.amber,
+                                              child: Row(
+                                                children:
+                                                    kelasAjarGuru.map((k) {
+                                                  return TextButton(
+                                                    onPressed: () {
+                                                      Get.toNamed(Routes.DAFTAR_KELAS, arguments: k);
+                                                      // print(k);
+                                                    },
+                                                    child: Text(
+                                                      k,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return SizedBox();
+                                        }
+                                      }),
+                                  // DropdownSearch<String>(
+                                  //   decoratorProps: DropDownDecoratorProps(
+                                  //     decoration: InputDecoration(
+                                  //       border: UnderlineInputBorder(),
+                                  //       filled: true,
+                                  //       prefixText: 'surat: ',
+                                  //     ),
+                                  //   ),
+                                  //   // selectedItem: controller.kelasSiswaController.text,
+                                  //   items: (f, cs) => controller.getDataKelas(),
+                                  //   onChanged: (String? value) {
+                                  //     // controller.kelasSiswaController.text = value!;
+                                  //     // print(value);
+                                  //   },
+                                  //   popupProps: PopupProps.menu(
+                                  //       // disabledItemFn: (item) => item == '1A',
+                                  //       fit: FlexFit.tight),
+                                  // ),
                                   ElevatedButton(
                                     onPressed: () =>
                                         Get.toNamed(Routes.TAMBAH_KELAS_BARU),
@@ -295,8 +341,8 @@ class Contoh extends GetView<HomeController> {
                                     child: Text('pemberian kelas TA'),
                                   ),
                                   ElevatedButton(
-                                    onPressed: () =>
-                                        Get.toNamed(Routes.DAFTAR_KELAS),
+                                    onPressed: () => Get.toNamed(
+                                        Routes.DAFTAR_KELAS_SEMUA_SISWA),
                                     child: Text('Daftar siswa per kelas'),
                                   ),
                                   ElevatedButton(

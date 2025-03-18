@@ -166,6 +166,25 @@ class HomeController extends GetxController {
     });
     return kelasList;
   }
+
+  Future<List<String>> getDataSemuaKelas() async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    List<String> kelasList = [];
+    await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran')
+        .doc(idTahunAjaran)
+        .collection('kelastahunajaran')
+        .get()
+        .then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        kelasList.add(docSnapshot.id);
+      }
+    });
+    return kelasList;
+  }
 }
 
 

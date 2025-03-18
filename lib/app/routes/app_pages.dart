@@ -4,6 +4,8 @@ import '../modules/contoh/bindings/contoh_binding.dart';
 import '../modules/contoh/views/contoh_view.dart';
 import '../modules/daftar_kelas/bindings/daftar_kelas_binding.dart';
 import '../modules/daftar_kelas/views/daftar_kelas_view.dart';
+import '../modules/daftar_kelas_semua_siswa/bindings/daftar_kelas_semua_siswa_binding.dart';
+import '../modules/daftar_kelas_semua_siswa/views/daftar_kelas_semua_siswa_view.dart';
 import '../modules/daftar_nilai/bindings/daftar_nilai_binding.dart';
 import '../modules/daftar_nilai/views/daftar_nilai_view.dart';
 import '../modules/daftar_siswa/bindings/daftar_siswa_binding.dart';
@@ -155,6 +157,11 @@ class AppPages {
       name: _Paths.TAMBAH_KELAS_BARU,
       page: () => const TambahKelasBaruView(),
       binding: TambahKelasBaruBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAFTAR_KELAS_SEMUA_SISWA,
+      page: () => const DaftarKelasSemuaSiswaView(),
+      binding: DaftarKelasSemuaSiswaBinding(),
     ),
   ];
 }

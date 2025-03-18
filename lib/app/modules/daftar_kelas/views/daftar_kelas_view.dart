@@ -26,10 +26,10 @@ class DaftarKelasView extends GetView<DaftarKelasController> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(snapshot.data!.docs[index].data()['nama']),
+                    title: Text(snapshot.data!.docs[index].data()['namasiswa']),
                     subtitle: Text(snapshot.data!.docs[index].data()['kelas']),
                     leading: CircleAvatar(
-                      child: Text(snapshot.data!.docs[index].data()['nama'][0]),
+                      child: Text(snapshot.data!.docs[index].data()['namasiswa'][0]),
                     ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -38,7 +38,7 @@ class DaftarKelasView extends GetView<DaftarKelasController> {
                           tooltip: 'Detail Nilai',
                           icon: const Icon(Icons.info_outlined),
                           onPressed: () {
-                            String getNama = snapshot.data!.docs[index].data()['nama'];
+                            String getNama = snapshot.data!.docs[index].data()['namasiswa'];
                             Get.toNamed(Routes.DETAIL_SISWA, arguments: getNama);
                           },
                         ),
@@ -47,14 +47,14 @@ class DaftarKelasView extends GetView<DaftarKelasController> {
                           icon: const Icon(Icons.add_box_rounded),
                           onPressed: () {
                             // Get.toNamed(Routes.PEMBERIAN_NILAI_SISWA, arguments: snapshot.data!.docs[index].data()['nama']);
-                            Get.toNamed(Routes.CONTOH, arguments: snapshot.data!.docs[index].data()['nama']);
+                            Get.toNamed(Routes.CONTOH, arguments: snapshot.data!.docs[index].data()['namasiswa']);
                           },
                         ),
                         IconButton(
                           tooltip: 'Daftar Nilai',
                           icon: const Icon(Icons.book),
                           onPressed: () {
-                            String getNama = snapshot.data!.docs[index].data()['nama'];
+                            String getNama = snapshot.data!.docs[index].data()['namasiswa'];
                             Get.toNamed(Routes.DAFTAR_NILAI, arguments: getNama);
                           },
                         ),
