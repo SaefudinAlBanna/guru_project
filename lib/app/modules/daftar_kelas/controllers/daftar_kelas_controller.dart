@@ -38,9 +38,9 @@ class DaftarKelasController extends GetxController {
 
     String tahunajaranya = await getTahunAjaranTerakhir();
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
-    var snapshot = await getDataKelasNya;
+    // var snapshot = await getDataKelasNya;
     String kelasnya = data.toString();
-    snapshot.docs.where((doc) => doc['kelas'] != data).toList();
+    // snapshot.docs.where((doc) => doc['kelas'] != data).toList();
     // return FirebaseFirestore.instance.collection('Siswa').where('kelas', isEqualTo: data).get();
     // return FirebaseFirestore.instance
     //     .collection('Sekolah')

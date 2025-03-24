@@ -24,9 +24,6 @@ class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
                 child: CircularProgressIndicator(),
               );
             }
-            // if (snapshot.hasData) {
-            //   final List<DocumentChange<Map<String, dynamic>>> data =
-            //       snapshot.data!.docChanges;
             if (snapshot.connectionState == ConnectionState.active){
                final List<DocumentSnapshot<Map<String, dynamic>>> data =
                   snapshot.data!.docs;
@@ -108,11 +105,11 @@ class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
                                 // controller.updateStatusSiswa(nisnSiswa);
                                 // controller.ubahStatusSiswa(nisnSiswa);
                   
-                                controller.getDataKelas().then((kelas) {
-                                  for (var k in kelas) {
-                                    print(k);
-                                  }
-                                });
+                                // controller.getDataKelas().then((kelas) {
+                                //   for (var k in kelas) {
+                                //     print(k);
+                                //   }
+                                // });
                                 
                               },
                               icon: Icon(Icons.save_outlined),

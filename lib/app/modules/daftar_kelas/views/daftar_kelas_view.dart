@@ -7,14 +7,15 @@ import '../controllers/daftar_kelas_controller.dart';
 class DaftarKelasView extends GetView<DaftarKelasController> {
   DaftarKelasView({super.key});
 
-  final data = Get.arguments;
+  // final data = Get.arguments;
+  final dataxx = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
-    print('tampilkan $data');
+    print('tampilkan $dataxx');
     return Scaffold(
       appBar: AppBar(
-        title: Text('Kelas $data'),
+        title: Text('Kelas $dataxx'),
         centerTitle: true,
       ),
       body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(

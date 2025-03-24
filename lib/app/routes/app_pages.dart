@@ -6,6 +6,8 @@ import '../modules/daftar_kelas/bindings/daftar_kelas_binding.dart';
 import '../modules/daftar_kelas/views/daftar_kelas_view.dart';
 import '../modules/daftar_kelas_semua_siswa/bindings/daftar_kelas_semua_siswa_binding.dart';
 import '../modules/daftar_kelas_semua_siswa/views/daftar_kelas_semua_siswa_view.dart';
+import '../modules/daftar_kelompok_mengaji/bindings/daftar_kelompok_mengaji_binding.dart';
+import '../modules/daftar_kelompok_mengaji/views/daftar_kelompok_mengaji_view.dart';
 import '../modules/daftar_nilai/bindings/daftar_nilai_binding.dart';
 import '../modules/daftar_nilai/views/daftar_nilai_view.dart';
 import '../modules/daftar_siswa/bindings/daftar_siswa_binding.dart';
@@ -162,6 +164,11 @@ class AppPages {
       name: _Paths.DAFTAR_KELAS_SEMUA_SISWA,
       page: () => const DaftarKelasSemuaSiswaView(),
       binding: DaftarKelasSemuaSiswaBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAFTAR_KELOMPOK_MENGAJI,
+      page: () => const DaftarKelompokMengajiView(),
+      binding: DaftarKelompokMengajiBinding(),
     ),
   ];
 }

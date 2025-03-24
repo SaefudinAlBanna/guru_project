@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TambahKelompokMengajiController extends GetxController {
-  
-  TextEditingController idPegawaiC = TextEditingController();
-  TextEditingController waliKelasSiswaC = TextEditingController();
+  TextEditingController idPegawaiC =
+      TextEditingController(); // nanti d print di view -->> kalo sudah hapus
+  // TextEditingController waliKelasSiswaC = TextEditingController();
   TextEditingController kelasSiswaC = TextEditingController();
+  TextEditingController tempatC = TextEditingController();
+  TextEditingController semesterC = TextEditingController();
+  TextEditingController pengampuC = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -16,7 +19,14 @@ class TambahKelompokMengajiController extends GetxController {
   String idSekolah = 'UQjMpsKZKmWWbWVu4Uwb';
   String emailAdmin = FirebaseAuth.instance.currentUser!.email!;
 
+  //**
+  // ini yang dipake dalam page tambah
+  // database masuk pada tahun ajaran
+  // */
+
   //pengambilan tahun ajaran terakhir
+
+  // --> C1
   Future<String> getTahunAjaranTerakhir() async {
     CollectionReference<Map<String, dynamic>> colTahunAjaran = firestore
         .collection('Sekolah')
@@ -31,7 +41,8 @@ class TambahKelompokMengajiController extends GetxController {
     return tahunAjaranTerakhir;
   }
 
-  Future<List<String>> getDataWaliKelas() async {
+  // --> C2
+  Future<List<String>> getDataPengampu() async {
     List<String> walikelasList = [];
     await firestore
         .collection('Sekolah')
@@ -42,11 +53,160 @@ class TambahKelompokMengajiController extends GetxController {
       for (var docSnapshot
           in querySnapshot.docs.where((doc) => doc['role'] == 'admin')) {
         walikelasList.add(docSnapshot.data()['alias']);
-        // walikelasList.add(docSnapshot.data()['nip']);
       }
     });
     return walikelasList;
   }
+
+  // --> C3
+  List<String> getDataTempat() {
+    List<String> temaptList = [
+      'masjid',
+      'aula',
+      'kelas',
+      'lab',
+      'dll',
+    ];
+    return temaptList;
+  }
+
+  // --> C4
+  List<String> getDataSemester() {
+    List<String> temaptList = [
+      'semester1',
+      'semester2',
+    ];
+    return temaptList;
+  }
+
+  // --> C5 --> muncul di Get.bottomSheet
+  Future<List<String>> getDataKelasYangAda() async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    List<String> kelasList = [];
+    await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran')
+        .doc(idTahunAjaran)
+        .collection('kelastahunajaran')
+        .get()
+        .then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        kelasList.add(docSnapshot.id);
+      }
+    });
+    return kelasList;
+  }
+
+  // --> C6 --> di dalam Get.bottomSheet
+  Future<QuerySnapshot<Map<String, dynamic>>> getDataSiswa() async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    return await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran')
+        .doc(idTahunAjaran)
+        .collection('kelastahunajaran')
+        .doc(kelasSiswaC.text)
+        .collection('semester')
+        .doc(semesterC.text) // ini nanti diganti otomatis // sudah di pasang -->> kalo sudah dihapus comment
+        .collection('daftarsiswasemester1')
+        .where('statuskelompok', isEqualTo: 'baru')
+        .get();
+  }
+
+  // --> C7 --> di dalam Get.bottomSheet --> simpan siswa kelompok yang dipilih
+  Future<void> tambahkanKelompokSiswa(
+    String namaSiswa, String nisnSiswa) async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    String kelasNya = kelasSiswaC.text.substring(0, 1);
+    String faseNya = (kelasNya == '1' || kelasNya == '2')
+        ? "FaseA"
+        : (kelasNya == '3' || kelasNya == '4')
+            ? "FaseB"
+            : "FaseC";
+    String semesterNya =
+        (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
+
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('pegawai')
+        .where('alias', isEqualTo: pengampuC.text)
+        .get();
+    String idPengampu = querySnapshot.docs.first.data()['uid'];
+
+    if (kelasSiswaC.text.isNotEmpty &&
+        tahunajaranya.isNotEmpty &&
+        semesterNya.isNotEmpty &&
+        pengampuC.text.isNotEmpty) {
+      try {
+        // buatIsiKelompokMengajiTahunAjaran();
+        isiFieldPengampuKelompok();
+        buatIsiSemester1();
+        tambahDaftarKelompokPengampuAjar(nisnSiswa, namaSiswa);
+
+        await firestore
+            .collection('Sekolah')
+            .doc(idSekolah)
+            .collection('tahunajaran')
+            .doc(idTahunAjaran)
+            .collection('semester')
+            .doc(semesterNya)
+            .collection('kelompokmengaji')
+            .doc(pengampuC.text)
+            .collection('daftarsiswakelompok')
+            .doc(nisnSiswa)
+            .set({
+          'namasiswa': namaSiswa,
+          'nisn': nisnSiswa,
+          'fase': faseNya,
+          'tahunajaran': tahunajaranya,
+          'kelompoksiswa': pengampuC.text,
+          'semester': semesterNya,
+          'pengampu': pengampuC.text,
+          'idpengampu': idPengampu,
+          'emailpenginput': emailAdmin,
+          'idpenginput': idUser,
+          'tanggalinput': DateTime.now(),
+          'idsiswa': nisnSiswa,
+        });
+
+        ubahStatusSiswa(nisnSiswa);
+      } catch (e) {
+        Get.snackbar('Error', e.toString());
+      }
+    } else {
+      Get.snackbar('Error', 'pengampu dan tempat tidak boleh kosong');
+    }
+  }
+
+  // --> C7 --> di dalam Get.bottomSheet --> tampilkan siswa kelompok yang terpilih
+  Stream<QuerySnapshot<Map<String, dynamic>>> tampilSiswaKelompok() async* {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    String semesterNya =
+        (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
+    yield* firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran')
+        .doc(idTahunAjaran)
+        .collection('semester')
+        .doc(semesterNya)
+        .collection('kelompokmengaji')
+        .doc(pengampuC.text)
+        .collection('daftarsiswakelompok')
+        .snapshots();
+  }
+
+  //**
+  // ini yang di inputkan kedalam database guru
+  //
+  // */
 
   // ambil data namakelas
   Future<List<String>> getDataKelas() async {
@@ -64,16 +224,177 @@ class TambahKelompokMengajiController extends GetxController {
     return kelasList;
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> tampilSiswa() async {
+  // input ke database kelompok mengaji
+  //==================================================
+  Future<void> buatIsiSemester1() async {
     String tahunajaranya = await getTahunAjaranTerakhir();
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
-    return firestore
+
+    String semesterNya =
+        (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
+
+    await firestore
         .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran')
+        .doc(idTahunAjaran)
+        .collection('semester')
+        .doc(semesterNya)
+        .set({
+      'namasemester': semesterNya,
+      'tahunajaran': tahunajaranya,
+      'emailpenginput': emailAdmin,
+      'idpenginput': idUser,
+      'tanggalinput': DateTime.now(),
+    });
+  }
+
+  // ini gak dipake karena di db tahun ajaran ada double
+  Future<void> buatIsiKelompokMengajiTahunAjaran() async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+
+    String semesterNya =
+        (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
+
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('pegawai')
+        .where('alias', isEqualTo: pengampuC.text)
+        .get();
+    String idPengampu = querySnapshot.docs.first.data()['uid'];
+
+    await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran')
+        .doc(idTahunAjaran)
+        .collection('semester')
+        .doc(semesterC.text)
+        .collection('kelompokmengaji')
+        .doc(pengampuC.text)
+        .set({
+      'namasemester': semesterNya,
+      'pengampu': pengampuC.text,
+      'idpengampu': idPengampu,
+      'tahunajaran': tahunajaranya,
+      'emailpenginput': emailAdmin,
+      'idpenginput': idUser,
+      'tanggalinput': DateTime.now(),
+    });
+  }
+
+  // buat isian field untuk pengampu di db kelompok yg di tahun ajaran
+  Future<void> isiFieldPengampuKelompok() async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+
+    String semesterNya =
+        (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
+
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('pegawai')
+        .where('alias', isEqualTo: pengampuC.text)
+        .get();
+    String idPengampu = querySnapshot.docs.first.data()['uid'];
+
+    await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran')
+        .doc(idTahunAjaran)
+        .collection('semester')
+        .doc(semesterNya)
+        .collection('kelompokmengaji')
+        .doc(pengampuC.text)
+        .set({
+      'namasemester': semesterNya,
+      'idpengampu': idPengampu,
+      'namapengampu' : pengampuC.text,
+      'tempatmengaji' : tempatC.text,
+      'tahunajaran': tahunajaranya,
+      'emailpenginput': emailAdmin,
+      'idpenginput': idUser,
+      'tanggalinput': DateTime.now(),
+    });
+  }
+
+  // tambah daftar kelas guru ajar -->> nanti disesuaikan daftar kelompok pengampu  >> kalo sudah komen dihapus
+  Future<void> tambahDaftarKelompokPengampuAjar(String nisnSiswa, String namaSiswa) async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    String kelasNya = kelasSiswaC.text.substring(0, 1);
+    String faseNya = (kelasNya == '1' || kelasNya == '2')
+        ? "FaseA"
+        : (kelasNya == '3' || kelasNya == '4')
+            ? "FaseB"
+            : "FaseC";
+
+    String semesterNya =
+        (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
+
+    //ambil data guru terpilih .. ini nggak perlu dirubah
+    QuerySnapshot<Map<String, dynamic>> querySnapshotGuru = await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('pegawai')
+        .where('alias', isEqualTo: pengampuC.text)
+        .get();
+    if (querySnapshotGuru.docs.isNotEmpty) {
+      Map<String, dynamic> dataGuru = querySnapshotGuru.docs.first.data();
+      String idPengampu = dataGuru['uid'];
+
+      await firestore
+          .collection('Sekolah')
+          .doc(idSekolah)
+          .collection('pegawai')
+          .doc(idPengampu)
+          .collection('tahunajarankelompok')
+          .doc(idTahunAjaran)
+          .collection('semester')
+          .doc(semesterNya)
+          .collection('kelompokmengaji')
+          .doc(pengampuC.text)
+          .collection('daftarsiswakelompok')
+          .doc(nisnSiswa)
+          .set({
+        'namasiswa': namaSiswa,
+          'nisn': nisnSiswa,
+          'fase': faseNya,
+          'tahunajaran': tahunajaranya,
+          'kelompoksiswa': pengampuC.text,
+          'semester': semesterNya,
+          'pengampu': pengampuC.text,
+          'idpengampu': idPengampu,
+          'emailpenginput': emailAdmin,
+          'idpenginput': idUser,
+          'tanggalinput': DateTime.now(),
+          'idsiswa': nisnSiswa,
+      });
+    }
+  }
+
+  // ubah / update siswa sudah punya kelompok  >> kalo sudah komen dihapus
+  Future<void> ubahStatusSiswa(String nisnSiSwa) async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+
+    await firestore
+         .collection('Sekolah')
         .doc(idSekolah)
         .collection('tahunajaran')
         .doc(idTahunAjaran)
         .collection('kelastahunajaran')
         .doc(kelasSiswaC.text)
-        .get();
+        .collection('semester')
+        .doc(semesterC.text)
+        .collection('daftarsiswasemester1')
+        .doc(nisnSiSwa)
+        .update({
+      'statuskelompok': 'aktif',
+    });
   }
 }

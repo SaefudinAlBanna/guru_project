@@ -150,6 +150,46 @@ class HomeController extends GetxController {
     });
     return kelasList;
 }
+
+Future<List<String>> getDataKelompok() async {
+  String tahunajaranya = await getTahunAjaranTerakhir();
+  String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+
+  QuerySnapshot<Map<String, dynamic>> querySnapshotGuru = await firestore
+      .collection('Sekolah')
+      .doc(idSekolah)
+      .collection('pegawai')
+      .where('uid', isEqualTo: idUser)
+      .get();
+  if (querySnapshotGuru.docs.isNotEmpty) {
+    Map<String, dynamic> dataGuru = querySnapshotGuru.docs.first.data();
+    String alias = dataGuru['alias'];
+
+    List<String> kelasList = [];
+    await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('pegawai')
+        .doc(idUser)
+        .collection('tahunajarankelompok')
+        .doc(idTahunAjaran)
+        .collection('semester')
+        .doc('Semester I')
+        .collection('kelompokmengaji')
+        .doc(alias)
+        .collection('daftarsiswakelompok')
+        .get()
+        .then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        kelasList.add(docSnapshot.id);
+      }
+    });
+    print('ini kelasList : $alias');
+    return kelasList;
+  }
+  return [];
+  
+ }
   //get data kelas
 
   Future<List<String>> getDataKelas() async {

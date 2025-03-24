@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,7 +13,6 @@ class Contoh extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: controller.userStreamBaru(),
-        // stream: null,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -49,7 +47,6 @@ class Contoh extends GetView<HomeController> {
                 ),
                 actions: [
                   if (snapshot.connectionState == ConnectionState.waiting)
-                    // SizedBox()
                     Center(
                       child: CircularProgressIndicator(),
                     )
@@ -90,7 +87,7 @@ class Contoh extends GetView<HomeController> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 50),
+                    margin: EdgeInsets.only(top: 20),
                     child: Column(
                       children: [
                         Column(
@@ -104,11 +101,10 @@ class Contoh extends GetView<HomeController> {
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
-                                      // Colors.blue.shade200,
-                                      // Colors.blue.shade400
-                                      Colors.green,
-                                      Colors.green.shade400,
-                                      Colors.blue.shade400,
+                                      // Colors.blue.shade300,
+                                      // Colors.blue.shade400,
+                                      Colors.indigo.shade500,
+                                      Colors.indigo.shade600,
                                     ],
                                   ),
                                   borderRadius: BorderRadius.circular(20),
@@ -118,55 +114,22 @@ class Contoh extends GetView<HomeController> {
                                   children: [
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.center,
                                       children: [
                                         Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              '07:00:02',
+                                              'SD IT UKHUWAH ISLAMIYAH',
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.black,
+                                                color: Colors.white,
                                               ),
                                             ),
                                             Text(
-                                              'Masuk',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            color: Colors.transparent,
-                                          ),
-                                          child: IconButton(
-                                              icon: Icon(Icons.alarm, size: 45),
-                                              onPressed: () {
-                                                Get.toNamed(Routes.CONTOH);
-                                              }),
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              '14:10:02',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Pulang',
+                                              'alamat sekolah',
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 color: Colors.black,
@@ -181,25 +144,22 @@ class Contoh extends GetView<HomeController> {
                                       height: 2,
                                       color: Colors.black,
                                     ),
-                                    SizedBox(height: 5),
+                                    SizedBox(height: 30),
                                     Column(
                                       children: [
-                                        Center(
-                                          child: Container(
-                                            height: 33,
-                                            width: 230,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: Colors.amber,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Kelas guru yang diajar',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white),
                                             ),
-                                            child: Center(
-                                              child: Text(
-                                                'Durasi Kerja : 00.00.00 Jam',
-                                              ),
-                                            ),
-                                          ),
+                                          ],
                                         ),
+                                        SizedBox(height: 10),
                                         FutureBuilder(
                                             future: controller
                                                 .getDataKelasYangDiajar(),
@@ -211,7 +171,6 @@ class Contoh extends GetView<HomeController> {
                                                 List<String> kelasAjarGuru =
                                                     snapshot.data
                                                         as List<String>;
-                                                // print(kelasAjarGuru);
                                                 return SingleChildScrollView(
                                                   child: Row(
                                                     children:
@@ -222,8 +181,15 @@ class Contoh extends GetView<HomeController> {
                                                               Routes
                                                                   .DAFTAR_KELAS,
                                                               arguments: k);
+                                                          print(
+                                                              'lemparan kelas $k');
                                                         },
-                                                        child: Text(k),
+                                                        child: Text(
+                                                          k,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black),
+                                                        ),
                                                       );
                                                     }).toList(),
                                                   ),
@@ -241,24 +207,252 @@ class Contoh extends GetView<HomeController> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 15),
-                        Container(
-                          height: 1,
-                          color: Colors.black,
-                        ),
-                        SizedBox(height: 25),
+                        // SizedBox(height: 15),
                         Expanded(
                           child: ListView(
                             padding: EdgeInsets.symmetric(horizontal: 25),
                             children: [
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Berita Harian'),
+                                  Column(
+                                    children: [
+                                      Text('kelompok mengaji'),
+                                      Row(
+                                        children: [
+                                          FutureBuilder(
+                                            future: controller
+                                                .getDataKelompok(),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              } else if (snapshot.hasData) {
+                                                List<String> kelompokPengampu =
+                                                    snapshot.data
+                                                        as List<String>;
+                                                return SingleChildScrollView(
+                                                  child: Row(
+                                                    children:
+                                                        kelompokPengampu.map((k) {
+                                                      return TextButton(
+                                                        onPressed: () {
+                                                          Get.toNamed(
+                                                              Routes
+                                                                  .DAFTAR_KELOMPOK_MENGAJI,
+                                                              arguments: k);
+                                                          print(
+                                                              'lemparan kelas $k');
+                                                        },
+                                                        child: Text(
+                                                          k,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black),
+                                                        ),
+                                                      );
+                                                    }).toList(),
+                                                  ),
+                                                );
+                                              } else {
+                                                return SizedBox();
+                                              }
+                                            }),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'MENU LAINYA',
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {},
+                                        child: Text(
+                                          "Lihat semua  >",
+                                          style: TextStyle(
+                                              color: Colors.redAccent),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Get.defaultDialog(
+                                              title: "Tampilkan 1",
+                                              middleText: "isi Content",
+                                            );
+                                          },
+                                          child: Container(
+                                            width: Get.width * 0.7,
+                                            height: 100,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      "https://picsum.photos/id/3/200/300"),
+                                                  fit: BoxFit.cover),
+                                            ),
+                                            // child: Image.asset(
+                                            //   "lib/assets/pictures/1.jpeg",
+                                            //   fit: BoxFit.cover,
+                                            // ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 10),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Get.defaultDialog(
+                                              title: "Tampilkan 2",
+                                              middleText: "isi Content",
+                                            );
+                                          },
+                                          child: Container(
+                                            width: Get.width * 0.7,
+                                            height: 100,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      "https://picsum.photos/id/1/200/300"),
+                                                  fit: BoxFit.cover),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 10),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Get.defaultDialog(
+                                              title: "Tampilkan 3",
+                                              middleText: "isi Content",
+                                            );
+                                          },
+                                          child: Container(
+                                            width: Get.width * 0.7,
+                                            height: 100,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      "https://picsum.photos/id/2/200/300"),
+                                                  fit: BoxFit.cover),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 30),
+                                  Text(
+                                    'PENGELOMPOKAN MENU (NANTI DI FILTER)',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   Divider(
                                     height: 1,
                                     color: Colors.black,
                                   ),
                                   SizedBox(height: 15),
+
+                                  //ISI KOTAKAN MENU
+                                  //===========================
+
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () => Get.toNamed(
+                                              Routes.TAMBAH_KELAS_BARU),
+                                          child: ItemMenu(
+                                            title: '(+) Kelas',
+                                            icon: Icon(Icons.clean_hands_sharp,
+                                                size: 40),
+                                          ),
+                                        ),
+                                        SizedBox(width: 20),
+                                        GestureDetector(
+                                          onTap: () => Get.toNamed(
+                                              Routes.TAMBAH_TAHUN_AJARAN),
+                                          child: ItemMenu(
+                                            title: 'Ajaran',
+                                            icon: Icon(
+                                                Icons
+                                                    .calendar_view_month_rounded,
+                                                size: 40),
+                                          ),
+                                        ),
+                                        SizedBox(width: 20),
+                                        GestureDetector(
+                                          onTap: () => Get.toNamed(
+                                              Routes.TAMBAH_KELOMPOK_MENGAJI),
+                                          child: ItemMenu(
+                                            title: '(+) Kelompok',
+                                            icon: Icon(Icons.menu_book_sharp,
+                                                size: 40),
+                                          ),
+                                        ),
+                                        SizedBox(width: 20),
+                                        GestureDetector(
+                                          onTap: () =>
+                                              Get.toNamed(Routes.TAMBAH_SISWA),
+                                          child: ItemMenu(
+                                            title: '(+) Siswa',
+                                            icon: Icon(Icons.person, size: 40),
+                                          ),
+                                        ),
+                                        SizedBox(width: 20),
+                                        GestureDetector(
+                                          onTap: () => Get.toNamed(
+                                              Routes.PEMBERIAN_KELAS_SISWA),
+                                          child: ItemMenu(
+                                            title: 'Beri Kelas',
+                                            icon: Icon(Icons.grid_view_outlined,
+                                                size: 40),
+                                          ),
+                                        ),
+                                        SizedBox(width: 20),
+                                        GestureDetector(
+                                          onTap: () => Get.toNamed(
+                                              Routes.UPDATE_KELAS_TAHUN_AJARAN),
+                                          child: ItemMenu(
+                                            title: 'update Kelas',
+                                            icon: Icon(Icons.update, size: 40),
+                                          ),
+                                        ),
+                                        SizedBox(width: 20),
+                                        GestureDetector(
+                                          onTap: () => Get.toNamed(
+                                              Routes.DAFTAR_KELOMPOK_MENGAJI),
+                                          child: ItemMenu(
+                                            title: 'kelompok',
+                                            icon: Icon(Icons.star_border_outlined, size: 40),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 30),
                                   FutureBuilder<Object>(
                                       future: controller.getDataSemuaKelas(),
                                       builder: (context, snapshot) {
@@ -277,8 +471,9 @@ class Contoh extends GetView<HomeController> {
                                                     kelasAjarGuru.map((k) {
                                                   return TextButton(
                                                     onPressed: () {
-                                                      Get.toNamed(Routes.DAFTAR_KELAS, arguments: k);
-                                                      // print(k);
+                                                      Get.toNamed(
+                                                          Routes.DAFTAR_KELAS,
+                                                          arguments: k);
                                                     },
                                                     child: Text(
                                                       k,
@@ -297,24 +492,7 @@ class Contoh extends GetView<HomeController> {
                                           return SizedBox();
                                         }
                                       }),
-                                  // DropdownSearch<String>(
-                                  //   decoratorProps: DropDownDecoratorProps(
-                                  //     decoration: InputDecoration(
-                                  //       border: UnderlineInputBorder(),
-                                  //       filled: true,
-                                  //       prefixText: 'surat: ',
-                                  //     ),
-                                  //   ),
-                                  //   // selectedItem: controller.kelasSiswaController.text,
-                                  //   items: (f, cs) => controller.getDataKelas(),
-                                  //   onChanged: (String? value) {
-                                  //     // controller.kelasSiswaController.text = value!;
-                                  //     // print(value);
-                                  //   },
-                                  //   popupProps: PopupProps.menu(
-                                  //       // disabledItemFn: (item) => item == '1A',
-                                  //       fit: FlexFit.tight),
-                                  // ),
+                                  SizedBox(height: 30),
                                   ElevatedButton(
                                     onPressed: () =>
                                         Get.toNamed(Routes.TAMBAH_KELAS_BARU),
@@ -365,6 +543,37 @@ class Contoh extends GetView<HomeController> {
             return Text('Data Kosong');
           }
         });
+  }
+}
+
+class ItemMenu extends StatelessWidget {
+  const ItemMenu({
+    super.key,
+    required this.title,
+    required this.icon,
+  });
+
+  final String title;
+  final Icon icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          height: 40,
+          width: 40,
+          child: icon,
+        ),
+        SizedBox(height: 5),
+        Text(
+          title,
+          style: TextStyle(fontSize: 15),
+        ),
+      ],
+    );
   }
 }
 

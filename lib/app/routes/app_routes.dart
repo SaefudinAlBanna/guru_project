@@ -25,6 +25,7 @@ abstract class Routes {
   static const TAMBAH_TAHUN_AJARAN = _Paths.TAMBAH_TAHUN_AJARAN;
   static const TAMBAH_KELAS_BARU = _Paths.TAMBAH_KELAS_BARU;
   static const DAFTAR_KELAS_SEMUA_SISWA = _Paths.DAFTAR_KELAS_SEMUA_SISWA;
+  static const DAFTAR_KELOMPOK_MENGAJI = _Paths.DAFTAR_KELOMPOK_MENGAJI;
 }
 
 abstract class _Paths {
@@ -51,4 +52,5 @@ abstract class _Paths {
   static const TAMBAH_TAHUN_AJARAN = '/tambah-tahun-ajaran';
   static const TAMBAH_KELAS_BARU = '/tambah-kelas-baru';
   static const DAFTAR_KELAS_SEMUA_SISWA = '/daftar-kelas-semua-siswa';
+  static const DAFTAR_KELOMPOK_MENGAJI = '/daftar-kelompok-mengaji';
 }
