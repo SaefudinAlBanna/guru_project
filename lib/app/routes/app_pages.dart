@@ -38,6 +38,8 @@ import '../modules/tambah_pegawai/bindings/tambah_pegawai_binding.dart';
 import '../modules/tambah_pegawai/views/tambah_pegawai_view.dart';
 import '../modules/tambah_siswa/bindings/tambah_siswa_binding.dart';
 import '../modules/tambah_siswa/views/tambah_siswa_view.dart';
+import '../modules/tambah_siswa_kelompok/bindings/tambah_siswa_kelompok_binding.dart';
+import '../modules/tambah_siswa_kelompok/views/tambah_siswa_kelompok_view.dart';
 import '../modules/tambah_tahun_ajaran/bindings/tambah_tahun_ajaran_binding.dart';
 import '../modules/tambah_tahun_ajaran/views/tambah_tahun_ajaran_view.dart';
 import '../modules/update_kelas_tahun_ajaran/bindings/update_kelas_tahun_ajaran_binding.dart';
@@ -169,6 +171,11 @@ class AppPages {
       name: _Paths.DAFTAR_KELOMPOK_MENGAJI,
       page: () => const DaftarKelompokMengajiView(),
       binding: DaftarKelompokMengajiBinding(),
+    ),
+    GetPage(
+      name: _Paths.TAMBAH_SISWA_KELOMPOK,
+      page: () => const TambahSiswaKelompokView(),
+      binding: TambahSiswaKelompokBinding(),
     ),
   ];
 }

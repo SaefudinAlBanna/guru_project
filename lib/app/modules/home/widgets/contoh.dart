@@ -181,8 +181,7 @@ class Contoh extends GetView<HomeController> {
                                                               Routes
                                                                   .DAFTAR_KELAS,
                                                               arguments: k);
-                                                          print(
-                                                              'lemparan kelas $k');
+                                                          // print('lemparan kelas $k');
                                                         },
                                                         child: Text(
                                                           k,
@@ -215,53 +214,6 @@ class Contoh extends GetView<HomeController> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    children: [
-                                      Text('kelompok mengaji'),
-                                      Row(
-                                        children: [
-                                          FutureBuilder(
-                                            future: controller
-                                                .getDataKelompok(),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return CircularProgressIndicator();
-                                              } else if (snapshot.hasData) {
-                                                List<String> kelompokPengampu =
-                                                    snapshot.data
-                                                        as List<String>;
-                                                return SingleChildScrollView(
-                                                  child: Row(
-                                                    children:
-                                                        kelompokPengampu.map((k) {
-                                                      return TextButton(
-                                                        onPressed: () {
-                                                          Get.toNamed(
-                                                              Routes
-                                                                  .DAFTAR_KELOMPOK_MENGAJI,
-                                                              arguments: k);
-                                                          print(
-                                                              'lemparan kelas $k');
-                                                        },
-                                                        child: Text(
-                                                          k,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black),
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                  ),
-                                                );
-                                              } else {
-                                                return SizedBox();
-                                              }
-                                            }),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -358,6 +310,52 @@ class Contoh extends GetView<HomeController> {
                                     ),
                                   ),
                                   SizedBox(height: 30),
+                                  Text('Daftar Kelompok ngaji'),
+                                  SizedBox(height: 10),
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        FutureBuilder(
+                                            future:
+                                                controller.getDataKelompok(),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              } else if (snapshot.hasData) {
+                                                List<String> kelompokPengampu =
+                                                    snapshot.data
+                                                        as List<String>;
+                                                return SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  child: Row(
+                                                    children: kelompokPengampu
+                                                        .map((k) {
+                                                      return TextButton(
+                                                        onPressed: () {
+                                                          Get.toNamed(Routes.DAFTAR_KELOMPOK_MENGAJI, arguments: k);
+                                                          // Get.toNamed(Routes.TAMBAH_SISWA_KELOMPOK, arguments: k);
+                                                          // print('lemparan kelompok $k');
+                                                        },
+                                                        child: Text(
+                                                          k,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black),
+                                                        ),
+                                                      );
+                                                    }).toList(),
+                                                  ),
+                                                );
+                                              } else {
+                                                return SizedBox();
+                                              }
+                                            }),
+                                      ],
+                                    ),
+                                  ),
                                   Text(
                                     'PENGELOMPOKAN MENU (NANTI DI FILTER)',
                                     textAlign: TextAlign.center,
@@ -387,6 +385,7 @@ class Contoh extends GetView<HomeController> {
                                           child: ItemMenu(
                                             title: '(+) Kelas',
                                             icon: Icon(Icons.clean_hands_sharp,
+                                            color: Colors.blueAccent,
                                                 size: 40),
                                           ),
                                         ),
@@ -404,8 +403,10 @@ class Contoh extends GetView<HomeController> {
                                         ),
                                         SizedBox(width: 20),
                                         GestureDetector(
-                                          onTap: () => Get.toNamed(
-                                              Routes.TAMBAH_KELOMPOK_MENGAJI),
+                                          onTap: () {
+                                            Get.toNamed(Routes.TAMBAH_KELOMPOK_MENGAJI);
+                                            // controller.buatKelompokMengaji();
+                                          },
                                           child: ItemMenu(
                                             title: '(+) Kelompok',
                                             icon: Icon(Icons.menu_book_sharp,
@@ -446,7 +447,9 @@ class Contoh extends GetView<HomeController> {
                                               Routes.DAFTAR_KELOMPOK_MENGAJI),
                                           child: ItemMenu(
                                             title: 'kelompok',
-                                            icon: Icon(Icons.star_border_outlined, size: 40),
+                                            icon: Icon(
+                                                Icons.star_border_outlined,
+                                                size: 40),
                                           ),
                                         ),
                                       ],
@@ -493,41 +496,15 @@ class Contoh extends GetView<HomeController> {
                                         }
                                       }),
                                   SizedBox(height: 30),
-                                  ElevatedButton(
-                                    onPressed: () =>
-                                        Get.toNamed(Routes.TAMBAH_KELAS_BARU),
-                                    child: Text('Tambah kelas baru'),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () =>
-                                        Get.toNamed(Routes.TAMBAH_TAHUN_AJARAN),
-                                    child: Text('Tambah Tahun Ajaran'),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () => Get.toNamed(
-                                        Routes.TAMBAH_KELOMPOK_MENGAJI),
-                                    child: Text('Tambah Kelompok'),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () =>
-                                        Get.toNamed(Routes.TAMBAH_SISWA),
-                                    child: Text('Tambah Siswa'),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () => Get.toNamed(
-                                        Routes.PEMBERIAN_KELAS_SISWA),
-                                    child: Text('pemberian kelas TA'),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () => Get.toNamed(
-                                        Routes.DAFTAR_KELAS_SEMUA_SISWA),
-                                    child: Text('Daftar siswa per kelas'),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () => Get.toNamed(
-                                        Routes.UPDATE_KELAS_TAHUN_AJARAN),
-                                    child: Text('update kelas TA'),
-                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage('lib/assets/pictures/kelas.PNG'),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  )
+                                  
                                 ],
                               ),
                             ],
