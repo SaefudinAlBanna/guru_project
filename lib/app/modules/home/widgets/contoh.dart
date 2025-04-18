@@ -309,7 +309,44 @@ class Contoh extends GetView<HomeController> {
                                       ],
                                     ),
                                   ),
-                                  SizedBox(height: 30),
+                                  SizedBox(height: 15),
+                                  Text('Fase Kelompok ngaji'),
+                                  SizedBox(height: 10),
+                                  FutureBuilder<List<String>>(
+                                      future: controller.getDataFase(),
+                                      builder: (context, snapshotfase) {
+                                        if (snapshotfase.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        } else if (snapshotfase.hasData) {
+                                          List<String> kelompokFase =
+                                              snapshotfase.data as List<String>;
+                                          return Row(
+                                            children: kelompokFase.map((f) {
+                                              return TextButton(
+                                                onPressed: () {
+                                                  Get.toNamed(
+                                                      Routes
+                                                          .DAFTAR_FASE,
+                                                      arguments: f);
+                                                  // Get.toNamed(Routes.TAMBAH_SISWA_KELOMPOK, arguments: k);
+                                                  // print('lemparan kelompok $k');
+                                                },
+                                                child: Text(
+                                                  f,
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          );
+                                        } else {
+                                          return SizedBox();
+                                        }
+                                      }),
+                                  SizedBox(height: 10),
                                   Text('Daftar Kelompok ngaji'),
                                   SizedBox(height: 10),
                                   SingleChildScrollView(
@@ -335,7 +372,10 @@ class Contoh extends GetView<HomeController> {
                                                         .map((k) {
                                                       return TextButton(
                                                         onPressed: () {
-                                                          Get.toNamed(Routes.DAFTAR_KELOMPOK_MENGAJI, arguments: k);
+                                                          Get.toNamed(
+                                                              Routes
+                                                                  .DAFTAR_KELOMPOK_MENGAJI,
+                                                              arguments: k);
                                                           // Get.toNamed(Routes.TAMBAH_SISWA_KELOMPOK, arguments: k);
                                                           // print('lemparan kelompok $k');
                                                         },
@@ -385,7 +425,7 @@ class Contoh extends GetView<HomeController> {
                                           child: ItemMenu(
                                             title: '(+) Kelas',
                                             icon: Icon(Icons.clean_hands_sharp,
-                                            color: Colors.blueAccent,
+                                                color: Colors.blueAccent,
                                                 size: 40),
                                           ),
                                         ),
@@ -398,18 +438,35 @@ class Contoh extends GetView<HomeController> {
                                             icon: Icon(
                                                 Icons
                                                     .calendar_view_month_rounded,
+                                                color: Colors.deepPurple,
                                                 size: 40),
                                           ),
                                         ),
                                         SizedBox(width: 20),
                                         GestureDetector(
                                           onTap: () {
-                                            Get.toNamed(Routes.TAMBAH_KELOMPOK_MENGAJI);
+                                            Get.toNamed(
+                                                Routes.BUAT_KELOMPOK_MENGAJI);
+                                            // controller.buatKelompokMengaji();
+                                          },
+                                          child: ItemMenu(
+                                            title: 'Kelompok',
+                                            icon: Icon(Icons.favorite,
+                                                color: Colors.red[800],
+                                                size: 40),
+                                          ),
+                                        ),
+                                        SizedBox(width: 20),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Get.toNamed(
+                                                Routes.TAMBAH_KELOMPOK_MENGAJI);
                                             // controller.buatKelompokMengaji();
                                           },
                                           child: ItemMenu(
                                             title: '(+) Kelompok',
                                             icon: Icon(Icons.menu_book_sharp,
+                                                color: Colors.teal[800],
                                                 size: 40),
                                           ),
                                         ),
@@ -456,55 +513,55 @@ class Contoh extends GetView<HomeController> {
                                     ),
                                   ),
                                   SizedBox(height: 30),
-                                  FutureBuilder<Object>(
-                                      future: controller.getDataSemuaKelas(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return CircularProgressIndicator();
-                                        } else if (snapshot.hasData) {
-                                          List<String> kelasAjarGuru =
-                                              snapshot.data as List<String>;
-                                          return SingleChildScrollView(
-                                            scrollDirection: Axis.horizontal,
-                                            child: Container(
-                                              color: Colors.amber,
-                                              child: Row(
-                                                children:
-                                                    kelasAjarGuru.map((k) {
-                                                  return TextButton(
-                                                    onPressed: () {
-                                                      Get.toNamed(
-                                                          Routes.DAFTAR_KELAS,
-                                                          arguments: k);
-                                                    },
-                                                    child: Text(
-                                                      k,
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            ),
-                                          );
-                                        } else {
-                                          return SizedBox();
-                                        }
-                                      }),
+                                  // FutureBuilder<Object>(
+                                  //     future: controller.getDataSemuaKelas(),
+                                  //     builder: (context, snapshot) {
+                                  //       if (snapshot.connectionState ==
+                                  //           ConnectionState.waiting) {
+                                  //         return CircularProgressIndicator();
+                                  //       } else if (snapshot.hasData) {
+                                  //         List<String> kelasAjarGuru =
+                                  //             snapshot.data as List<String>;
+                                  //         return SingleChildScrollView(
+                                  //           scrollDirection: Axis.horizontal,
+                                  //           child: Container(
+                                  //             color: Colors.amber,
+                                  //             child: Row(
+                                  //               children:
+                                  //                   kelasAjarGuru.map((k) {
+                                  //                 return TextButton(
+                                  //                   onPressed: () {
+                                  //                     Get.toNamed(
+                                  //                         Routes.DAFTAR_KELAS,
+                                  //                         arguments: k);
+                                  //                   },
+                                  //                   child: Text(
+                                  //                     k,
+                                  //                     style: TextStyle(
+                                  //                         color: Colors.black,
+                                  //                         fontSize: 14,
+                                  //                         fontWeight:
+                                  //                             FontWeight.bold),
+                                  //                   ),
+                                  //                 );
+                                  //               }).toList(),
+                                  //             ),
+                                  //           ),
+                                  //         );
+                                  //       } else {
+                                  //         return SizedBox();
+                                  //       }
+                                  //     }),
                                   SizedBox(height: 30),
                                   Container(
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
-                                        image: AssetImage('lib/assets/pictures/kelas.PNG'),
+                                        image: AssetImage(
+                                            'lib/assets/pictures/kelas.PNG'),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
                                   )
-                                  
                                 ],
                               ),
                             ],
@@ -547,6 +604,7 @@ class ItemMenu extends StatelessWidget {
         SizedBox(height: 5),
         Text(
           title,
+          textAlign: TextAlign.center,
           style: TextStyle(fontSize: 15),
         ),
       ],

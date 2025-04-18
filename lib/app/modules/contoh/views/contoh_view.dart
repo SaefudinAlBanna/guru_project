@@ -7,7 +7,8 @@ import 'package:intl/intl.dart';
 import '../controllers/contoh_controller.dart';
 
 class ContohView extends GetView<ContohController> {
-  const ContohView({super.key});
+   ContohView({super.key});
+  final dataxx = Get.arguments;
 
   // List get data => [];
   @override
@@ -36,7 +37,7 @@ class ContohView extends GetView<ContohController> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Nama Siswa'),
+                          Text('Nama Siswa : $dataxx'),
                           Text('No Induk'),
                           Text('Kelas'),
                         ],

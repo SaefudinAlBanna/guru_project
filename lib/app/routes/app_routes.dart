@@ -27,6 +27,8 @@ abstract class Routes {
   static const DAFTAR_KELAS_SEMUA_SISWA = _Paths.DAFTAR_KELAS_SEMUA_SISWA;
   static const DAFTAR_KELOMPOK_MENGAJI = _Paths.DAFTAR_KELOMPOK_MENGAJI;
   static const TAMBAH_SISWA_KELOMPOK = _Paths.TAMBAH_SISWA_KELOMPOK;
+  static const BUAT_KELOMPOK_MENGAJI = _Paths.BUAT_KELOMPOK_MENGAJI;
+  static const DAFTAR_FASE = _Paths.DAFTAR_FASE;
 }
 
 abstract class _Paths {
@@ -55,4 +57,6 @@ abstract class _Paths {
   static const DAFTAR_KELAS_SEMUA_SISWA = '/daftar-kelas-semua-siswa';
   static const DAFTAR_KELOMPOK_MENGAJI = '/daftar-kelompok-mengaji';
   static const TAMBAH_SISWA_KELOMPOK = '/tambah-siswa-kelompok';
+  static const BUAT_KELOMPOK_MENGAJI = '/buat-kelompok-mengaji';
+  static const DAFTAR_FASE = '/daftar-fase';
 }

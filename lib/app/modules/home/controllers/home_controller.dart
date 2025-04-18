@@ -159,6 +159,29 @@ class HomeController extends GetxController {
     return kelasList;
   }
 
+  Future<List<String>> getDataFase() async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    String idSemester = 'Semester I';  // nanti ini diambil dari database
+
+    List<String> faseList = [];
+    await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran')
+        .doc(idTahunAjaran)
+        .collection('semester')
+        .doc(idSemester)
+        .collection('kelompokmengaji')
+        .get()
+        .then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        faseList.add(docSnapshot.id);
+      }
+    });
+    return faseList;
+  }
+
   Future<List<String>> getDataKelompok() async {
     String tahunajaranya = await getTahunAjaranTerakhir();
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
@@ -186,7 +209,6 @@ class HomeController extends GetxController {
     // }
     // return [];
   }
-  //get data kelas
 
   Future<List<String>> getDataKelas() async {
     List<String> kelasList = [];

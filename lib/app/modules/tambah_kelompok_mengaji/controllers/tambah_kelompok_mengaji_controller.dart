@@ -3,6 +3,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guru_project/app/routes/app_pages.dart';
 
 class TambahKelompokMengajiController extends GetxController {
   TextEditingController idPegawaiC = TextEditingController();
@@ -10,6 +11,7 @@ class TambahKelompokMengajiController extends GetxController {
   TextEditingController tempatC = TextEditingController();
   TextEditingController semesterC = TextEditingController();
   TextEditingController pengampuC = TextEditingController();
+  TextEditingController faseC = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -85,6 +87,15 @@ class TambahKelompokMengajiController extends GetxController {
     return temaptList;
   }
 
+  List<String> getDataFase() {
+    List<String> faseList = [
+      'Fase A',
+      'Fase B',
+      'Fase C',
+    ];
+    return faseList;
+  }
+
   // --> C5 --> muncul di Get.bottomSheet
   Future<List<String>> getDataKelasYangAda() async {
     String tahunajaranya = await getTahunAjaranTerakhir();
@@ -149,6 +160,139 @@ class TambahKelompokMengajiController extends GetxController {
         .collection('siswa')
         .where('status', isNotEqualTo: 'aktif')
         .snapshots();
+  }
+
+  Future<void> test() async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    String semesterNya = 
+    (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
+
+    DocumentReference<Map<String, dynamic>> docKelompok = await firestore
+            .collection('Sekolah')
+            .doc(idSekolah)
+            .collection('tahunajaran')
+            .doc(idTahunAjaran)
+            .collection('semester')
+            .doc(semesterNya)
+            .collection('kelompokmengaji')
+            .doc(faseC.text);
+
+       DocumentSnapshot<Map<String, dynamic>> snapKelompok = await docKelompok.get();
+
+
+       if(snapKelompok.data()?.length == 0) {
+        print('data kosong');
+       } else {
+        print('data ada ${snapKelompok.data()?.length}');
+        print('-------------------------');
+        print('datanya : ${snapKelompok.data()}');
+       }
+  }
+
+  Future<void> buatKelompok() async {
+
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    String semesterNya = 
+    (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('pegawai')
+        .where('alias', isEqualTo: pengampuC.text)
+        .get();
+    String idPengampu = querySnapshot.docs.first.data()['uid'];
+
+    
+    if (faseC.text.isNotEmpty &&
+        tahunajaranya.isNotEmpty &&
+        pengampuC.text.isNotEmpty &&
+        tempatC.text.isNotEmpty && 
+        semesterNya.isNotEmpty 
+        ) {
+         
+      try {
+        // buatIsiKelompokMengajiTahunAjaran();
+        isiFieldPengampuKelompok();
+        buatIsiSemester1();
+        // tambahDaftarKelompokPengampuAjar(nisnSiswa, namaSiswa);
+
+      //  DocumentReference<Map<String, dynamic>> docKelompok = await firestore
+      //       .collection('Sekolah')
+      //       .doc(idSekolah)
+      //       .collection('tahunajaran')
+      //       .doc(idTahunAjaran)
+      //       .collection('semester')
+      //       .doc(semesterNya)
+      //       .collection('kelompokmengaji')
+      //       .doc(faseC.text);
+
+      //  DocumentSnapshot<Map<String, dynamic>> snapKelompok = await docKelompok.get();
+
+      //  if(snapKelompok.data().length == 0)
+        
+
+        await firestore
+            .collection('Sekolah')
+            .doc(idSekolah)
+            .collection('tahunajaran')
+            .doc(idTahunAjaran)
+            .collection('semester')
+            .doc(semesterNya)
+            .collection('kelompokmengaji')
+            .doc(faseC.text)
+            .set({
+          'fase': faseC.text,
+          'tahunajaran': tahunajaranya,
+          'semester': semesterNya,
+          'emailpenginput': emailAdmin,
+          'idpenginput': idUser,
+          'tanggalinput': DateTime.now(),
+        });
+
+        await firestore
+            .collection('Sekolah')
+            .doc(idSekolah)
+            .collection('tahunajaran')
+            .doc(idTahunAjaran)
+            .collection('semester')
+            .doc(semesterNya)
+            .collection('kelompokmengaji')
+            .doc(faseC.text)
+            .collection('pengampu')
+            .doc(pengampuC.text)
+            .collection('tempat')
+            .doc(tempatC.text)
+            .set({
+          'fase' : faseC.text,
+          'tempatmengaji': tempatC.text,
+          'tahunajaran': tahunajaranya,
+          'kelompokmengaji': pengampuC.text,
+          'namasemester': semesterNya,
+          'namapengampu': pengampuC.text,
+          'idpengampu': idPengampu,
+          'emailpenginput': emailAdmin,
+          'idpenginput': idUser,
+          'tanggalinput': DateTime.now(),
+        });
+
+        Get.snackbar('Sukses', 'Kelompok mengaji berhasil dibuat');
+
+        Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK,
+                        arguments: pengampuC.text);
+
+        refresh();
+
+       
+      } catch (e) {
+        Get.snackbar('Error', e.toString());
+      }
+    } else {
+      Get.snackbar('Error', 'tidak boleh kosong');
+    }
+        refresh();
+    
   }
 
   // --> C7 --> di dalam Get.bottomSheet --> simpan siswa kelompok yang dipilih
@@ -390,6 +534,54 @@ class TambahKelompokMengajiController extends GetxController {
         'idpenginput': idUser,
         'tanggalinput': DateTime.now(),
       });
+
+      await firestore
+          .collection('Sekolah')
+          .doc(idSekolah)
+          .collection('pegawai')
+          .doc(idPengampu)
+          .collection('tahunajarankelompok')
+          .doc(idTahunAjaran)
+          .collection('semester')
+          .doc(semesterNya)
+          .collection('kelompokmengaji')
+          .doc(faseC.text)
+          .set({
+        'fase' : faseC.text,
+        'tempatmengaji': tempatC.text,
+        'namapengampu': pengampuC.text,
+        'idpengampu': idPengampu,
+        'namasemester': semesterNya,
+        'tahunajaran': tahunajaranya,
+        'emailpenginput': emailAdmin,
+        'idpenginput': idUser,
+        'tanggalinput': DateTime.now(),
+      });
+
+      await firestore
+          .collection('Sekolah')
+          .doc(idSekolah)
+          .collection('pegawai')
+          .doc(idPengampu)
+          .collection('tahunajarankelompok')
+          .doc(idTahunAjaran)
+          .collection('semester')
+          .doc(semesterNya)
+          .collection('kelompokmengaji')
+          .doc(faseC.text)
+          .collection('tempat')
+          .doc(tempatC.text)
+          .set({
+        'fase' : faseC.text,
+        'tempatmengaji': tempatC.text,
+        'namapengampu': pengampuC.text,
+        'idpengampu': idPengampu,
+        'namasemester': semesterNya,
+        'tahunajaran': tahunajaranya,
+        'emailpenginput': emailAdmin,
+        'idpenginput': idUser,
+        'tanggalinput': DateTime.now(),
+      });
     }
   }
 
@@ -420,10 +612,13 @@ class TambahKelompokMengajiController extends GetxController {
         .collection('semester')
         .doc(semesterNya)
         .collection('kelompokmengaji')
+        .doc(faseC.text)
+        .collection('pengampu')
         .doc(pengampuC.text)
         .collection('tempat')
         .doc(tempatC.text)
         .set({
+      'fase' : faseC.text,
       'tempatmengaji': tempatC.text,
       'tahunajaran': tahunajaranya,
       'kelompokmengaji': pengampuC.text,
@@ -443,10 +638,11 @@ class TambahKelompokMengajiController extends GetxController {
         .collection('semester')
         .doc(semesterNya)
         .collection('kelompokmengaji')
+        .doc(faseC.text)
+        .collection('pengampu')
         .doc(pengampuC.text)
-        // .collection('tempat')
-        // .doc(tempatC.text)
         .set({
+      'fase' : faseC.text,
       'namasemester': semesterNya,
       'kelompokmengaji': pengampuC.text,
       'idpengampu': idPengampu,
@@ -490,8 +686,11 @@ class TambahKelompokMengajiController extends GetxController {
           .collection('semester')
           .doc(semesterNya)
           .collection('kelompokmengaji')
+          .doc(faseC.text)
+          .collection('pengampu')
           .doc(pengampuC.text)
           .set({
+        'fase' : faseC.text,
         'tahunajaran': tahunajaranya,
         'kelompokmengaji': pengampuC.text,
         'namasemester': semesterNya,
@@ -513,10 +712,13 @@ class TambahKelompokMengajiController extends GetxController {
           .collection('semester')
           .doc(semesterNya)
           .collection('kelompokmengaji')
+          .doc(faseC.text)
+          .collection('pengampu')
           .doc(pengampuC.text)
           .collection('tempat')
           .doc(tempatC.text)
           .set({
+        'fase' : faseC.text,
         'tahunajaran': tahunajaranya,
         'kelompokmengaji': pengampuC.text,
         'namasemester': semesterNya,

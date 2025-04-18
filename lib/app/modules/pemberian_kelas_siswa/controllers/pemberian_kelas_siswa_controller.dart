@@ -292,6 +292,7 @@ class PemberianKelasSiswaController extends GetxController {
           'tanggalinput': DateTime.now(),
           'status': 'aktif',
           'idsiswa': nisnSiswa,
+          'statuskelompok' : 'baru',
         });
 
         ubahStatusSiswa(nisnSiswa);
