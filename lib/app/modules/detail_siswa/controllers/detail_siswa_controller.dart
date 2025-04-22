@@ -1,24 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 class DetailSiswaController extends GetxController {
-  //TODO: Implement DetailSiswaController
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  var argumenNisn = Get.arguments;
+  String idSekolah = 'UQjMpsKZKmWWbWVu4Uwb';
+
+  Future<String> getTahunAjaranTerakhir() async {
+    CollectionReference<Map<String, dynamic>> colTahunAjaran = firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran');
+    QuerySnapshot<Map<String, dynamic>> snapshotTahunAjaran =
+        await colTahunAjaran.get();
+    List<Map<String, dynamic>> listTahunAjaran =
+        snapshotTahunAjaran.docs.map((e) => e.data()).toList();
+    String tahunAjaranTerakhir =
+        listTahunAjaran.map((e) => e['namatahunajaran']).toList().last;
+    return tahunAjaranTerakhir;
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  Future<QuerySnapshot<Map<String, dynamic>>> getDetailSiswa() async {
 
-  @override
-  void onClose() {
-    super.onClose();
+    return await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('siswa')
+        .where('nisn', isEqualTo: argumenNisn)
+        .get();
   }
-  
-
-  void increment() => count.value++;
 }

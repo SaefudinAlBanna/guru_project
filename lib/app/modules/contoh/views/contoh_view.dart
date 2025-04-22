@@ -37,9 +37,9 @@ class ContohView extends GetView<ContohController> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Nama Siswa : $dataxx'),
-                          Text('No Induk'),
-                          Text('Kelas'),
+                          Text('Nama Siswa : ${dataxx['namasiswa']}'),
+                          Text('No Induk : ${dataxx['nisn']}'),
+                          Text('Kelas :  ${dataxx['kelas']}'),
                         ],
                       ),
                     ),
@@ -54,8 +54,8 @@ class ContohView extends GetView<ContohController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(DateFormat('dd Mmmm Yyyy').toString()),
-                          Text('Ustadz/ah'),
-                          Text('Tempat'),
+                          Text(dataxx['namapengampu']),
+                          Text(dataxx['tempatmengaji']),
                         ],
                       ),
                     ),
@@ -87,7 +87,7 @@ class ContohView extends GetView<ContohController> {
                       prefixText: 'surat: ',
                     ),
                   ),
-                  // selectedItem: controller.kelasSiswaController.text,
+                  selectedItem: controller.suratC.text,
                   items: (f, cs) => [
                     "Annas",
                     'Al-Falaq',
@@ -97,13 +97,16 @@ class ContohView extends GetView<ContohController> {
                     'dll'
                   ],
                   onChanged: (String? value) {
-                    // controller.kelasSiswaController.text = value!;
-                  },
+                  if (value != null) {
+                    controller.suratC.text = value;
+                  }
+                },
                   popupProps: PopupProps.menu(
                       // disabledItemFn: (item) => item == '1A',
                       fit: FlexFit.tight),
                 ),
                 TextField(
+                  controller: controller.ayatHafalC,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Ayat yang dihafal',
@@ -126,7 +129,7 @@ class ContohView extends GetView<ContohController> {
                       prefixText: 'Jld/Surat: ',
                     ),
                   ),
-                  // selectedItem: controller.kelasSiswaController.text,
+                  selectedItem: controller.jldSuratC.text,
                   items: (f, cs) => [
                     "Annas",
                     'Al-Falaq',
@@ -136,55 +139,71 @@ class ContohView extends GetView<ContohController> {
                     'dll'
                   ],
                   onChanged: (String? value) {
-                    // controller.kelasSiswaController.text = value!;
+                    controller.jldSuratC.text = value!;
                   },
                   popupProps: PopupProps.menu(
                       // disabledItemFn: (item) => item == '1A',
                       fit: FlexFit.tight),
                 ),
                 TextField(
+                  controller: controller.halAyatC,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Hal / Ayat',
                   ),
                 ),
                 TextField(
+                  controller: controller.materiC,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Materi',
                   ),
                 ),
                 TextField(
+                  controller: controller.nilaiC,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Nilai',
                   ),
                 ),
                 SizedBox(height: 10),
+                // Text(
+                //   'DISIMAK',
+                //   style: TextStyle(
+                //     fontSize: 16,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
+                // Divider(height: 2, color: Colors.black),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //   children: [
+                //     Text('Guru : Sudah'),
+                //     SizedBox(width: 15),
+                //     Text('Orang tua : Sudah'),
+                //   ],
+                // ),
+
                 Text(
-                  'DISIMAK',
+                  'KETERANGAN / CATATAN PENGAMPU',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Divider(height: 2, color: Colors.black),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text('Guru : Sudah'),
-                    SizedBox(width: 15),
-                    Text('Orang tua : Sudah'),
-                  ],
-                ),
-                SizedBox(height: 15),
+                SizedBox(height: 3),
                 TextField(
+                  controller: controller.keteranganGuruC,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Keterangan',
+                    hintText: 'Keterangan / Catatan Pengampu',
                   ),
                 ),
-                Center(child: FloatingActionButton(onPressed: (){}, child: Text('Simpan'),)),
+                Center(child: FloatingActionButton(onPressed: (){
+                  controller.simpanNilai();
+                  Navigator.of(context).pop();
+                }, child: Text('Simpan'),)),
               ],
             ),
           ],

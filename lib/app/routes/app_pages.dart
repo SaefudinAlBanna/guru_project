@@ -1,11 +1,15 @@
 import 'package:get/get.dart';
 
-import '../modules/buat_kelompok_mengaji/bindings/buat_kelompok_mengaji_binding.dart';
-import '../modules/buat_kelompok_mengaji/views/buat_kelompok_mengaji_view.dart';
 import '../modules/contoh/bindings/contoh_binding.dart';
 import '../modules/contoh/views/contoh_view.dart';
 import '../modules/daftar_fase/bindings/daftar_fase_binding.dart';
 import '../modules/daftar_fase/views/daftar_fase_view.dart';
+import '../modules/daftar_halaqoh/bindings/daftar_halaqoh_binding.dart';
+import '../modules/daftar_halaqoh/views/daftar_halaqoh_view.dart';
+import '../modules/daftar_halaqoh_pengampu/bindings/daftar_halaqoh_pengampu_binding.dart';
+import '../modules/daftar_halaqoh_pengampu/views/daftar_halaqoh_pengampu_view.dart';
+import '../modules/daftar_halaqoh_perfase/bindings/daftar_halaqoh_perfase_binding.dart';
+import '../modules/daftar_halaqoh_perfase/views/daftar_halaqoh_perfase_view.dart';
 import '../modules/daftar_kelas/bindings/daftar_kelas_binding.dart';
 import '../modules/daftar_kelas/views/daftar_kelas_view.dart';
 import '../modules/daftar_kelas_semua_siswa/bindings/daftar_kelas_semua_siswa_binding.dart';
@@ -182,14 +186,24 @@ class AppPages {
       binding: TambahSiswaKelompokBinding(),
     ),
     GetPage(
-      name: _Paths.BUAT_KELOMPOK_MENGAJI,
-      page: () => const BuatKelompokMengajiView(),
-      binding: BuatKelompokMengajiBinding(),
-    ),
-    GetPage(
       name: _Paths.DAFTAR_FASE,
       page: () => DaftarFaseView(),
       binding: DaftarFaseBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAFTAR_HALAQOH_PERFASE,
+      page: () => DaftarHalaqohPerfaseView(),
+      binding: DaftarHalaqohPerfaseBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAFTAR_HALAQOH,
+      page: () => DaftarHalaqohView(),
+      binding: DaftarHalaqohBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAFTAR_HALAQOH_PENGAMPU,
+      page: () => DaftarHalaqohPengampuView(),
+      binding: DaftarHalaqohPengampuBinding(),
     ),
   ];
 }

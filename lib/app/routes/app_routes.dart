@@ -29,6 +29,9 @@ abstract class Routes {
   static const TAMBAH_SISWA_KELOMPOK = _Paths.TAMBAH_SISWA_KELOMPOK;
   static const BUAT_KELOMPOK_MENGAJI = _Paths.BUAT_KELOMPOK_MENGAJI;
   static const DAFTAR_FASE = _Paths.DAFTAR_FASE;
+  static const DAFTAR_HALAQOH_PERFASE = _Paths.DAFTAR_HALAQOH_PERFASE;
+  static const DAFTAR_HALAQOH = _Paths.DAFTAR_HALAQOH;
+  static const DAFTAR_HALAQOH_PENGAMPU = _Paths.DAFTAR_HALAQOH_PENGAMPU;
 }
 
 abstract class _Paths {
@@ -59,4 +62,7 @@ abstract class _Paths {
   static const TAMBAH_SISWA_KELOMPOK = '/tambah-siswa-kelompok';
   static const BUAT_KELOMPOK_MENGAJI = '/buat-kelompok-mengaji';
   static const DAFTAR_FASE = '/daftar-fase';
+  static const DAFTAR_HALAQOH_PERFASE = '/daftar-halaqoh-perfase';
+  static const DAFTAR_HALAQOH = '/daftar-halaqoh';
+  static const DAFTAR_HALAQOH_PENGAMPU = '/daftar-halaqoh-pengampu';
 }

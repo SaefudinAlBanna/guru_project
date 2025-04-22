@@ -30,33 +30,57 @@ class DaftarKelasView extends GetView<DaftarKelasController> {
                     title: Text(snapshot.data!.docs[index].data()['namasiswa']),
                     subtitle: Text(snapshot.data!.docs[index].data()['kelas']),
                     leading: CircleAvatar(
-                      child: Text(snapshot.data!.docs[index].data()['namasiswa'][0]),
+                      child: Text(
+                          snapshot.data!.docs[index].data()['namasiswa'][0]),
                     ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         IconButton(
-                          tooltip: 'Detail Nilai',
+                          tooltip: 'Info siswa',
                           icon: const Icon(Icons.info_outlined),
                           onPressed: () {
-                            String getNama = snapshot.data!.docs[index].data()['namasiswa'];
-                            Get.toNamed(Routes.DETAIL_SISWA, arguments: getNama);
+                            String getNama =
+                                snapshot.data!.docs[index].data()['nisn'];
+                            Get.toNamed(Routes.DETAIL_SISWA,
+                                arguments: getNama);
                           },
                         ),
                         IconButton(
                           tooltip: 'Pemberian Nilai',
                           icon: const Icon(Icons.add_box_rounded),
                           onPressed: () {
-                            // Get.toNamed(Routes.PEMBERIAN_NILAI_SISWA, arguments: snapshot.data!.docs[index].data()['nama']);
-                            Get.toNamed(Routes.CONTOH, arguments: snapshot.data!.docs[index].data()['namasiswa']);
+                            // Get.toNamed(Routes.CONTOH, arguments: snapshot.data!.docs[index].data()['namasiswa']);
+                            Get.dialog(AlertDialog(
+                              title: Text('Fitur dalam pengembangan'),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('Ok'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            ));
                           },
                         ),
                         IconButton(
                           tooltip: 'Daftar Nilai',
                           icon: const Icon(Icons.book),
                           onPressed: () {
-                            String getNama = snapshot.data!.docs[index].data()['namasiswa'];
-                            Get.toNamed(Routes.DAFTAR_NILAI, arguments: getNama);
+                            // String getNama = snapshot.data!.docs[index].data()['namasiswa'];
+                            // Get.toNamed(Routes.DAFTAR_NILAI, arguments: getNama);
+                            Get.dialog(AlertDialog(
+                              title: Text('Fitur dalam pengembangan'),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('Ok'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            ));
                           },
                         ),
                       ],
@@ -66,7 +90,7 @@ class DaftarKelasView extends GetView<DaftarKelasController> {
               );
             } else {
               return const Center(
-                child: Text('No data available'),
+                child: Text('Belum ada siswa'),
               );
             }
           } else {

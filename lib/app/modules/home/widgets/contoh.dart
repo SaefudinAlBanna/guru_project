@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
+import 'package:card_swiper/card_swiper.dart';
 
 class Contoh extends GetView<HomeController> {
   const Contoh({super.key});
@@ -25,63 +26,80 @@ class Contoh extends GetView<HomeController> {
               appBar: AppBar(
                 title: Padding(
                   padding: const EdgeInsets.only(top: 15),
-                  child: Text(
-                    data['nama'].toString().toUpperCase(),
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        data['sekolah'].toString().toUpperCase(),
+                        style: TextStyle(
+                          // fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        data['alamat'].toString(),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 backgroundColor: Colors.indigo[400],
                 leading: Container(
-                  height: 85,
-                  width: 85,
-                  margin: EdgeInsets.only(left: 15, top: 15),
+                  height: 150,
+                  width: 150,
+                  margin: EdgeInsets.only(left: 5, top: 5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                     color: Colors.grey[350],
+                    // image: DecorationImage(
+                    //     image: NetworkImage(
+                    //         "https://ui-avatars.com/api/?name=${data['nama']}")),
                     image: DecorationImage(
-                        image: NetworkImage(
-                            "https://ui-avatars.com/api/?name=${data['nama']}")),
+                        image: AssetImage("lib/assets/pictures/sdit.png"),
+                        fit: BoxFit.contain),
                   ),
                 ),
-                actions: [
-                  if (snapshot.connectionState == ConnectionState.waiting)
-                    Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  else if (snapshot.data!.data()!['role'] == 'admin')
-                    IconButton(
-                      onPressed: () => Get.toNamed(Routes.TAMBAH_PEGAWAI),
-                      icon: Icon(Icons.admin_panel_settings_outlined),
-                    )
-                  else
-                    SizedBox(),
-                  Obx(
-                    () => ElevatedButton(
-                      onPressed: () async {
-                        if (controller.isLoading.isFalse) {
-                          controller.isLoading.value = true;
-                          await FirebaseAuth.instance.signOut();
-                          controller.isLoading.value = false;
-                          Get.offAllNamed(Routes.LOGIN);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.indigo[400]),
-                      child: controller.isLoading.isFalse
-                          ? Icon(Icons.logout_outlined, color: Colors.black)
-                          : CircularProgressIndicator(),
-                    ),
-                  ),
-                ],
+                // actions: [
+                //   if (snapshot.connectionState == ConnectionState.waiting)
+                //     Center(
+                //       child: CircularProgressIndicator(),
+                //     )
+                //   else if (snapshot.data!.data()!['role'] == 'admin')
+                //     IconButton(
+                //       onPressed: () => Get.toNamed(Routes.TAMBAH_PEGAWAI),
+                //       icon: Icon(Icons.admin_panel_settings_outlined),
+                //     )
+                //   else
+                //     SizedBox(),
+                //   Obx(
+                //     () => ElevatedButton(
+                //       onPressed: () async {
+                //         if (controller.isLoading.isFalse) {
+                //           controller.isLoading.value = true;
+                //           await FirebaseAuth.instance.signOut();
+                //           controller.isLoading.value = false;
+                //           Get.offAllNamed(Routes.LOGIN);
+                //         }
+                //       },
+                //       style: ElevatedButton.styleFrom(
+                //           backgroundColor: Colors.indigo[400]),
+                //       child: controller.isLoading.isFalse
+                //           ? Icon(Icons.logout_outlined, color: Colors.black)
+                //           : CircularProgressIndicator(),
+                //     ),
+                //   ),
+                // ],
               ),
               body: Stack(
                 children: [
                   ClipPath(
                     clipper: ClassClipPathTop(),
                     child: Container(
-                      height: 250,
+                      height: 225,
                       width: Get.width,
                       color: Colors.indigo[400],
                     ),
@@ -92,13 +110,11 @@ class Contoh extends GetView<HomeController> {
                       children: [
                         Column(
                           children: [
-                            ClipPath(
-                              clipper: ClipPathClass(),
-                              child: Container(
-                                padding: EdgeInsets.all(15),
-                                margin: EdgeInsets.symmetric(horizontal: 25),
-                                height: 215,
-                                decoration: BoxDecoration(
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              margin: EdgeInsets.symmetric(horizontal: 25),
+                              height: 170,
+                              decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
                                       // Colors.blue.shade300,
@@ -107,106 +123,300 @@ class Contoh extends GetView<HomeController> {
                                       Colors.indigo.shade600,
                                     ],
                                   ),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'SD IT UKHUWAH ISLAMIYAH',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
+                                  // borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20))),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SizedBox(height: 10),
+                                          Container(
+                                            height: 50,
+                                            width: 50,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[300],
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      "https://ui-avatars.com/api/?name=${data['nama']}")),
                                             ),
-                                            Text(
-                                              'alamat sekolah',
-                                              style: TextStyle(
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text(
+                                            data['alias']
+                                                .toString()
+                                                .toUpperCase(),
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Text(
+                                            data['role'].toString(),
+                                            style: TextStyle(
                                                 fontSize: 14,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
+                                                color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  Divider(
+                                    height: 2,
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              margin: EdgeInsets.symmetric(horizontal: 25),
+                              height: 110,
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.indigo.shade900,
+                                      Colors.indigo.shade900,
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20))),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  //KELAS
+                                  MenuAtas(
+                                    title: 'Kelas',
+                                    icon: Icon(Icons.school_outlined),
+                                    onTap: () {
+                                      Get.defaultDialog(
+                                        onCancel: () => Get.back(),
+                                        title: 'Kelas Yang Diajar',
+                                        content: SizedBox(
+                                          height: 200,
+                                          width: 200,
+                                          // color: Colors.amber,
+                                          child: FutureBuilder<List<String>>(
+                                              future: controller
+                                                  .getDataKelasYangDiajar(),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return CircularProgressIndicator();
+                                                } else if (snapshot.hasData) {
+                                                  List<String> kelasAjarGuru =
+                                                      snapshot.data
+                                                          as List<String>;
+                                                  return SingleChildScrollView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    child: SizedBox(
+                                                      // color: Colors.amber,
+                                                      child: Row(
+                                                        children: kelasAjarGuru
+                                                            .map((k) {
+                                                          return SingleChildScrollView(
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            child:
+                                                                GestureDetector(
+                                                                  onTap: () {
+                                                                    Get.toNamed(
+                                                                      Routes
+                                                                          .DAFTAR_KELAS,
+                                                                      arguments:
+                                                                          k);
+                                                                          // Get.back();
+                                                                          // Navigator.of(context).pop();
+                                                                  },
+                                                                  child: Container(
+                                                                    margin: EdgeInsets
+                                                                        .only(
+                                                                            left:
+                                                                                10),
+                                                                    height: 65,
+                                                                    width: 55,
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                10),
+                                                                        color: Colors
+                                                                                .indigo[
+                                                                            700]),
+                                                                    child: Center(
+                                                                      child: Text(
+                                                                        k,
+                                                                        style: TextStyle(
+                                                                            color: Colors
+                                                                                .white,
+                                                                            fontSize:
+                                                                                14,
+                                                                            fontWeight:
+                                                                                FontWeight.bold),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                          );
+                                                        }).toList(),
+                                                      ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return Center(
+                                                    child: Text(
+                                                        "Anda belum memiliki kelas"),
+                                                  );
+                                                }
+                                              }),
                                         ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 15),
-                                    Divider(
-                                      height: 2,
-                                      color: Colors.black,
-                                    ),
-                                    SizedBox(height: 30),
-                                    Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'Kelas guru yang diajar',
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.white),
+                                      );
+                                    },
+                                  ),
+
+                                  //HALAQOH
+                                  MenuAtas(
+                                    title: 'Halaqoh',
+                                    icon: Icon(Icons.menu_book_sharp),
+                                    onTap: () {
+                                      Get.defaultDialog(
+                                        onCancel: () => Get.back(),
+                                        title: 'Halaqoh Yang Diajar',
+                                        content: SizedBox(
+                                          height: 200,
+                                          width: 200,
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                              children: [
+                                                FutureBuilder<List<String>>(
+                                                    future: controller
+                                                        .getDataKelompok(),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        return CircularProgressIndicator();
+                                                      } else if (snapshot
+                                                          .hasData) {
+                                                        List<String>
+                                                            kelompokPengampu =
+                                                            snapshot.data
+                                                                as List<String>;
+                                                        return SingleChildScrollView(
+                                                          scrollDirection:
+                                                              Axis.horizontal,
+                                                          child: Row(
+                                                            children:
+                                                                kelompokPengampu
+                                                                    .map((p) {
+                                                              return GestureDetector(
+                                                                onTap: () =>
+                                                                    Get.toNamed(
+                                                                        Routes
+                                                                            .DAFTAR_HALAQOH_PENGAMPU,
+                                                                        arguments:
+                                                                            p),
+                                                                child:
+                                                                    Container(
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              10),
+                                                                  height: 65,
+                                                                  width: 55,
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              10),
+                                                                      color: Colors
+                                                                              .indigo[
+                                                                          700]),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      p,
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              14,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }).toList(),
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        return SizedBox();
+                                                      }
+                                                    }),
+                                              ],
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                        SizedBox(height: 10),
-                                        FutureBuilder(
-                                            future: controller
-                                                .getDataKelasYangDiajar(),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return CircularProgressIndicator();
-                                              } else if (snapshot.hasData) {
-                                                List<String> kelasAjarGuru =
-                                                    snapshot.data
-                                                        as List<String>;
-                                                return SingleChildScrollView(
-                                                  child: Row(
-                                                    children:
-                                                        kelasAjarGuru.map((k) {
-                                                      return TextButton(
-                                                        onPressed: () {
-                                                          Get.toNamed(
-                                                              Routes
-                                                                  .DAFTAR_KELAS,
-                                                              arguments: k);
-                                                          // print('lemparan kelas $k');
-                                                        },
-                                                        child: Text(
-                                                          k,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black),
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                  ),
-                                                );
-                                              } else {
-                                                return SizedBox();
-                                              }
-                                            }),
-                                      ],
-                                    ),
-                                    SizedBox(height: 10),
-                                  ],
-                                ),
+                                      );
+                                    },
+                                  ),
+                                  //EKSKUL
+                                  MenuAtas(
+                                    title: 'Ekskul',
+                                    icon: Icon(Icons.sports_gymnastics_rounded),
+                                    onTap: () => Get.defaultDialog(
+                                        title: 'Ekskul',
+                                        middleText: 'Fitur dalam pengembangan'),
+                                  ),
+                                  //KOORDINATOR HALAQOH
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting)
+                                    Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  else if (snapshot.data!.data()!['role'] ==
+                                      'admin')
+                                    MenuAtas(
+                                      title: 'Input Halaqoh',
+                                      icon: Icon(Icons.add_box_outlined),
+                                      onTap: () => Get.toNamed(
+                                          Routes.TAMBAH_KELOMPOK_MENGAJI),
+                                    )
+                                  else
+                                    SizedBox(),
+                                  //KESISWAAN
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting)
+                                    Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  else if (snapshot.data!.data()!['role'] ==
+                                      'admin')
+                                    MenuAtas(
+                                      title: 'Input Siswa',
+                                      icon: Icon(Icons.person_add_alt),
+                                      onTap: () =>
+                                          Get.toNamed(Routes.TAMBAH_SISWA),
+                                    )
+                                  else
+                                    SizedBox(),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                        // SizedBox(height: 15),
                         Expanded(
                           child: ListView(
                             padding: EdgeInsets.symmetric(horizontal: 25),
@@ -310,94 +520,122 @@ class Contoh extends GetView<HomeController> {
                                     ),
                                   ),
                                   SizedBox(height: 15),
-                                  Text('Fase Kelompok ngaji'),
+                                  Text('MENU ADMIN'),
                                   SizedBox(height: 10),
-                                  FutureBuilder<List<String>>(
-                                      future: controller.getDataFase(),
-                                      builder: (context, snapshotfase) {
-                                        if (snapshotfase.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                        } else if (snapshotfase.hasData) {
-                                          List<String> kelompokFase =
-                                              snapshotfase.data as List<String>;
-                                          return Row(
-                                            children: kelompokFase.map((f) {
-                                              return TextButton(
-                                                onPressed: () {
-                                                  Get.toNamed(
-                                                      Routes
-                                                          .DAFTAR_FASE,
-                                                      arguments: f);
-                                                  // Get.toNamed(Routes.TAMBAH_SISWA_KELOMPOK, arguments: k);
-                                                  // print('lemparan kelompok $k');
-                                                },
-                                                child: Text(
-                                                  f,
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              );
-                                            }).toList(),
-                                          );
-                                        } else {
-                                          return SizedBox();
-                                        }
-                                      }),
-                                  SizedBox(height: 10),
-                                  Text('Daftar Kelompok ngaji'),
-                                  SizedBox(height: 10),
-                                  SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      children: [
-                                        FutureBuilder(
-                                            future:
-                                                controller.getDataKelompok(),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return CircularProgressIndicator();
-                                              } else if (snapshot.hasData) {
-                                                List<String> kelompokPengampu =
-                                                    snapshot.data
-                                                        as List<String>;
-                                                return SingleChildScrollView(
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  child: Row(
-                                                    children: kelompokPengampu
-                                                        .map((k) {
-                                                      return TextButton(
-                                                        onPressed: () {
-                                                          Get.toNamed(
-                                                              Routes
-                                                                  .DAFTAR_KELOMPOK_MENGAJI,
-                                                              arguments: k);
-                                                          // Get.toNamed(Routes.TAMBAH_SISWA_KELOMPOK, arguments: k);
-                                                          // print('lemparan kelompok $k');
-                                                        },
-                                                        child: Text(
-                                                          k,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black),
-                                                        ),
-                                                      );
-                                                    }).toList(),
+
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting)
+                                        Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      else if (snapshot.data!.data()!['role'] ==
+                                          'admin')
+                                        MenuBawah(
+                                            title: 'Fase',
+                                            icon: Icon(Icons.hotel_class_sharp),
+                                            onTap: () => Get.defaultDialog(
+                                                  onCancel: () => Get.back(),
+                                                  title: 'Daftar Fase',
+                                                  content: SizedBox(
+                                                    height: 200,
+                                                    width: 200,
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      child: Row(
+                                                        children: [
+                                                          FutureBuilder<
+                                                                  List<String>>(
+                                                              future: controller
+                                                                  .getDataFase(),
+                                                              builder: (context,
+                                                                  snapshot) {
+                                                                if (snapshot
+                                                                        .connectionState ==
+                                                                    ConnectionState
+                                                                        .waiting) {
+                                                                  return CircularProgressIndicator();
+                                                                } else if (snapshot
+                                                                    .hasData) {
+                                                                  List<String>
+                                                                      kelompokPengampu =
+                                                                      snapshot.data
+                                                                          as List<
+                                                                              String>;
+                                                                  return SingleChildScrollView(
+                                                                    scrollDirection:
+                                                                        Axis.horizontal,
+                                                                    child: Row(
+                                                                      children:
+                                                                          kelompokPengampu
+                                                                              .map((p) {
+                                                                        return GestureDetector(
+                                                                          onTap: () => Get.toNamed(
+                                                                              Routes.DAFTAR_HALAQOH_PERFASE,
+                                                                              arguments: p),
+                                                                          // onTap: () => Get.toNamed(
+                                                                          //     Routes.DAFTAR_KELAS,
+                                                                          //     arguments: p),
+                                                                          child:
+                                                                              Container(
+                                                                            margin:
+                                                                                EdgeInsets.only(left: 10),
+                                                                            height:
+                                                                                65,
+                                                                            width:
+                                                                                55,
+                                                                            decoration:
+                                                                                BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.indigo[700]),
+                                                                            child:
+                                                                                Center(
+                                                                              child: Text(
+                                                                                p,
+                                                                                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      }).toList(),
+                                                                    ),
+                                                                  );
+                                                                } else {
+                                                                  return SizedBox();
+                                                                }
+                                                              }),
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ),
-                                                );
-                                              } else {
-                                                return SizedBox();
-                                              }
-                                            }),
-                                      ],
-                                    ),
+                                                )),
+                                      // TAMBAH PESAN GURU KE WALI
+                                      MenuBawah(
+                                          title: 'Pesan',
+                                          icon: Icon(Icons.message_outlined),
+                                          onTap: () {}),
+
+                                      // TAMBAH MOTIVASI GURU KE WALI
+                                      MenuBawah(
+                                          title: 'Motivasi',
+                                          icon: Icon(
+                                              Icons.family_restroom_outlined),
+                                          onTap: () {}),
+
+                                      // TAMBAH MOTIVASI GURU KE WALI
+                                      MenuBawah(
+                                          title: 'Sekolah',
+                                          icon: Icon(Icons.info_outline),
+                                          onTap: () {}),
+                                    ],
                                   ),
+
+                                  SizedBox(height: 35),
                                   Text(
-                                    'PENGELOMPOKAN MENU (NANTI DI FILTER)',
+                                    'MENU MANAGEMENT',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 12,
@@ -419,85 +657,21 @@ class Contoh extends GetView<HomeController> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        GestureDetector(
-                                          onTap: () => Get.toNamed(
-                                              Routes.TAMBAH_KELAS_BARU),
-                                          child: ItemMenu(
-                                            title: '(+) Kelas',
-                                            icon: Icon(Icons.clean_hands_sharp,
-                                                color: Colors.blueAccent,
-                                                size: 40),
-                                          ),
-                                        ),
-                                        SizedBox(width: 20),
-                                        GestureDetector(
-                                          onTap: () => Get.toNamed(
-                                              Routes.TAMBAH_TAHUN_AJARAN),
-                                          child: ItemMenu(
-                                            title: 'Ajaran',
-                                            icon: Icon(
-                                                Icons
-                                                    .calendar_view_month_rounded,
-                                                color: Colors.deepPurple,
-                                                size: 40),
-                                          ),
-                                        ),
-                                        SizedBox(width: 20),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Get.toNamed(
-                                                Routes.BUAT_KELOMPOK_MENGAJI);
-                                            // controller.buatKelompokMengaji();
-                                          },
-                                          child: ItemMenu(
-                                            title: 'Kelompok',
-                                            icon: Icon(Icons.favorite,
-                                                color: Colors.red[800],
-                                                size: 40),
-                                          ),
-                                        ),
-                                        SizedBox(width: 20),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Get.toNamed(
-                                                Routes.TAMBAH_KELOMPOK_MENGAJI);
-                                            // controller.buatKelompokMengaji();
-                                          },
-                                          child: ItemMenu(
-                                            title: '(+) Kelompok',
-                                            icon: Icon(Icons.menu_book_sharp,
-                                                color: Colors.teal[800],
-                                                size: 40),
-                                          ),
-                                        ),
-                                        SizedBox(width: 20),
-                                        GestureDetector(
-                                          onTap: () =>
-                                              Get.toNamed(Routes.TAMBAH_SISWA),
-                                          child: ItemMenu(
-                                            title: '(+) Siswa',
-                                            icon: Icon(Icons.person, size: 40),
-                                          ),
-                                        ),
-                                        SizedBox(width: 20),
-                                        GestureDetector(
-                                          onTap: () => Get.toNamed(
-                                              Routes.PEMBERIAN_KELAS_SISWA),
-                                          child: ItemMenu(
-                                            title: 'Beri Kelas',
-                                            icon: Icon(Icons.grid_view_outlined,
-                                                size: 40),
-                                          ),
-                                        ),
-                                        SizedBox(width: 20),
-                                        GestureDetector(
-                                          onTap: () => Get.toNamed(
-                                              Routes.UPDATE_KELAS_TAHUN_AJARAN),
-                                          child: ItemMenu(
-                                            title: 'update Kelas',
-                                            icon: Icon(Icons.update, size: 40),
-                                          ),
-                                        ),
+                                        //TAMBAH KELAS
+                                        MenuManagement(
+                                            title: 'Tambah Kelas',
+                                            icon: Icon(Icons
+                                                .format_list_numbered_outlined),
+                                            onTap: () => Get.toNamed(
+                                                Routes.TAMBAH_KELAS_BARU),
+                                            colors: Colors.red),
+                                        // TAMBAH TAHUN AJARAN
+                                        MenuManagement(title: 'Tahun Ajaran', icon: Icon(Icons.calendar_month_outlined), onTap: () => Get.toNamed(Routes.TAMBAH_TAHUN_AJARAN), colors: Colors.indigo.shade600),
+                                        MenuManagement(title: 'Input Halaqoh', icon: Icon(Icons.add_box_outlined), onTap: () => Get.toNamed(Routes.TAMBAH_KELOMPOK_MENGAJI), colors: Colors.green.shade700),
+                                        MenuManagement(title: 'Input Siswa', icon: Icon(Icons.person_add_alt), onTap: () => Get.toNamed(Routes.TAMBAH_SISWA), colors: Colors.deepOrange.shade600),
+                                        MenuManagement(title: 'Input Kelas', icon: Icon(Icons.account_balance_rounded), onTap: () => Get.toNamed(Routes.PEMBERIAN_KELAS_SISWA), colors: Colors.grey.shade800),
+                                        MenuManagement(title: 'Update Kelas', icon: Icon(Icons.account_tree_outlined), onTap: () => Get.toNamed(Routes.UPDATE_KELAS_TAHUN_AJARAN), colors: Colors.teal.shade700),
+                                      
                                         SizedBox(width: 20),
                                         GestureDetector(
                                           onTap: () => Get.toNamed(
@@ -512,7 +686,7 @@ class Contoh extends GetView<HomeController> {
                                       ],
                                     ),
                                   ),
-                                  SizedBox(height: 30),
+                                  // SizedBox(height: 30),
                                   // FutureBuilder<Object>(
                                   //     future: controller.getDataSemuaKelas(),
                                   //     builder: (context, snapshot) {
@@ -577,6 +751,155 @@ class Contoh extends GetView<HomeController> {
             return Text('Data Kosong');
           }
         });
+  }
+}
+
+class MenuAtas extends StatelessWidget {
+  const MenuAtas({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.onTap,
+  });
+
+  final String title;
+  final Icon icon;
+  final Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, left: 10),
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: onTap,
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                color: Colors.indigo.shade500,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                  child: Icon(
+                icon.icon,
+                size: 40,
+                color: Colors.white,
+              )),
+            ),
+          ),
+          SizedBox(height: 3),
+          SizedBox(
+              width: 55,
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ))
+        ],
+      ),
+    );
+  }
+}
+
+class MenuBawah extends StatelessWidget {
+  const MenuBawah({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.onTap,
+  });
+
+  final String title;
+  final Icon icon;
+  final Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: onTap,
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                color: Colors.indigo.shade500,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                  child: Icon(
+                icon.icon,
+                size: 40,
+                color: Colors.white,
+              )),
+            ),
+          ),
+          SizedBox(height: 3),
+          SizedBox(
+              width: 55,
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black, fontSize: 12),
+              ))
+        ],
+      ),
+    );
+  }
+}
+
+class MenuManagement extends StatelessWidget {
+  const MenuManagement({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.onTap,
+    required this.colors,
+  });
+
+  final String title;
+  final Icon icon;
+  final Function() onTap;
+  final Color colors;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: onTap,
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                color: colors,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                  child: Icon(
+                icon.icon,
+                size: 40,
+                color: Colors.white,
+              )),
+            ),
+          ),
+          SizedBox(height: 3),
+          SizedBox(
+              width: 55,
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black, fontSize: 12),
+              ))
+        ],
+      ),
+    );
   }
 }
 

@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  card_swiper: ^3.0.1
   cloud_firestore: ^5.6.1
   convex: ^0.0.3+1
   convex_bottom_bar: ^3.2.0
