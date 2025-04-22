@@ -23,6 +23,8 @@ class HomeController extends GetxController {
   TextEditingController tempatC = TextEditingController();
   TextEditingController semesterC = TextEditingController();
   TextEditingController pengampuC = TextEditingController();
+  TextEditingController kelasBaruC = TextEditingController();
+  TextEditingController tahunAjaranBaruC = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -78,13 +80,13 @@ class HomeController extends GetxController {
     isLoading.value = true;
     String uid = auth.currentUser!.uid;
 
-    await firestore.collection('Pegawai').doc(uid).update({
+    await firestore.collection('Sekolah').doc(idSekolah).collection('pegawai').doc(uid).update({
       'nip': nipC.text,
       'nama': namaC.text,
       'email': emailC.text,
       'noHp': noHpC.text,
-      'alamat': alamatC.text,
-      'jabatan': jabatanC.text,
+      // 'alamat': alamatC.text,
+      // 'jabatan': jabatanC.text,
     });
 
     isLoading.value = false;
@@ -94,6 +96,8 @@ class HomeController extends GetxController {
       snackPosition: SnackPosition.BOTTOM,
     );
   }
+
+  
 
   // END REGION LAMA
 
@@ -453,37 +457,9 @@ class HomeController extends GetxController {
         semesterNya.isNotEmpty &&
         pengampuC.text.isNotEmpty) {
       try {
-        // buatIsiKelompokMengajiTahunAjaran();
         isiFieldPengampuKelompok();
         buatIsiSemester1();
         tambahDaftarKelompokPengampuAjar();
-
-        // await firestore
-        //     .collection('Sekolah')
-        //     .doc(idSekolah)
-        //     .collection('tahunajaran')
-        //     .doc(idTahunAjaran)
-        //     .collection('semester')
-        //     .doc(semesterNya)
-        //     .collection('kelompokmengaji')
-        //     .doc(idKelompokmengaji)
-        //     .collection('daftarsiswakelompok');
-            // .doc(null)
-            // .set({
-          // 'namasiswa': '',
-          // 'nisn': '',
-          // 'kelas': '',
-          // 'fase': '',
-          // 'tahunajaran': '',
-          // 'kelompoksiswa': '',
-          // 'semester': '',
-          // 'pengampu': '',
-          // 'idpengampu': idPengampu,
-          // 'emailpenginput': '',
-          // 'idpenginput': '',
-          // 'tanggalinput': DateTime.now(),
-          // 'idsiswa': '',
-        // });
       } catch (e) {
         Get.snackbar('Error', e.toString());
       }
@@ -493,8 +469,6 @@ class HomeController extends GetxController {
   }
 
   Future<void> buatKelompokMengaji() async {
-    // String tahunajaranya = await getTahunAjaranTerakhir();
-    // String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
     MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -503,125 +477,102 @@ class HomeController extends GetxController {
         body: Center(child: Text('data')),
       ),
     );
-    // Get.defaultDialog(
-    //     title: 'Konfirmasi',
-    //     middleText: 'Silahkan buat kelompok mengajinya',
-    //     actions: [
-    //       Column(
-    //         children: [
-    //           Padding(
-    //             padding: const EdgeInsets.all(10),
-    //             child: Row(
-    //               mainAxisAlignment: MainAxisAlignment.center,
-    //               children: [
-    //                 Text('TAHUN AJARAN :'),
-    //                 FutureBuilder<String>(
-    //                     future: getTahunAjaranTerakhir(),
-    //                     builder: (context, snapshot) {
-    //                       if (snapshot.connectionState ==
-    //                           ConnectionState.waiting) {
-    //                         return CircularProgressIndicator();
-    //                       } else if (snapshot.hasError) {
-    //                         return Text('Error');
-    //                       } else {
-    //                         return Text(
-    //                           snapshot.data ?? 'No Data',
-    //                           style: TextStyle(
-    //                               fontSize: 18, fontWeight: FontWeight.bold),
-    //                         );
-    //                       }
-    //                     }),
-    //               ],
-    //             ),
-    //           ),
-    //           SizedBox(
-    //             height: 50,
-    //             width: Get.width,
-    //             child: DropdownSearch<String>(
-    //               decoratorProps: DropDownDecoratorProps(
-    //                 decoration: InputDecoration(
-    //                   border: UnderlineInputBorder(),
-    //                   filled: true,
-    //                   labelText: 'Pengampu',
-    //                 ),
-    //               ),
-    //               selectedItem:
-    //                   pengampuC.text.isNotEmpty ? pengampuC.text : null,
-    //               items: (f, cs) => getDataPengampu(),
-    //               onChanged: (String? value) {
-    //                 if (value != null) {
-    //                   pengampuC.text = value;
-    //                   // print('ini onchange : ${pengampuC.text}');
-    //                 }
-    //               },
-    //               popupProps: PopupProps.menu(fit: FlexFit.tight),
-    //             ),
-    //           ),
-    //           SizedBox(height: 5),
-    //           SizedBox(
-    //             height: 50,
-    //             width: Get.width,
-    //             child: DropdownSearch<String>(
-    //               decoratorProps: DropDownDecoratorProps(
-    //                 decoration: InputDecoration(
-    //                   border: UnderlineInputBorder(),
-    //                   filled: true,
-    //                   labelText: 'Tempat',
-    //                 ),
-    //               ),
-    //               selectedItem: tempatC.text.isNotEmpty ? tempatC.text : null,
-    //               items: (f, cs) => getDataTempat(),
-    //               onChanged: (String? value) {
-    //                 if (value != null) {
-    //                   tempatC.text = value;
-    //                   // print('ini onchange : ${tempatC.text}');
-    //                 }
-    //               },
-    //               popupProps: PopupProps.menu(fit: FlexFit.tight),
-    //             ),
-    //           ),
-    //           SizedBox(height: 5),
-    //           SizedBox(
-    //             height: 50,
-    //             width: Get.width,
-    //             child: DropdownSearch<String>(
-    //               decoratorProps: DropDownDecoratorProps(
-    //                 decoration: InputDecoration(
-    //                   border: UnderlineInputBorder(),
-    //                   filled: true,
-    //                   labelText: 'Semester',
-    //                 ),
-    //               ),
-    //               selectedItem:
-    //                   semesterC.text.isNotEmpty ? semesterC.text : null,
-    //               items: (f, cs) => getDataSemester(),
-    //               onChanged: (String? value) {
-    //                 if (value != null) {
-    //                   semesterC.text = value;
-    //                   // print('ini onchange : ${semesterC.text}');
-    //                 }
-    //               },
-    //               popupProps: PopupProps.menu(fit: FlexFit.tight),
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //       OutlinedButton(
-    //           onPressed: () {
-    //             // isLoading.value = false;
-    //             // Get.back();
-    //             Get.offAllNamed(Routes.HOME);
-    //           },
-    //           child: Text('CANCEL')),
-    //       ElevatedButton(
-    //           onPressed: () {
-    //             tambahkanKelompokSiswa();
-    //             Get.offAllNamed(Routes.TAMBAH_KELOMPOK_MENGAJI);
-    //           },
-    //           child: Text('Buat'))
-    //     ]);
-    // }
+    
   }
-}// END REGION BARU
+
+  Future<void> simpanKelasBaru() async {
+    String idSekolah = 'UQjMpsKZKmWWbWVu4Uwb';
+    //ambil uid penginput
+    String uid = auth.currentUser!.uid;
+    String emailPenginput = auth.currentUser!.email!;
+
+    CollectionReference<Map<String, dynamic>> colKelas = firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('kelas');
+    QuerySnapshot<Map<String, dynamic>> snapshotKelas =
+        await colKelas.get();
+    List<Map<String, dynamic>> listKelas =
+        snapshotKelas.docs.map((e) => e.data()).toList();
+
+    // buat documen id buat tahun kelas
+    String idKelas = kelasBaruC.text;
+
+    if (listKelas.elementAt(0)['namakelas'] != kelasBaruC.text) {
+      if (!listKelas
+          .any((element) => element['namakelas'] == kelasBaruC.text)) {
+        //belum input tahun kelas yang baru, maka bikin tahun kelas baru
+        colKelas.doc(idKelas).set({
+          'namakelas': kelasBaruC.text,
+          'idpenginput': uid,
+          'emailpenginput' : emailPenginput,
+          'tanggalinput': DateTime.now().toString(),
+          'idkelas' : idKelas,
+        }).then(
+          (value) {
+              Get.snackbar('Berhasil', 'Kelas Baru Berhasil Dibuat');
+              kelasBaruC.text = "";
+          }
+        );
+      } else {
+        Get.snackbar('Gagal', 'Kelas Sudah Ada');
+      } 
+    }
+  }
+
+  Future<void> simpanTahunAjaran() async {
+    String idSekolah = 'UQjMpsKZKmWWbWVu4Uwb';
+    String uid = auth.currentUser!.uid;
+    String emailPenginput = auth.currentUser!.email!;
+
+    DocumentReference<Map<String, dynamic>> ambilDataPenginput = firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('pegawai')
+        .doc(uid);
+
+    DocumentSnapshot<Map<String, dynamic>> snapDataPenginput =
+        await ambilDataPenginput.get();
+
+    CollectionReference<Map<String, dynamic>> colTahunAjaran = firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran');
+    QuerySnapshot<Map<String, dynamic>> snapshotTahunAjaran =
+        await colTahunAjaran.get();
+    List<Map<String, dynamic>> listTahunAjaran =
+        snapshotTahunAjaran.docs.map((e) => e.data()).toList();
+
+    //ambil namatahunajaranya
+    listTahunAjaran.map((e) => e['namatahunajaran']).toList();
+
+    // buat documen id buat tahun ajaran
+    String idTahunAjaran = tahunAjaranBaruC.text.replaceAll("/", "-");
+
+    if (listTahunAjaran.elementAt(0)['namatahunajaran'] != tahunAjaranBaruC.text) {
+      if (!listTahunAjaran
+          .any((element) => element['namatahunajaran'] == tahunAjaranBaruC.text)) {
+        //belum input tahun ajaran yang baru, maka bikin tahun ajaran baru
+        colTahunAjaran.doc(idTahunAjaran).set({
+          'namatahunajaran': tahunAjaranBaruC.text,
+          'idpenginput': uid,
+          'emailpenginput': emailPenginput,
+          'namapenginput': snapDataPenginput.data()?['nama'],
+          'tanggalinput': DateTime.now().toString(),
+          'idtahunajaran': idTahunAjaran,
+        }).then(
+          (value) => {
+              Get.snackbar('Berhasil', 'Tahun ajaran sudah berhasil dibuat'),
+              tahunAjaranBaruC.text = ""
+          }
+        );
+      } else {
+        Get.snackbar('Gagal', 'Tahun ajaran sudah ada');
+      }
+      // Get.back();
+    }
+    // Get.back();
+  }
+}
 
 

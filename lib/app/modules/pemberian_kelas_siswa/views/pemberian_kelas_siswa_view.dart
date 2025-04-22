@@ -13,74 +13,80 @@ class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PemberianKelasSiswaView'),
+        title: const Text('Input Kelas Siswa'),
         centerTitle: true,
       ),
       body: Column(
         children: [
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Tahun Ajaran : '),
-                  FutureBuilder<String>(
-                      future: controller.getTahunAjaranTerakhir(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        } else if (snapshot.hasError) {
-                          return Text('Error');
-                        } else {
-                          return Text(
-                            snapshot.data ?? 'No Data',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          );
-                        }
-                      }),
-                ],
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Tahun Ajaran : '),
+                    SizedBox(height: 20),
+                    FutureBuilder<String>(
+                        future: controller.getTahunAjaranTerakhir(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text('Error');
+                          } else {
+                            return Text(
+                              snapshot.data ?? 'No Data',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            );
+                          }
+                        }),
+                  ],
+                ),
+                SizedBox(height: 20),
+                DropdownSearch<String>(
+              decoratorProps: DropDownDecoratorProps(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  prefixText: 'Wali kelas : ',
+                ),
               ),
-            ],
-          ),
-          DropdownSearch<String>(
-            decoratorProps: DropDownDecoratorProps(
-              decoration: InputDecoration(
-                border: UnderlineInputBorder(),
-                filled: true,
-                prefixText: 'Wali kelas : ',
-              ),
+              // selectedItem: controller.kelasSiswaC.text,
+              selectedItem: controller.idPegawaiC.text,
+              items: (f, cs) => controller.getDataWaliKelas(),
+              onChanged: (String? value) {
+                controller.waliKelasSiswaC.text = value!;
+                controller.idPegawaiC.text = value;
+              },
+              popupProps: PopupProps.menu(
+                  // disabledItemFn: (item) => item == '1A',
+                  fit: FlexFit.tight),
             ),
-            // selectedItem: controller.kelasSiswaC.text,
-            selectedItem: controller.idPegawaiC.text,
-            items: (f, cs) => controller.getDataWaliKelas(),
-            onChanged: (String? value) {
-              controller.waliKelasSiswaC.text = value!;
-              controller.idPegawaiC.text = value;
-            },
-            popupProps: PopupProps.menu(
-                // disabledItemFn: (item) => item == '1A',
-                fit: FlexFit.tight),
-          ),
-          SizedBox(height: 10),
-          DropdownSearch<String>(
-            decoratorProps: DropDownDecoratorProps(
-              decoration: InputDecoration(
-                border: UnderlineInputBorder(),
-                filled: true,
-                prefixText: 'kelas : ',
+            SizedBox(height: 10),
+            DropdownSearch<String>(
+              decoratorProps: DropDownDecoratorProps(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  prefixText: 'kelas : ',
+                ),
               ),
+              selectedItem: controller.kelasSiswaC.text,
+              items: (f, cs) => controller.getDataKelas(),
+              onChanged: (String? value) {
+                controller.kelasSiswaC.text = value!;
+              },
+              popupProps: PopupProps.menu(
+                  // disabledItemFn: (item) => item == '1A',
+                  fit: FlexFit.tight),
             ),
-            selectedItem: controller.kelasSiswaC.text,
-            items: (f, cs) => controller.getDataKelas(),
-            onChanged: (String? value) {
-              controller.kelasSiswaC.text = value!;
-            },
-            popupProps: PopupProps.menu(
-                // disabledItemFn: (item) => item == '1A',
-                fit: FlexFit.tight),
+              ],
+            ),
           ),
+          
           SizedBox(height: 10),
           Expanded(
             child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(

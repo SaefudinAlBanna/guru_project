@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
-import 'package:card_swiper/card_swiper.dart';
+// import 'package:card_swiper/card_swiper.dart';
 
 class Contoh extends GetView<HomeController> {
   const Contoh({super.key});
@@ -230,43 +229,43 @@ class Contoh extends GetView<HomeController> {
                                                                 Axis.horizontal,
                                                             child:
                                                                 GestureDetector(
-                                                                  onTap: () {
-                                                                    Get.toNamed(
-                                                                      Routes
-                                                                          .DAFTAR_KELAS,
-                                                                      arguments:
-                                                                          k);
-                                                                          // Get.back();
-                                                                          // Navigator.of(context).pop();
-                                                                  },
-                                                                  child: Container(
-                                                                    margin: EdgeInsets
-                                                                        .only(
-                                                                            left:
-                                                                                10),
-                                                                    height: 65,
-                                                                    width: 55,
-                                                                    decoration: BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                10),
+                                                              onTap: () {
+                                                                Get.toNamed(
+                                                                    Routes
+                                                                        .DAFTAR_KELAS,
+                                                                    arguments:
+                                                                        k);
+                                                                // Get.back();
+                                                                // Navigator.of(context).pop();
+                                                              },
+                                                              child: Container(
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            10),
+                                                                height: 65,
+                                                                width: 55,
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10),
+                                                                    color: Colors
+                                                                            .indigo[
+                                                                        700]),
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    k,
+                                                                    style: TextStyle(
                                                                         color: Colors
-                                                                                .indigo[
-                                                                            700]),
-                                                                    child: Center(
-                                                                      child: Text(
-                                                                        k,
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .white,
-                                                                            fontSize:
-                                                                                14,
-                                                                            fontWeight:
-                                                                                FontWeight.bold),
-                                                                      ),
-                                                                    ),
+                                                                            .white,
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
                                                                   ),
                                                                 ),
+                                                              ),
+                                                            ),
                                                           );
                                                         }).toList(),
                                                       ),
@@ -377,7 +376,8 @@ class Contoh extends GetView<HomeController> {
                                     title: 'Ekskul',
                                     icon: Icon(Icons.sports_gymnastics_rounded),
                                     onTap: () => Get.defaultDialog(
-                                        title: 'Ekskul',
+                                        onCancel: Get.back,
+                                        title: 'Update Kelas',
                                         middleText: 'Fitur dalam pengembangan'),
                                   ),
                                   //KOORDINATOR HALAQOH
@@ -453,8 +453,9 @@ class Contoh extends GetView<HomeController> {
                                         GestureDetector(
                                           onTap: () {
                                             Get.defaultDialog(
-                                              title: "Tampilkan 1",
-                                              middleText: "isi Content",
+                                              onCancel: Get.back,
+                                              title: "Fitur Menu",
+                                              middleText: "Dalam pengembangan",
                                             );
                                           },
                                           child: Container(
@@ -478,8 +479,9 @@ class Contoh extends GetView<HomeController> {
                                         GestureDetector(
                                           onTap: () {
                                             Get.defaultDialog(
-                                              title: "Tampilkan 2",
-                                              middleText: "isi Content",
+                                              onCancel: Get.back,
+                                              title: "Fitur Andalan",
+                                              middleText: "Dalam pengembangan",
                                             );
                                           },
                                           child: Container(
@@ -499,8 +501,9 @@ class Contoh extends GetView<HomeController> {
                                         GestureDetector(
                                           onTap: () {
                                             Get.defaultDialog(
-                                              title: "Tampilkan 3",
-                                              middleText: "isi Content",
+                                              onCancel: Get.back,
+                                              title: "Fitur Istimewa",
+                                              middleText: "Dalam pengembangan",
                                             );
                                           },
                                           child: Container(
@@ -539,7 +542,12 @@ class Contoh extends GetView<HomeController> {
                                             icon: Icon(Icons.hotel_class_sharp),
                                             onTap: () => Get.defaultDialog(
                                                   onCancel: () => Get.back(),
-                                                  title: 'Daftar Fase',
+                                                  title: 'Halaqoh Per Fase',
+                                                  middleText:
+                                                      'klik tombol fase',
+                                                  middleTextStyle: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16),
                                                   content: SizedBox(
                                                     height: 200,
                                                     width: 200,
@@ -578,9 +586,6 @@ class Contoh extends GetView<HomeController> {
                                                                           onTap: () => Get.toNamed(
                                                                               Routes.DAFTAR_HALAQOH_PERFASE,
                                                                               arguments: p),
-                                                                          // onTap: () => Get.toNamed(
-                                                                          //     Routes.DAFTAR_KELAS,
-                                                                          //     arguments: p),
                                                                           child:
                                                                               Container(
                                                                             margin:
@@ -662,70 +667,186 @@ class Contoh extends GetView<HomeController> {
                                             title: 'Tambah Kelas',
                                             icon: Icon(Icons
                                                 .format_list_numbered_outlined),
-                                            onTap: () => Get.toNamed(
-                                                Routes.TAMBAH_KELAS_BARU),
+                                            // onTap: () => Get.toNamed(Routes.TAMBAH_KELAS_BARU),
+                                            onTap: () {
+                                              Get.defaultDialog(
+                                                  onCancel: () => Get.back(),
+                                                  title: 'Tambah Kelas Baru',
+                                                  middleText:
+                                                      'Silahkan tambahkan kelas baru',
+                                                  content: Column(
+                                                    children: [
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            'Masukan Kelas Baru',
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          SizedBox(height: 10),
+                                                          TextField(
+                                                            textCapitalization:
+                                                                TextCapitalization
+                                                                    .sentences,
+                                                            controller:
+                                                                controller
+                                                                    .kelasBaruC,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              border:
+                                                                  OutlineInputBorder(),
+                                                              labelText:
+                                                                  'Nama Kelas',
+                                                            ),
+                                                          ),
+                                                          SizedBox(height: 20),
+                                                          Center(
+                                                            child:
+                                                                ElevatedButton(
+                                                              onPressed: () {
+                                                                controller
+                                                                    .simpanKelasBaru();
+                                                                Get.back();
+                                                              },
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal:
+                                                                            40,
+                                                                        vertical:
+                                                                            15),
+                                                                textStyle:
+                                                                    TextStyle(
+                                                                        fontSize:
+                                                                            16),
+                                                              ),
+                                                              child: Text(
+                                                                  'Simpan'),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ));
+                                            },
                                             colors: Colors.red),
                                         // TAMBAH TAHUN AJARAN
-                                        MenuManagement(title: 'Tahun Ajaran', icon: Icon(Icons.calendar_month_outlined), onTap: () => Get.toNamed(Routes.TAMBAH_TAHUN_AJARAN), colors: Colors.indigo.shade600),
-                                        MenuManagement(title: 'Input Halaqoh', icon: Icon(Icons.add_box_outlined), onTap: () => Get.toNamed(Routes.TAMBAH_KELOMPOK_MENGAJI), colors: Colors.green.shade700),
-                                        MenuManagement(title: 'Input Siswa', icon: Icon(Icons.person_add_alt), onTap: () => Get.toNamed(Routes.TAMBAH_SISWA), colors: Colors.deepOrange.shade600),
-                                        MenuManagement(title: 'Input Kelas', icon: Icon(Icons.account_balance_rounded), onTap: () => Get.toNamed(Routes.PEMBERIAN_KELAS_SISWA), colors: Colors.grey.shade800),
-                                        MenuManagement(title: 'Update Kelas', icon: Icon(Icons.account_tree_outlined), onTap: () => Get.toNamed(Routes.UPDATE_KELAS_TAHUN_AJARAN), colors: Colors.teal.shade700),
-                                      
-                                        SizedBox(width: 20),
-                                        GestureDetector(
-                                          onTap: () => Get.toNamed(
-                                              Routes.DAFTAR_KELOMPOK_MENGAJI),
-                                          child: ItemMenu(
-                                            title: 'kelompok',
+                                        MenuManagement(
+                                            title: 'Tahun Ajaran',
                                             icon: Icon(
-                                                Icons.star_border_outlined,
-                                                size: 40),
-                                          ),
-                                        ),
+                                                Icons.calendar_month_outlined),
+                                            // onTap: () => Get.toNamed(Routes.TAMBAH_TAHUN_AJARAN),
+                                            onTap: () {
+                                              Get.defaultDialog(
+                                                  onCancel: () => Get.back(),
+                                                  title: 'Tahun Ajaran Baru',
+                                                  middleText:
+                                                      'Silahkan tambahkan tahun ajaran baru',
+                                                  content: Column(
+                                                    children: [
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            'tahun ajaran baru',
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          SizedBox(height: 10),
+                                                          TextField(
+                                                            textCapitalization:
+                                                                TextCapitalization
+                                                                    .sentences,
+                                                            controller: controller
+                                                                .tahunAjaranBaruC,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              border:
+                                                                  OutlineInputBorder(),
+                                                              labelText:
+                                                                  'Tahun Ajaran',
+                                                            ),
+                                                          ),
+                                                          SizedBox(height: 20),
+                                                          Center(
+                                                            child:
+                                                                ElevatedButton(
+                                                              onPressed: () {
+                                                                controller
+                                                                    .simpanTahunAjaran();
+                                                                Get.back();
+                                                              },
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal:
+                                                                            40,
+                                                                        vertical:
+                                                                            15),
+                                                                textStyle:
+                                                                    TextStyle(
+                                                                        fontSize:
+                                                                            16),
+                                                              ),
+                                                              child: Text(
+                                                                  'Simpan'),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ));
+                                            },
+                                            colors: Colors.indigo.shade600),
+                                        MenuManagement(
+                                            title: 'Input Halaqoh',
+                                            icon: Icon(Icons.add_box_outlined),
+                                            onTap: () => Get.toNamed(
+                                                Routes.TAMBAH_KELOMPOK_MENGAJI),
+                                            colors: Colors.green.shade700),
+                                        MenuManagement(
+                                            title: 'Input Siswa',
+                                            icon: Icon(Icons.person_add_alt),
+                                            onTap: () => Get.toNamed(
+                                                Routes.TAMBAH_SISWA),
+                                            colors: Colors.deepOrange.shade600),
+                                        MenuManagement(
+                                            title: 'Input Kelas',
+                                            icon: Icon(
+                                                Icons.account_balance_rounded),
+                                            onTap: () => Get.toNamed(
+                                                Routes.PEMBERIAN_KELAS_SISWA),
+                                            colors: Colors.grey.shade800),
+                                        MenuManagement(
+                                            title: 'Update Kelas',
+                                            icon: Icon(
+                                                Icons.account_tree_outlined),
+                                            onTap: () => Get.defaultDialog(
+                                                title: 'Ekskul',
+                                                middleText:
+                                                    'Fitur dalam pengembangan'),
+                                            // Get.toNamed(Routes.UPDATE_KELAS_TAHUN_AJARAN),
+                                            colors: Colors.teal.shade700),
+
+                                        
                                       ],
                                     ),
                                   ),
-                                  // SizedBox(height: 30),
-                                  // FutureBuilder<Object>(
-                                  //     future: controller.getDataSemuaKelas(),
-                                  //     builder: (context, snapshot) {
-                                  //       if (snapshot.connectionState ==
-                                  //           ConnectionState.waiting) {
-                                  //         return CircularProgressIndicator();
-                                  //       } else if (snapshot.hasData) {
-                                  //         List<String> kelasAjarGuru =
-                                  //             snapshot.data as List<String>;
-                                  //         return SingleChildScrollView(
-                                  //           scrollDirection: Axis.horizontal,
-                                  //           child: Container(
-                                  //             color: Colors.amber,
-                                  //             child: Row(
-                                  //               children:
-                                  //                   kelasAjarGuru.map((k) {
-                                  //                 return TextButton(
-                                  //                   onPressed: () {
-                                  //                     Get.toNamed(
-                                  //                         Routes.DAFTAR_KELAS,
-                                  //                         arguments: k);
-                                  //                   },
-                                  //                   child: Text(
-                                  //                     k,
-                                  //                     style: TextStyle(
-                                  //                         color: Colors.black,
-                                  //                         fontSize: 14,
-                                  //                         fontWeight:
-                                  //                             FontWeight.bold),
-                                  //                   ),
-                                  //                 );
-                                  //               }).toList(),
-                                  //             ),
-                                  //           ),
-                                  //         );
-                                  //       } else {
-                                  //         return SizedBox();
-                                  //       }
-                                  //     }),
                                   SizedBox(height: 30),
                                   Container(
                                     decoration: BoxDecoration(
@@ -919,7 +1040,7 @@ class ItemMenu extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
+        SizedBox(
           height: 40,
           width: 40,
           child: icon,

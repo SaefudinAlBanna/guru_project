@@ -162,34 +162,6 @@ class TambahKelompokMengajiController extends GetxController {
         .snapshots();
   }
 
-  Future<void> test() async {
-    String tahunajaranya = await getTahunAjaranTerakhir();
-    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
-    String semesterNya = 
-    (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
-
-    DocumentReference<Map<String, dynamic>> docKelompok = await firestore
-            .collection('Sekolah')
-            .doc(idSekolah)
-            .collection('tahunajaran')
-            .doc(idTahunAjaran)
-            .collection('semester')
-            .doc(semesterNya)
-            .collection('kelompokmengaji')
-            .doc(faseC.text);
-
-       DocumentSnapshot<Map<String, dynamic>> snapKelompok = await docKelompok.get();
-
-
-       if(snapKelompok.data()?.length == 0) {
-        print('data kosong');
-       } else {
-        print('data ada ${snapKelompok.data()?.length}');
-        print('-------------------------');
-        print('datanya : ${snapKelompok.data()}');
-       }
-  }
-
   Future<void> buatKelompok() async {
 
     String tahunajaranya = await getTahunAjaranTerakhir();
@@ -216,21 +188,6 @@ class TambahKelompokMengajiController extends GetxController {
         // buatIsiKelompokMengajiTahunAjaran();
         isiFieldPengampuKelompok();
         buatIsiSemester1();
-        // tambahDaftarKelompokPengampuAjar(nisnSiswa, namaSiswa);
-
-      //  DocumentReference<Map<String, dynamic>> docKelompok = await firestore
-      //       .collection('Sekolah')
-      //       .doc(idSekolah)
-      //       .collection('tahunajaran')
-      //       .doc(idTahunAjaran)
-      //       .collection('semester')
-      //       .doc(semesterNya)
-      //       .collection('kelompokmengaji')
-      //       .doc(faseC.text);
-
-      //  DocumentSnapshot<Map<String, dynamic>> snapKelompok = await docKelompok.get();
-
-      //  if(snapKelompok.data().length == 0)
         
 
         await firestore

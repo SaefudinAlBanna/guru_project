@@ -12,7 +12,7 @@ class DaftarKelasView extends GetView<DaftarKelasController> {
 
   @override
   Widget build(BuildContext context) {
-    print('tampilkan $dataxx');
+    // print('tampilkan $dataxx');
     return Scaffold(
       appBar: AppBar(
         title: Text('Kelas $dataxx'),

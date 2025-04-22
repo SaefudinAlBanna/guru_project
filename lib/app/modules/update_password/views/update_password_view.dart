@@ -9,58 +9,59 @@ class UpdatePasswordView extends GetView<UpdatePasswordController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Update Password'),
-        centerTitle: true,
-      ),
-      body: ListView(
-        children: [
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              obscureText: true,
-              autocorrect: false,
-              controller: controller.oldPasswordController,
-              decoration: const InputDecoration(
-                labelText: 'Old Password',
+        appBar: AppBar(
+          title: const Text('Update Password'),
+          centerTitle: true,
+        ),
+        body: ListView(
+          children: [
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                obscureText: true,
+                autocorrect: false,
+                controller: controller.oldPasswordController,
+                decoration: const InputDecoration(
+                  labelText: 'Old Password',
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              obscureText: true,
-              autocorrect: false,
-              controller: controller.newPasswordController,
-              decoration: const InputDecoration(
-                labelText: 'New Password',
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                obscureText: true,
+                autocorrect: false,
+                controller: controller.newPasswordController,
+                decoration: const InputDecoration(
+                  labelText: 'New Password',
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              obscureText: true,
-              autocorrect: false,
-              controller: controller.confirmPasswordController,
-              decoration: const InputDecoration(
-                labelText: 'Confirm Password',
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                obscureText: true,
+                autocorrect: false,
+                controller: controller.confirmPasswordController,
+                decoration: const InputDecoration(
+                  labelText: 'Confirm Password',
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () {
-                controller.updatePassword();
-              },
-              child: const Text('Update Password'),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Obx(() => ElevatedButton(
+                    onPressed: () {
+                      if(controller.isLoading.isFalse) {
+                      controller.updatePassword();
+                      }
+                    },
+                    child: Text((controller.isLoading.isFalse) ? "UPDATE" : "Loading.." ),
+                  )),
             ),
-          ),
-        ],
-      )
-    );
+          ],
+        ));
   }
 }

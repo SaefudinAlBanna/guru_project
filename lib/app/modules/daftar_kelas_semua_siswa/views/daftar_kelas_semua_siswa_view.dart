@@ -57,7 +57,7 @@ class DaftarKelasSemuaSiswaView
                               return TextButton(
                                 onPressed: () {
                                   // Get.toNamed(Routes.DAFTAR_KELAS, arguments: k);
-                                  print(k);
+                                  // print(k);
                                 },
                                 child: Text(k, style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),),
                               );

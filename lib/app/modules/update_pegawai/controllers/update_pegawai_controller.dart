@@ -16,12 +16,14 @@ class UpdatePegawaiController extends GetxController {
   // FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  String idSekolah = 'UQjMpsKZKmWWbWVu4Uwb';
+
   // void updateProfile() async {
   Future<void> updateProfile(String uid) async {
     isLoading.value = true;
     // String uid = auth.currentUser!.uid;
     if(namaC.text.isNotEmpty && noHpC.text.isNotEmpty) {
-      await firestore.collection('Pegawai').doc(uid).update({
+      await firestore.collection('Sekolah').doc(idSekolah).collection('pegawai').doc(uid).update({
         'nama': namaC.text,
         'noHp': noHpC.text,
        });

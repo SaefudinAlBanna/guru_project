@@ -176,79 +176,7 @@ class TambahSiswaKelompokController extends GetxController {
     throw Exception('No data found for testAmbilTempat');
   }
 
-  Future<void> testAmbilTempat() async {
-    String tahunajaranya = await getTahunAjaranTerakhir();
-    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
-
-    QuerySnapshot<Map<String, dynamic>> querySnapshotKelompok = await firestore
-        .collection('Sekolah')
-        .doc(idSekolah)
-        .collection('pegawai')
-        .where('alias', isEqualTo: argumenPengampu)
-        .get();
-    if (querySnapshotKelompok.docs.isNotEmpty) {
-      Map<String, dynamic> dataGuru = querySnapshotKelompok.docs.first.data();
-      String idPengampu = dataGuru['uid'];
-
-      QuerySnapshot<Map<String, dynamic>> querySnapshotSemester =
-          await firestore
-              .collection('Sekolah')
-              .doc(idSekolah)
-              .collection('pegawai')
-              .doc(idPengampu)
-              .collection('tahunajarankelompok')
-              .doc(idTahunAjaran)
-              .collection('semester')
-              .get();
-      if (querySnapshotSemester.docs.isNotEmpty) {
-        Map<String, dynamic> dataSemester =
-            querySnapshotSemester.docs.last.data();
-        String semesterNya = dataSemester['namasemester'];
-
-        QuerySnapshot<Map<String, dynamic>> querySnapshotFase = await firestore
-            .collection('Sekolah')
-            .doc(idSekolah)
-            .collection('pegawai')
-            .doc(idPengampu)
-            .collection('tahunajarankelompok')
-            .doc(idTahunAjaran)
-            .collection('semester')
-            .doc(semesterNya)
-            .collection('kelompokmengaji')
-            .get();
-        if (querySnapshotFase.docs.isNotEmpty) {
-          Map<String, dynamic> dataFase = querySnapshotFase.docs.last.data();
-          String faseNya = dataFase['fase'];
-
-          QuerySnapshot<Map<String, dynamic>> querySnapshotTempat =
-              await firestore
-                  .collection('Sekolah')
-                  .doc(idSekolah)
-                  .collection('pegawai')
-                  .doc(idPengampu)
-                  .collection('tahunajarankelompok')
-                  .doc(idTahunAjaran)
-                  .collection('semester')
-                  .doc(semesterNya)
-                  .collection('kelompokmengaji')
-                  .doc(faseNya)
-                  .collection('tempat')
-                  .orderBy('tanggalinput')
-                  .get();
-          if (querySnapshotTempat.docs.isNotEmpty) {
-            Map<String, dynamic> dataTempat =
-                querySnapshotTempat.docs.last.data();
-            String tempatNya = dataTempat['tempatmengaji'];
-
-            print('ini tempatnya : $tempatNya');
-            print('ini fasenya : $faseNya');
-            print('ini semesternya : $semesterNya');
-          }
-        }
-      }
-    }
-    // throw Exception('No data found for testAmbilTempat');
-  }
+  
 
   Future<String> getPengampu() {
     String pengampuNya = argumenPengampu.toString();
@@ -344,7 +272,7 @@ class TambahSiswaKelompokController extends GetxController {
         .where('statuskelompok', isEqualTo: 'baru')
         .snapshots();
 
-    print('ini kelasnya : ${kelasSiswaC.text}');
+    // print('ini kelasnya : ${kelasSiswaC.text}');
   }
 
   Future<void> isiTahunAjaranKelompokPadaPegawai() async {
@@ -703,7 +631,7 @@ class TambahSiswaKelompokController extends GetxController {
         }
       }
     }
-    print('sudah d klik');
+    // print('sudah d klik');
   }
 
   Future<void> tambahkanKelompokSiswa(

@@ -49,7 +49,7 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                             tooltip: 'Lihat',
                             icon: const Icon(Icons.arrow_circle_right_outlined),
                             onPressed: () {
-                              Get.toNamed(Routes.DAFTAR_HALAQOH, arguments: doc);
+                              Get.toNamed(Routes.DAFTAR_NILAI, arguments: doc);
                             },
                           ),
                         ],

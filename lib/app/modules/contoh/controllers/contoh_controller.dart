@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:guru_project/app/modules/contoh/views/contoh_view.dart';
+// import 'package:guru_project/app/modules/contoh/views/contoh_view.dart';
 import 'package:intl/intl.dart';
 
 class ContohController extends GetxController {
@@ -32,8 +32,8 @@ class ContohController extends GetxController {
         // print('nilaiC : ${nilaiC.text}');
         // print('keteranganGuruC : ${keteranganGuruC.text}');
 
-        DateTime now = DateTime.now();
-          print(DateFormat.yMd().format(now));
+        // DateTime now = DateTime.now();
+          // print(DateFormat.yMd().format(now));
       }
 
       Future<void> simpanNilai() async {
@@ -42,7 +42,7 @@ class ContohController extends GetxController {
           String idTahunAjaran = idTahunAjaranNya.replaceAll("/", "-");
 
 
-        CollectionReference<Map<String, dynamic>> colNilai =  await firestore
+        CollectionReference<Map<String, dynamic>> colNilai =  firestore
             .collection('Sekolah')
             .doc(idSekolah)
             .collection('tahunajaran')
@@ -90,7 +90,6 @@ class ContohController extends GetxController {
               "keteranganorangtua" : "0"
               });
 
-              print('Berhasil');
 
               Get.snackbar('Informasi', 'Berhasil input nilai',
               snackPosition: SnackPosition.BOTTOM,

@@ -53,12 +53,8 @@ class TambahSiswaController extends GetxController {
         .map((e) => e['namatahunajaran'])
         .toList()
         .last;
-    print(tahunAjaranTerakhir);
+    // print(tahunAjaranTerakhir);
     return tahunAjaranTerakhir;
-  }
-
-  Future<void> test() async{
-    print(getTahunAjaranTerakhir());
   }
 
   Future<void> siswaDitambahkan() async {
@@ -72,42 +68,7 @@ class TambahSiswaController extends GetxController {
           email: emailOrangTuaController.text,
           password: 'password',
         );
-        print(siswaCredential);
-
-        // if (siswaCredential.user != null) {
-        //   String uid = siswaCredential.user!.uid;
-
-        //   await firestore.collection("Siswa").doc(uid).set({
-        //     "nama": namaSiswaController.text,
-        //     "kelas": kelasSiswaController.text,
-        //     "jenisKelamin": jenisKelaminSiswaController.text,
-        //     "agama": agamaSiswaController.text,
-        //     "tempatLahir": tempatLahirSiswaController.text,
-        //     "tanggalLahir": tanggalLahirSiswaController.text,
-        //     "alamat": alamatSiswaController.text,
-        //     "waliKelas": waliKelasSiswaController.text,
-        //     "namaAyah": namaAyahController.text,
-        //     "namaIbu": namaIbuController.text,
-        //     "emailOrangTua": emailOrangTuaController.text,
-        //     "noHpOrangTua": noHpOrangTuaController.text,
-        //     "alamatOrangTua": alamatOrangTuaController.text,
-        //     "pekerjaanAyah": pekerjaanAyahController.text,
-        //     "pekerjaanIbu": pekerjaanIbuController.text,
-        //     "pendidikanAyah": pendidikanAyahController.text,
-        //     "pendidikanIbu": pendidikanIbuController.text,
-        //     "noHpWali": noHpWaliController.text,
-        //     "alamatWali": alamatWaliController.text,
-        //     "pekerjaanWali": pekerjaanWaliController.text,
-        //     "pendidikanWali": pendidikanWaliController.text,
-        //     "biayaSpp": biayaSppController.text,
-        //     "biayaUangPangkal": biayaUangPangkalController.text,
-        //     "uid": uid,
-        //     "createdAt": DateTime.now().toIso8601String(),
-        //     "createdByEmail": emailAdmin,
-        //     "createdById": auth.currentUser!.uid,
-        //     // "createdByName" : auth.currentUser!.
-        //     "status": "Siswa",
-        //   });
+        
 
         //======================================================
 
@@ -365,29 +326,5 @@ class TambahSiswaController extends GetxController {
     biayaSppController.dispose();
     biayaUangPangkalController.dispose();
   }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  // @override
-  // void onInactive() {
-  //   // super.onInactive();
-  // }
-
-  // @override
-  // void onResumed() {
-  //   // super.onResumed();
-  // }
-
-  // @override
-  // void onSuspended() {
-  //   // super.onSuspended();
-  // }
+  
 }

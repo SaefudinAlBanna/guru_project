@@ -81,22 +81,7 @@ class DaftarHalaqohPengampuView
                             onTap:() {
                               Map<String, dynamic> dataNya = snapshot.data!.docs[index].data();
                               Get.toNamed(Routes.DAFTAR_NILAI, arguments: dataNya);
-                              // Map<String, dynamic> dataNya = snapshot.data!.docs[index].data();
-                              // Get.toNamed(Routes.DAFTAR_NILAI,);
-
-                              // Get.toNamed(Routes.DAFTAR_NILAI, arguments: snapshot.data!.docs[index].data()['namasiswa']);
-                              // Get.dialog(AlertDialog(
-                              //   title: Text('Fitur dalam pengembangan'),
-                              //   actions: <Widget>[
-                              //     TextButton(
-                              //       child: const Text('Ok'),
-                              //       onPressed: () {
-                              //         Navigator.of(context).pop();
-                              //       },
-                              //     ),
-                              //   ],
-                              // ));
-                            } ,
+                            },
                             child: SizedBox(
                                 height: 40,
                                 width: 40,

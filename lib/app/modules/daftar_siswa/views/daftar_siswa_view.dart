@@ -73,7 +73,7 @@ class DaftarSiswaView extends GetView<DaftarSiswaController> {
                     onPressed: () {
                       // Get.toNamed('/detail_siswa', arguments: controller.daftarSiswa[index]);
                       // Get.toNamed(Routes.DETAIL_SISWA);
-                      print(data.length);
+                      // print(data.length);
                     },
                   ),
                 ),

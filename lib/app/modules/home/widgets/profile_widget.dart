@@ -144,6 +144,10 @@ class ProfileWidget extends GetView<HomeController> {
           icon: const Icon(Icons.vpn_key_outlined, size: 25, color: Colors.grey),
         ),
         IconButton(
+          onPressed: () => Get.toNamed(Routes.FORGOT_PASSWORD),
+          icon: const Icon(Icons.abc, size: 25, color: Colors.grey),
+        ),
+        IconButton(
           onPressed: () => Get.toNamed(Routes.UPDATE_PEGAWAI, arguments: data),
           icon: const Icon(Icons.change_circle_outlined, size: 25, color: Colors.grey),
         ),
