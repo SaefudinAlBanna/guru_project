@@ -62,36 +62,6 @@ class Contoh extends GetView<HomeController> {
                         fit: BoxFit.contain),
                   ),
                 ),
-                // actions: [
-                //   if (snapshot.connectionState == ConnectionState.waiting)
-                //     Center(
-                //       child: CircularProgressIndicator(),
-                //     )
-                //   else if (snapshot.data!.data()!['role'] == 'admin')
-                //     IconButton(
-                //       onPressed: () => Get.toNamed(Routes.TAMBAH_PEGAWAI),
-                //       icon: Icon(Icons.admin_panel_settings_outlined),
-                //     )
-                //   else
-                //     SizedBox(),
-                //   Obx(
-                //     () => ElevatedButton(
-                //       onPressed: () async {
-                //         if (controller.isLoading.isFalse) {
-                //           controller.isLoading.value = true;
-                //           await FirebaseAuth.instance.signOut();
-                //           controller.isLoading.value = false;
-                //           Get.offAllNamed(Routes.LOGIN);
-                //         }
-                //       },
-                //       style: ElevatedButton.styleFrom(
-                //           backgroundColor: Colors.indigo[400]),
-                //       child: controller.isLoading.isFalse
-                //           ? Icon(Icons.logout_outlined, color: Colors.black)
-                //           : CircularProgressIndicator(),
-                //     ),
-                //   ),
-                // ],
               ),
               body: Stack(
                 children: [
@@ -617,6 +587,13 @@ class Contoh extends GetView<HomeController> {
                                                     ),
                                                   ),
                                                 )),
+
+                                       // TAMBAH PEGAWAI
+                                       if(snapshot.data!.data()!['role'] ==
+                                          'admin')
+                                          MenuBawah(title: 'Pegawai', icon: Icon(Icons.person_add), onTap: () {
+                                            Get.toNamed(Routes.TAMBAH_PEGAWAI);
+                                          },),
                                       // TAMBAH PESAN GURU KE WALI
                                       MenuBawah(
                                           title: 'Pesan',

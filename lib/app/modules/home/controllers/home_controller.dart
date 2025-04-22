@@ -65,10 +65,10 @@ class HomeController extends GetxController {
     // HomeWidget(),
     Center(
       child: Text(
-        'ABSEN',
+        'PROSES PENGEMBANGAN',
+        textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: 50,
-          fontWeight: FontWeight.bold,
+          fontSize: 25,
         ),
       ),
     ),

@@ -15,9 +15,11 @@ class HomeView extends GetView<HomeController> {
         () => controller.myWidgets.elementAt(controller.indexWidget.value),
       ),
       bottomNavigationBar: ConvexAppBar(
-        style: TabStyle.fixedCircle,
+        // style: TabStyle.fixedCircle,
+        style: TabStyle.react,
+        curveSize: 80,
         initialActiveIndex: 1,
-        backgroundColor: Colors.indigo[400],
+        backgroundColor: Colors.indigo[600],
         onTap: (value) => controller.changeIndex(value),
         items: [
           TabItem(
